@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration | StudentSync</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .contact-section {
+            padding: 120px 0 60px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .form-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 3rem;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-white);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-coral);
+            box-shadow: 0 0 10px rgba(255, 64, 129, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .id-card-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        #idCanvas {
+            max-width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            margin: 2rem 0;
+            background-color: white; /* Base color for canvas */
+        }
+
+        /* Validation UI */
+        .form-group { position: relative; }
+        .input-wrapper { position: relative; }
+        .form-control.is-invalid { border-color: #ff4d4f !important; box-shadow: 0 0 8px rgba(255, 77, 79, 0.3) !important; }
+        .form-control.is-valid { border-color: #27c93f !important; box-shadow: 0 0 8px rgba(39, 201, 63, 0.3) !important; }
+        .error-text { color: #ff4d4f; font-size: 0.85rem; margin-top: 5px; display: block; animation: fadeIn 0.3s ease; }
+        .validation-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 1rem; opacity: 0; transition: opacity 0.3s ease; }
+        .validation-icon.fa-circle-check { color: #27c93f; opacity: 1; }
+        .validation-icon.fa-circle-xmark { color: #ff4d4f; opacity: 1; }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient bg-gradient-1"></div>
+    <div class="bg-gradient bg-gradient-2" style="top: 20%; left: 60%;"></div>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                Student<span>Sync</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html#features">Challenges</a>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="index.html" class="btn btn-outline" style="text-decoration: none;">Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="contact-section">
+            <div class="container" style="display: flex; justify-content: center;">
+                
+                <!-- Registration Form -->
+                <div class="glass-card form-container" id="registrationFormContainer">
+                    <div class="form-header">
+                        <h2>Institute Registration</h2>
+                        <p class="text-muted">Join the platform and generate your digital Student ID.</p>
+                    </div>
+                    
+                    <form id="registrationForm">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" class="form-control" placeholder="e.g. John Doe" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fatherName">Father / Guardian Name</label>
+                                <input type="text" id="fatherName" class="form-control" placeholder="e.g. Richard Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cnic">CNIC / B-Form No.</label>
+                                <input type="text" id="cnic" class="form-control" placeholder="e.g. 42101-1234567-1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dob">Date of Birth</label>
+                                <input type="date" id="dob" class="form-control" required style="background-color: #1f2833; color-scheme: dark;">
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender" class="form-control" required style="background-color: #1f2833;">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="qualification">Previous Qualification</label>
+                            <input type="text" id="qualification" class="form-control" placeholder="e.g. Intermediate (Pre-Engineering)" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" class="form-control" placeholder="john@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" class="form-control" placeholder="e.g. +92 300 1234567" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-large" style="width: 100%; margin-top: 1rem;">
+                            Register & Generate ID <i class="fa-solid fa-id-card" style="margin-left: 8px;"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- ID Card Result Container -->
+                <div class="glass-card id-card-container" id="idCardContainer">
+                    <div class="form-header">
+                        <h2><i class="fa-solid fa-circle-check" style="color: #27c93f; margin-right: 10px;"></i>Registration Successful!</h2>
+                        <p class="text-muted">Your official StudentSync Digital ID has been generated.</p>
+                    </div>
+                    
+                    <canvas id="idCanvas" width="450" height="650"></canvas>
+                    
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem; width: 100%;">
+                        <button id="downloadBtn" class="btn btn-primary" style="flex: 1;">
+                            Download ID <i class="fa-solid fa-download" style="margin-left: 8px;"></i>
+                        </button>
+                        <a href="index.html" class="btn btn-outline" style="flex: 1; text-decoration: none;">
+                            Go to Dashboard
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer glass-card">
+        <div class="container footer-container">
+            <div class="footer-col brand-col">
+                <a href="#" class="logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    Student<span>Sync</span>
+                </a>
+                <p>Empowering college students to connect, share, and thrive together.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-discord"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Challenges</h4>
+                <a href="#">Transit Economics</a>
+                <a href="#">Route Intelligence</a>
+                <a href="#">Civic Voice Hub</a>
+                <a href="#">Conceptual Mastery</a>
+                <a href="#">Knowledge Base</a>
+                <a href="#">Strategic Mentorship</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Campus Reps</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 StudentSync. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="contact.js"></script>
+</body>
+</html>
