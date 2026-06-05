@@ -89,6 +89,16 @@
         .validation-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 1rem; opacity: 0; transition: opacity 0.3s ease; }
         .validation-icon.fa-circle-check { color: #27c93f; opacity: 1; }
         .validation-icon.fa-circle-xmark { color: #ff4d4f; opacity: 1; }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+            }
+            .contact-info-panel {
+                padding: 2rem !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -114,89 +124,137 @@
 
     <main>
         <section class="contact-section">
-            <div class="container" style="display: flex; justify-content: center;">
+            <div class="container contact-grid" style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; align-items: flex-start;">
                 
-                <!-- Registration Form -->
-                <div class="glass-card form-container" id="registrationFormContainer">
-                    <div class="form-header">
-                        <h2>Institute Registration</h2>
-                        <p class="text-muted">Join the platform and generate your digital Student ID.</p>
+                <!-- Contact Information & Details -->
+                <div class="contact-info-panel glass-card" style="padding: 3rem; display: flex; flex-direction: column; gap: 2rem;">
+                    <div>
+                        <h2 style="margin-bottom: 1rem;">Get in Touch</h2>
+                        <p class="text-muted">Have questions? We're here to help you sync your college life better.</p>
                     </div>
                     
-                    <form id="registrationForm">
-                        <div class="form-group">
-                            <label for="fullName">Full Name</label>
-                            <input type="text" id="fullName" class="form-control" placeholder="e.g. John Doe" required>
+                    <div class="info-items" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <div class="icon-box" style="width: 50px; height: 50px; border-radius: 50%; background: rgba(255, 64, 129, 0.1); display: flex; align-items: center; justify-content: center; color: var(--accent-coral); font-size: 1.2rem;">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4>Our Office</h4>
+                                <p class="text-muted" style="font-size: 0.9rem;">123 Campus Road, Karachi</p>
+                            </div>
                         </div>
                         
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="fatherName">Father / Guardian Name</label>
-                                <input type="text" id="fatherName" class="form-control" placeholder="e.g. Richard Doe" required>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <div class="icon-box" style="width: 50px; height: 50px; border-radius: 50%; background: rgba(255, 64, 129, 0.1); display: flex; align-items: center; justify-content: center; color: var(--accent-coral); font-size: 1.2rem;">
+                                <i class="fa-solid fa-envelope"></i>
                             </div>
-                            <div class="form-group">
-                                <label for="cnic">CNIC / B-Form No.</label>
-                                <input type="text" id="cnic" class="form-control" placeholder="e.g. 42101-1234567-1" required>
+                            <div>
+                                <h4>Email Us</h4>
+                                <p class="text-muted" style="font-size: 0.9rem;">support@studentsync.edu.pk</p>
                             </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="dob">Date of Birth</label>
-                                <input type="date" id="dob" class="form-control" required style="background-color: #1f2833; color-scheme: dark;">
-                            </div>
-                            <div class="form-group">
-                                <label for="gender">Gender</label>
-                                <select id="gender" class="form-control" required style="background-color: #1f2833;">
-                                    <option value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="qualification">Previous Qualification</label>
-                            <input type="text" id="qualification" class="form-control" placeholder="e.g. Intermediate (Pre-Engineering)" required>
                         </div>
                         
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="email">Email Address</label>
-                                <input type="email" id="email" class="form-control" placeholder="john@example.com" required>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <div class="icon-box" style="width: 50px; height: 50px; border-radius: 50%; background: rgba(255, 64, 129, 0.1); display: flex; align-items: center; justify-content: center; color: var(--accent-coral); font-size: 1.2rem;">
+                                <i class="fa-solid fa-phone"></i>
                             </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" class="form-control" placeholder="e.g. +92 300 1234567" required>
+                            <div>
+                                <h4>Call Us</h4>
+                                <p class="text-muted" style="font-size: 0.9rem;">+92 300 1234567</p>
                             </div>
                         </div>
-
-                        <button type="submit" class="btn btn-primary btn-large" style="width: 100%; margin-top: 1rem;">
-                            Register & Generate ID <i class="fa-solid fa-id-card" style="margin-left: 8px;"></i>
-                        </button>
-                    </form>
-                </div>
-
-                <!-- ID Card Result Container -->
-                <div class="glass-card id-card-container" id="idCardContainer">
-                    <div class="form-header">
-                        <h2><i class="fa-solid fa-circle-check" style="color: #27c93f; margin-right: 10px;"></i>Registration Successful!</h2>
-                        <p class="text-muted">Your official StudentSync Digital ID has been generated.</p>
                     </div>
                     
-                    <canvas id="idCanvas" width="450" height="650"></canvas>
-                    
-                    <div style="display: flex; gap: 1rem; margin-top: 1rem; width: 100%;">
-                        <button id="downloadBtn" class="btn btn-primary" style="flex: 1;">
-                            Download ID <i class="fa-solid fa-download" style="margin-left: 8px;"></i>
-                        </button>
-                        <a href="index.html" class="btn btn-outline" style="flex: 1; text-decoration: none;">
-                            Go to Dashboard
-                        </a>
+                    <div class="faq-mini" style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">
+                        <h4 style="margin-bottom: 1rem;">Working Hours</h4>
+                        <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 0.5rem;"><i class="fa-regular fa-clock" style="margin-right: 5px;"></i> Mon - Fri: 9:00 AM - 6:00 PM</p>
+                        <p class="text-muted" style="font-size: 0.9rem;"><i class="fa-solid fa-moon" style="margin-right: 5px;"></i> Sat - Sun: Closed</p>
                     </div>
                 </div>
 
+                <!-- Right Side Container -->
+                <div style="display: flex; flex-direction: column; gap: 2rem; width: 100%;">
+                    <!-- Registration Form -->
+                    <div class="glass-card form-container" id="registrationFormContainer" style="max-width: 100%;">
+                        <div class="form-header">
+                            <h2>Institute Registration</h2>
+                            <p class="text-muted">Join the platform and generate your digital Student ID.</p>
+                        </div>
+                        
+                        <form id="registrationForm">
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" id="fullName" class="form-control" placeholder="e.g. John Doe" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="fatherName">Father / Guardian Name</label>
+                                    <input type="text" id="fatherName" class="form-control" placeholder="e.g. Richard Doe" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cnic">CNIC / B-Form No.</label>
+                                    <input type="text" id="cnic" class="form-control" placeholder="e.g. 42101-1234567-1" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="dob">Date of Birth</label>
+                                    <input type="date" id="dob" class="form-control" required style="background-color: #1f2833; color-scheme: dark;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">Gender</label>
+                                    <select id="gender" class="form-control" required style="background-color: #1f2833;">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="qualification">Previous Qualification</label>
+                                <input type="text" id="qualification" class="form-control" placeholder="e.g. Intermediate (Pre-Engineering)" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" class="form-control" placeholder="john@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" class="form-control" placeholder="e.g. +92 300 1234567" required>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-large" style="width: 100%; margin-top: 1rem;">
+                                Register & Generate ID <i class="fa-solid fa-id-card" style="margin-left: 8px;"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- ID Card Result Container -->
+                    <div class="glass-card id-card-container" id="idCardContainer" style="max-width: 100%;">
+                        <div class="form-header">
+                            <h2><i class="fa-solid fa-circle-check" style="color: #27c93f; margin-right: 10px;"></i>Registration Successful!</h2>
+                            <p class="text-muted">Your official StudentSync Digital ID has been generated.</p>
+                        </div>
+                        
+                        <canvas id="idCanvas" width="450" height="650"></canvas>
+                        
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem; width: 100%;">
+                            <button id="downloadBtn" class="btn btn-primary" style="flex: 1;">
+                                Download ID <i class="fa-solid fa-download" style="margin-left: 8px;"></i>
+                            </button>
+                            <a href="index.html" class="btn btn-outline" style="flex: 1; text-decoration: none;">
+                                Go to Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

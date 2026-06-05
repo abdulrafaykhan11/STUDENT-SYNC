@@ -168,29 +168,47 @@
             </div>
         </section>
 
-        <!-- Live Focus Utility Widget (Pomodoro) -->
-        <section id="focus" class="focus-section">
+        <!-- Live Campus Radar Widget -->
+        <section id="live-feed" class="focus-section">
             <div class="container">
-                <div class="focus-wrapper glass-card animate-on-scroll">
-                    <div class="focus-info">
-                        <h2>Live Focus Mode</h2>
-                        <p>Boost your productivity with our built-in Pomodoro timer and ambient sounds.</p>
-                        <ul class="focus-benefits">
-                            <li><i class="fa-solid fa-check text-accent"></i> 25-minute focus intervals</li>
-                            <li><i class="fa-solid fa-check text-accent"></i> 5-minute short breaks</li>
-                            <li><i class="fa-solid fa-check text-accent"></i> Lo-Fi ambiance tracks</li>
-                        </ul>
+                <div class="focus-wrapper glass-card animate-on-scroll" style="display: flex; flex-direction: column; gap: 2rem; max-width: 900px; margin: 0 auto; text-align: center;">
+                    <div class="focus-info" style="width: 100%;">
+                        <h2><i class="fa-solid fa-satellite-dish text-accent" style="margin-right: 10px;"></i>Campus Live Radar</h2>
+                        <p>Real-time updates on transit, notes, marketplace, and events happening around you.</p>
                     </div>
                     
-                    <div class="pomodoro-widget">
-                        <div class="pomodoro-tabs">
-                            <button class="tab active" data-mode="focus">Focus</button>
-                            <button class="tab" data-mode="break">Break</button>
+                    <div class="feed-container" style="width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; text-align: left;">
+                        <!-- Feed Item 1 -->
+                        <div class="dash-card small floating" style="animation-delay: 0s; width: 100%;">
+                            <i class="fa-solid fa-book-open text-accent"></i>
+                            <div>
+                                <h4>Data Structures</h4>
+                                <p style="font-size: 0.8rem;">Notes by Ali • 5m ago</p>
+                            </div>
                         </div>
-                        <div class="timer-display" id="timer">25:00</div>
-                        <div class="timer-controls">
-                            <button class="btn btn-primary" id="startBtn">Start</button>
-                            <button class="btn btn-outline" id="resetBtn">Reset</button>
+                        <!-- Feed Item 2 -->
+                        <div class="dash-card small alert floating" style="animation-delay: 0.2s; width: 100%;">
+                            <i class="fa-solid fa-bus text-crimson"></i>
+                            <div>
+                                <h4>Transit Alert</h4>
+                                <p style="font-size: 0.8rem;">Route 4 delayed 15m</p>
+                            </div>
+                        </div>
+                        <!-- Feed Item 3 -->
+                        <div class="dash-card small floating" style="animation-delay: 0.4s; width: 100%;">
+                            <i class="fa-solid fa-tag" style="color: #27c93f;"></i>
+                            <div>
+                                <h4>Physics Book</h4>
+                                <p style="font-size: 0.8rem;">Sale for Rs 500 • 1h ago</p>
+                            </div>
+                        </div>
+                        <!-- Feed Item 4 -->
+                        <div class="dash-card small alert floating" style="animation-delay: 0.6s; width: 100%;">
+                            <i class="fa-solid fa-calendar-check text-crimson"></i>
+                            <div>
+                                <h4>Tech Seminar</h4>
+                                <p style="font-size: 0.8rem;">Auditorium • Tonight 7PM</p>
+                            </div>
                         </div>
                     </div>
                 </div>
