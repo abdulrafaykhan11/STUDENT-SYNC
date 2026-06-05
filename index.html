@@ -52,7 +52,7 @@
         <section class="hero">
             <div class="container hero-container">
                 <div class="hero-content animate-on-scroll">
-                    <div class="badge">🚀 The Ultimate Student Hub</div>
+                    <div class="badge"><i class="fa-solid fa-bolt"></i> The Ultimate Student Hub</div>
                     <h1>Sync Your College Life.<br><span class="text-gradient">Simpler. Faster. Better.</span></h1>
                     <p class="hero-subtitle">Solve real college problems in one place. Share notes, find roommates, trade on campus, and track events effortlessly.</p>
                     <div class="hero-buttons">
@@ -168,48 +168,111 @@
             </div>
         </section>
 
-        <!-- Live Campus Radar Widget -->
-        <section id="live-feed" class="focus-section">
+        <!-- Student Command Center -->
+        <section id="command-center" class="command-center-section">
             <div class="container">
-                <div class="focus-wrapper glass-card animate-on-scroll" style="display: flex; flex-direction: column; gap: 2rem; max-width: 900px; margin: 0 auto; text-align: center;">
-                    <div class="focus-info" style="width: 100%;">
-                        <h2><i class="fa-solid fa-satellite-dish text-accent" style="margin-right: 10px;"></i>Campus Live Radar</h2>
-                        <p>Real-time updates on transit, notes, marketplace, and events happening around you.</p>
+                <div class="section-header animate-on-scroll">
+                    <span class="section-kicker">Home page exclusive</span>
+                    <h2>Student Command Center</h2>
+                    <p>A premium daily cockpit that turns transport, civic issues, learning gaps, resources, and mentorship into one clear action plan.</p>
+                </div>
+
+                <div class="command-grid">
+                    <div class="readiness-panel glass-card animate-on-scroll">
+                        <div class="panel-topline">
+                            <span>Today's Readiness</span>
+                            <strong>Karachi Campus</strong>
+                        </div>
+                        <div class="readiness-meter" aria-label="Student readiness score 82 percent">
+                            <span>82</span>
+                            <small>sync score</small>
+                        </div>
+                        <div class="readiness-list">
+                            <div>
+                                <i class="fa-solid fa-bus-simple"></i>
+                                <span>Best route locked</span>
+                                <strong>Rs 95 saved</strong>
+                            </div>
+                            <div>
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span>Road risk spotted</span>
+                                <strong>Alt route ready</strong>
+                            </div>
+                            <div>
+                                <i class="fa-solid fa-layer-group"></i>
+                                <span>Study pack matched</span>
+                                <strong>3 resources</strong>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="feed-container" style="width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; text-align: left;">
-                        <!-- Feed Item 1 -->
-                        <div class="dash-card small floating" style="animation-delay: 0s; width: 100%;">
-                            <i class="fa-solid fa-book-open text-accent"></i>
+
+                    <div class="solution-engine glass-card animate-on-scroll" style="transition-delay: 0.1s;">
+                        <div class="engine-header">
                             <div>
-                                <h4>Data Structures</h4>
-                                <p style="font-size: 0.8rem;">Notes by Ali • 5m ago</p>
+                                <span class="section-kicker">6-problem response engine</span>
+                                <h3>Pick a student pain point</h3>
+                            </div>
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+
+                        <div class="solution-tabs" role="tablist" aria-label="Student problem solutions">
+                            <button class="solution-tab active" type="button" data-solution="transit"><i class="fa-solid fa-wallet"></i> Transit Cost</button>
+                            <button class="solution-tab" type="button" data-solution="route"><i class="fa-solid fa-route"></i> Bad Routes</button>
+                            <button class="solution-tab" type="button" data-solution="civic"><i class="fa-solid fa-bullhorn"></i> Civic Issues</button>
+                            <button class="solution-tab" type="button" data-solution="concept"><i class="fa-solid fa-brain"></i> Concepts</button>
+                            <button class="solution-tab" type="button" data-solution="knowledge"><i class="fa-solid fa-folder-open"></i> Resources</button>
+                            <button class="solution-tab" type="button" data-solution="mentor"><i class="fa-solid fa-compass"></i> Mentorship</button>
+                        </div>
+
+                        <div class="solution-result" id="solutionResult">
+                            <span class="result-label">Recommended move</span>
+                            <h4>Compare commute cost before leaving</h4>
+                            <p>StudentSync checks bus, ride-hailing, and personal transport cost so students can choose the cheapest reliable route.</p>
+                            <div class="result-metrics">
+                                <span><strong>Rs 95</strong> average saving</span>
+                                <span><strong>12 min</strong> delay avoided</span>
                             </div>
                         </div>
-                        <!-- Feed Item 2 -->
-                        <div class="dash-card small alert floating" style="animation-delay: 0.2s; width: 100%;">
-                            <i class="fa-solid fa-bus text-crimson"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Premium Intelligence Feed -->
+        <section id="live-feed" class="intelligence-section">
+            <div class="container">
+                <div class="intelligence-board glass-card animate-on-scroll">
+                    <div class="board-copy">
+                        <span class="section-kicker">Live campus radar</span>
+                        <h2>One feed for the next best action.</h2>
+                        <p>Instead of random updates, the home page now shows what a student should do next: leave early, revise a weak concept, raise a civic report, or book a mentor session.</p>
+                    </div>
+
+                    <div class="radar-feed">
+                        <article class="radar-item priority-high">
+                            <span class="radar-time">07:40 AM</span>
                             <div>
-                                <h4>Transit Alert</h4>
-                                <p style="font-size: 0.8rem;">Route 4 delayed 15m</p>
+                                <h4>Route 4 has heavy delay near Shahrah-e-Faisal</h4>
+                                <p>Switch to Green Line + 12 minute walk. Estimated saving: Rs 120.</p>
                             </div>
-                        </div>
-                        <!-- Feed Item 3 -->
-                        <div class="dash-card small floating" style="animation-delay: 0.4s; width: 100%;">
-                            <i class="fa-solid fa-tag" style="color: #27c93f;"></i>
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                        </article>
+                        <article class="radar-item">
+                            <span class="radar-time">10:15 AM</span>
                             <div>
-                                <h4>Physics Book</h4>
-                                <p style="font-size: 0.8rem;">Sale for Rs 500 • 1h ago</p>
+                                <h4>Data Structures weak-topic pack is ready</h4>
+                                <p>Stack, queue, and recursion notes are grouped with short video explainers.</p>
                             </div>
-                        </div>
-                        <!-- Feed Item 4 -->
-                        <div class="dash-card small alert floating" style="animation-delay: 0.6s; width: 100%;">
-                            <i class="fa-solid fa-calendar-check text-crimson"></i>
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </article>
+                        <article class="radar-item">
+                            <span class="radar-time">01:30 PM</span>
                             <div>
-                                <h4>Tech Seminar</h4>
-                                <p style="font-size: 0.8rem;">Auditorium • Tonight 7PM</p>
+                                <h4>Mentor slot opened for career roadmap</h4>
+                                <p>Book a 20-minute session and get a semester action plan.</p>
                             </div>
-                        </div>
+                            <i class="fa-solid fa-user-tie"></i>
+                        </article>
                     </div>
                 </div>
             </div>
