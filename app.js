@@ -223,131 +223,237 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Transit Calculator Mockup ---
     const calcTabs = document.querySelectorAll('.calc-tab');
     const calcContent = document.getElementById('calc-content');
+    const calcInsights = document.getElementById('calc-insights');
     const calcRecommendation = document.getElementById('calc-recommendation');
     const originSelect = document.getElementById('origin-select');
     const destSelect = document.getElementById('dest-select');
 
-    // Dynamic Destinations
-    const destinations = {
-        school: [
-            { value: 'kgs', label: 'KGS (Karachi Grammar)' },
-            { value: 'city_school', label: 'The City School' },
-            { value: 'beaconhouse', label: 'Beaconhouse System' },
-            { value: 'bay_view', label: 'Bay View Academy' },
-            { value: 'habib', label: 'Habib Public School' }
-        ],
-        college: [
-            { value: 'adamjee', label: 'Adamjee Govt Science' },
-            { value: 'dj_science', label: 'DJ Sindh Govt' },
-            { value: 'pechs', label: 'BAMM PECHS Govt' },
-            { value: 'st_patricks', label: 'St. Patrick\'s College' },
-            { value: 'bahria', label: 'Bahria College Karsaz' }
-        ],
-        university: [
-            { value: 'ned', label: 'NED University' },
-            { value: 'ku', label: 'Karachi University (KU)' },
-            { value: 'fast', label: 'FAST NUCES' },
-            { value: 'iba', label: 'IBA' },
-            { value: 'dawood', label: 'Dawood University' }
-        ]
+    const transitRoutes = {
+        gulshan: {
+            label: 'Gulshan-e-Iqbal',
+            routes: {
+                ned: { km: 5.4, congestion: 10, transfers: 0, walk: 6, seats: 4, shuttleEta: 11, signal: 'University Road clear' },
+                ku: { km: 4.8, congestion: 8, transfers: 0, walk: 8, seats: 5, shuttleEta: 9, signal: 'Direct campus belt' },
+                fast: { km: 13.8, congestion: 17, transfers: 1, walk: 10, seats: 2, shuttleEta: 18, signal: 'Shahrah-e-Faisal traffic' },
+                iba: { km: 6.2, congestion: 11, transfers: 0, walk: 7, seats: 3, shuttleEta: 10, signal: 'Main University Road' },
+                dhaus: { km: 19.5, congestion: 21, transfers: 2, walk: 12, seats: 1, shuttleEta: 24, signal: 'Long cross-city route' }
+            }
+        },
+        north_nazimabad: {
+            label: 'North Nazimabad',
+            routes: {
+                ned: { km: 12.6, congestion: 16, transfers: 1, walk: 8, seats: 3, shuttleEta: 15, signal: 'Nagan to University Road' },
+                ku: { km: 13.9, congestion: 17, transfers: 1, walk: 9, seats: 3, shuttleEta: 16, signal: 'Buffer Zone delay risk' },
+                fast: { km: 20.4, congestion: 24, transfers: 2, walk: 12, seats: 2, shuttleEta: 23, signal: 'Long morning corridor' },
+                iba: { km: 14.3, congestion: 18, transfers: 1, walk: 10, seats: 2, shuttleEta: 17, signal: 'Reliable bus chain' },
+                dhaus: { km: 25.7, congestion: 29, transfers: 2, walk: 14, seats: 1, shuttleEta: 27, signal: 'Premium ride advised' }
+            }
+        },
+        pechs: {
+            label: 'PECHS',
+            routes: {
+                ned: { km: 11.7, congestion: 15, transfers: 1, walk: 7, seats: 4, shuttleEta: 13, signal: 'Stadium Road option' },
+                ku: { km: 12.8, congestion: 16, transfers: 1, walk: 8, seats: 4, shuttleEta: 14, signal: 'University Road approach' },
+                fast: { km: 8.5, congestion: 12, transfers: 0, walk: 6, seats: 3, shuttleEta: 12, signal: 'Shahrah-e-Faisal direct' },
+                iba: { km: 13.5, congestion: 17, transfers: 1, walk: 9, seats: 2, shuttleEta: 16, signal: 'Campus connector active' },
+                dhaus: { km: 15.9, congestion: 19, transfers: 1, walk: 10, seats: 2, shuttleEta: 19, signal: 'Korangi Road moderate' }
+            }
+        },
+        clifton: {
+            label: 'Clifton',
+            routes: {
+                ned: { km: 22.1, congestion: 26, transfers: 2, walk: 12, seats: 2, shuttleEta: 25, signal: 'City crossing route' },
+                ku: { km: 23.4, congestion: 28, transfers: 2, walk: 13, seats: 2, shuttleEta: 26, signal: 'Heavy peak traffic' },
+                fast: { km: 14.6, congestion: 18, transfers: 1, walk: 9, seats: 3, shuttleEta: 18, signal: 'DHA to Faisal link' },
+                iba: { km: 24.0, congestion: 29, transfers: 2, walk: 14, seats: 1, shuttleEta: 28, signal: 'Budget warning' },
+                dhaus: { km: 9.8, congestion: 13, transfers: 0, walk: 7, seats: 4, shuttleEta: 12, signal: 'Best west route' }
+            }
+        },
+        malir: {
+            label: 'Malir',
+            routes: {
+                ned: { km: 13.2, congestion: 16, transfers: 1, walk: 8, seats: 4, shuttleEta: 14, signal: 'Safoora approach' },
+                ku: { km: 14.4, congestion: 17, transfers: 1, walk: 9, seats: 5, shuttleEta: 15, signal: 'Direct east corridor' },
+                fast: { km: 16.7, congestion: 20, transfers: 1, walk: 10, seats: 2, shuttleEta: 20, signal: 'Airport road delay' },
+                iba: { km: 15.1, congestion: 18, transfers: 1, walk: 8, seats: 3, shuttleEta: 17, signal: 'University belt route' },
+                dhaus: { km: 26.6, congestion: 31, transfers: 2, walk: 14, seats: 1, shuttleEta: 30, signal: 'Longest route today' }
+            }
+        }
     };
 
-    if (originSelect && destSelect) {
-        originSelect.addEventListener('change', () => {
-            const type = originSelect.value; // Origin select is now "Institution Type"
-            if (destinations[type]) {
-                destSelect.innerHTML = '';
-                destinations[type].forEach(inst => {
-                    const option = document.createElement('option');
-                    option.value = inst.value;
-                    option.textContent = inst.label;
-                    option.style.background = 'var(--bg-dark)';
-                    option.style.color = 'white';
-                    destSelect.appendChild(option);
-                });
-            }
-            updateCalculator();
-        });
-        
-        destSelect.addEventListener('change', updateCalculator);
-    }
+    const campuses = {
+        ned: 'NED University',
+        ku: 'Karachi University',
+        fast: 'FAST NUCES',
+        iba: 'IBA Karachi',
+        dhaus: 'DHA Suffa University'
+    };
 
-    // Dynamic Rate Logic
-    const getRates = (type, dest) => {
-        // Mock distance multipliers based on dest length to create variations
-        let distanceMultiplier = 1.0 + (dest.length * 0.05);
-        if (type === 'university') distanceMultiplier += 0.5;
-        if (type === 'school') distanceMultiplier -= 0.2;
+    const modeMeta = {
+        ride: { label: 'Ride App', icon: 'fa-taxi', className: 'ride', tag: 'Peak fare checked' },
+        bus: { label: 'Public Bus', icon: 'fa-bus', className: 'bus', tag: 'Budget route' },
+        carpool: { label: 'Carpool', icon: 'fa-car-side', className: 'carpool', tag: 'Verified student seats' },
+        shuttle: { label: 'Campus Shuttle', icon: 'fa-van-shuttle', className: 'shuttle', tag: 'Point schedule match' }
+    };
 
-        const baseRide = Math.floor(400 * distanceMultiplier);
-        const surgeRide = Math.floor(baseRide * 1.5);
-        const baseBus = Math.floor(60 * distanceMultiplier);
-        const baseCarpool = Math.floor(100 * distanceMultiplier);
+    const formatRs = value => `Rs ${Math.round(value).toLocaleString()}`;
 
-        const timeRide = Math.floor(20 * distanceMultiplier);
-        const timeBus = Math.floor(50 * distanceMultiplier);
-        const timeCarpool = Math.floor(25 * distanceMultiplier);
+    const buildOptions = route => {
+        const km = route.km;
+        const rideBase = Math.round(150 + (km * 33) + route.congestion);
+        const rideCost = Math.round(rideBase * (route.congestion > 22 ? 1.38 : route.congestion > 16 ? 1.24 : 1.12));
+        const busCost = Math.round(55 + (route.transfers * 45) + (km > 18 ? 35 : 0));
+        const carpoolCost = Math.round(95 + (km * 15) + Math.max(0, 5 - route.seats) * 12);
+        const shuttleCost = Math.round(80 + (km > 15 ? 35 : 0) + (route.shuttleEta > 22 ? 20 : 0));
 
         return {
             ride: {
-                html: `
-                    <div class="calc-icon" style="font-size: 3rem; color: #ff5252; margin-bottom: 1rem;"><i class="fa-solid fa-taxi"></i></div>
-                    <h3 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Rs ${surgeRide} <span style="font-size: 1rem; color: var(--text-muted); text-decoration: line-through;">Rs ${baseRide}</span></h3>
-                    <div class="badge" style="background: rgba(255, 82, 82, 0.1); color: #ff5252; border-color: rgba(255, 82, 82, 0.3);"><i class="fa-solid fa-arrow-trend-up"></i> Surge Pricing Active</div>
-                    <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">Est. Time: ${timeRide} mins</p>
-                `,
-                recommendation: '<span style="color: #ff5252; font-weight: 600; font-size: 0.95rem;">Expensive for daily use - best for emergencies.</span>'
+                cost: rideCost,
+                oldCost: rideBase,
+                time: Math.round(16 + (km * 1.75) + (route.congestion * 0.45)),
+                reliability: route.congestion > 24 ? 72 : 84,
+                detail: 'Fastest solo option, but peak pricing is active.'
             },
             bus: {
-                html: `
-                    <div class="calc-icon" style="font-size: 3rem; color: var(--accent-gold); margin-bottom: 1rem;"><i class="fa-solid fa-bus"></i></div>
-                    <h3 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Rs ${baseBus}</h3>
-                    <div class="badge" style="background: rgba(255, 189, 46, 0.1); color: var(--accent-gold); border-color: rgba(255, 189, 46, 0.3);"><i class="fa-solid fa-person-walking"></i> Requires 10m walk</div>
-                    <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">Est. Time: ${timeBus} mins (with transfers)</p>
-                `,
-                recommendation: '<span style="color: var(--accent-gold); font-weight: 600; font-size: 0.95rem;">Cheapest, but takes longest.</span>'
+                cost: busCost,
+                time: Math.round(24 + (km * 2.35) + (route.transfers * 11) + route.walk),
+                reliability: route.transfers > 1 ? 69 : 77,
+                detail: `${route.transfers} transfer${route.transfers === 1 ? '' : 's'} and ${route.walk} min walk.`
             },
             carpool: {
-                html: `
-                    <div class="calc-icon" style="font-size: 3rem; color: var(--accent-mint); margin-bottom: 1rem;"><i class="fa-solid fa-car"></i></div>
-                    <h3 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Rs ${baseCarpool}</h3>
-                    <div class="badge" style="background: rgba(0, 209, 178, 0.1); color: var(--accent-mint); border-color: rgba(0, 209, 178, 0.3);"><i class="fa-solid fa-check-circle"></i> Verified Matches</div>
-                    <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">Est. Time: ${timeCarpool} mins (Direct Route)</p>
-                `,
-                recommendation: '<span style="color: var(--accent-mint); font-weight: 600; font-size: 0.95rem;"><i class="fa-solid fa-star"></i> StudentSync Recommended</span>'
+                cost: carpoolCost,
+                time: Math.round(20 + (km * 1.85) + (route.congestion * 0.35)),
+                reliability: route.seats > 2 ? 91 : 82,
+                detail: `${route.seats} verified seat${route.seats === 1 ? '' : 's'} near your area.`
+            },
+            shuttle: {
+                cost: shuttleCost,
+                time: Math.round(route.shuttleEta + 20 + (km * 2.05)),
+                reliability: route.shuttleEta > 24 ? 76 : 88,
+                detail: `Next pickup in ${route.shuttleEta} min.`
             }
         };
     };
 
+    const getRoutePlan = (originKey, destKey) => {
+        const origin = transitRoutes[originKey] || transitRoutes.gulshan;
+        const route = origin.routes[destKey] || origin.routes.ned;
+        const options = buildOptions(route);
+        const entries = Object.entries(options);
+        const cheapest = entries.reduce((best, current) => current[1].cost < best[1].cost ? current : best);
+        const fastest = entries.reduce((best, current) => current[1].time < best[1].time ? current : best);
+        const balanced = entries
+            .map(([key, option]) => [key, option, option.cost + (option.time * 8) - (option.reliability * 3)])
+            .sort((a, b) => a[2] - b[2])[0];
+
+        return {
+            originLabel: origin.label,
+            campusLabel: campuses[destKey] || campuses.ned,
+            route,
+            options,
+            cheapest: cheapest[0],
+            fastest: fastest[0],
+            recommended: balanced[0]
+        };
+    };
+
+    const renderCalculator = (plan, activeMode) => {
+        const selected = plan.options[activeMode] || plan.options.ride;
+        const meta = modeMeta[activeMode] || modeMeta.ride;
+        const rideCost = plan.options.ride.cost;
+        const saving = Math.max(0, rideCost - selected.cost);
+        const monthlySaving = saving * 22;
+
+        const optionRows = Object.entries(plan.options).map(([key, option]) => {
+            const rowMeta = modeMeta[key];
+            const badges = [
+                key === plan.recommended ? '<span>Best</span>' : '',
+                key === plan.cheapest ? '<span>Cheapest</span>' : '',
+                key === plan.fastest ? '<span>Fastest</span>' : ''
+            ].filter(Boolean).join('');
+
+            return `
+                <div class="calc-option-row ${key === activeMode ? 'active' : ''}">
+                    <div>
+                        <i class="fa-solid ${rowMeta.icon}"></i>
+                        <strong>${rowMeta.label}</strong>
+                    </div>
+                    <span>${formatRs(option.cost)}</span>
+                    <small>${option.time} min</small>
+                    <div class="calc-row-badges">${badges}</div>
+                </div>
+            `;
+        }).join('');
+
+        calcContent.innerHTML = `
+            <div class="calc-main-card ${meta.className}">
+                <div class="calc-icon"><i class="fa-solid ${meta.icon}"></i></div>
+                <div class="calc-price-block">
+                    <span>${meta.label}</span>
+                    <h3>${formatRs(selected.cost)} ${activeMode === 'ride' ? `<small>${formatRs(selected.oldCost)}</small>` : ''}</h3>
+                    <p>${plan.originLabel} to ${plan.campusLabel}</p>
+                </div>
+                <div class="calc-live-pill"><i class="fa-solid fa-circle"></i> ${meta.tag}</div>
+            </div>
+
+            <div class="calc-metric-grid">
+                <div><span>Time</span><strong>${selected.time} min</strong></div>
+                <div><span>Reliability</span><strong>${selected.reliability}%</strong></div>
+                <div><span>Monthly Save</span><strong>${formatRs(monthlySaving)}</strong></div>
+            </div>
+
+            <div class="calc-compare-list">
+                ${optionRows}
+            </div>
+        `;
+
+        calcInsights.innerHTML = `
+            <div>
+                <i class="fa-solid fa-route"></i>
+                <span>${plan.route.km} km</span>
+                <strong>${plan.route.signal}</strong>
+            </div>
+            <div>
+                <i class="fa-solid fa-wallet"></i>
+                <span>Best value</span>
+                <strong>${modeMeta[plan.recommended].label}</strong>
+            </div>
+            <div>
+                <i class="fa-solid fa-user-group"></i>
+                <span>Carpool seats</span>
+                <strong>${plan.route.seats} open</strong>
+            </div>
+        `;
+
+        calcRecommendation.innerHTML = `<i class="fa-solid fa-star"></i> Recommended: ${modeMeta[plan.recommended].label} saves ${formatRs(Math.max(0, rideCost - plan.options[plan.recommended].cost))} per trip vs ride app.`;
+    };
+
     const updateCalculator = () => {
         if (!calcContent || !originSelect || !destSelect) return;
-        
+
         const activeTab = document.querySelector('.calc-tab.active');
         const mode = activeTab ? activeTab.dataset.mode : 'ride';
-        const type = originSelect.value;
-        const dest = destSelect.value;
-        
-        const rates = getRates(type, dest);
+        const plan = getRoutePlan(originSelect.value, destSelect.value);
 
-        // Animate out
-        calcContent.style.opacity = 0;
-        calcContent.style.transform = 'translateY(10px)';
-        
+        calcContent.classList.add('is-updating');
+        if (calcInsights) calcInsights.classList.add('is-updating');
+
         setTimeout(() => {
-            calcContent.innerHTML = rates[mode].html;
-            calcRecommendation.innerHTML = rates[mode].recommendation;
-            
-            // Animate in
-            calcContent.style.transition = 'all 0.3s ease';
-            calcContent.style.opacity = 1;
-            calcContent.style.transform = 'translateY(0)';
-        }, 300);
+            renderCalculator(plan, mode);
+            calcContent.classList.remove('is-updating');
+            if (calcInsights) calcInsights.classList.remove('is-updating');
+        }, 180);
     };
+
+    if (originSelect && destSelect) {
+        originSelect.addEventListener('change', updateCalculator);
+        destSelect.addEventListener('change', updateCalculator);
+    }
 
     if (calcTabs.length && calcContent) {
         calcTabs.forEach(tab => {
             tab.addEventListener('click', () => {
-                calcTabs.forEach(t => t.classList.remove('active'));
+                calcTabs.forEach(item => item.classList.remove('active'));
                 tab.classList.add('active');
                 updateCalculator();
             });
@@ -355,7 +461,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (originSelect && destSelect) {
-        // Trigger initial populate
-        originSelect.dispatchEvent(new Event('change'));
+        updateCalculator();
     }
 });

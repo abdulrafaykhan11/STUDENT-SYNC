@@ -170,47 +170,61 @@
                     </div>
 
                     <!-- Right: Calculator Mockup -->
-                    <div class="calculator-mockup glass-card animate-on-scroll" style="transition-delay: 0.2s; padding: 0; overflow: hidden; border-color: rgba(0, 209, 178, 0.3); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 209, 178, 0.1);">
-                        <div class="mockup-header" style="padding: 1.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); background: rgba(0,0,0,0.2);">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 10px;">
-                                <div style="flex: 1; position: relative;">
-                                    <i class="fa-solid fa-location-dot text-accent" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);"></i>
-                                    <select id="origin-select" class="calc-select" style="width: 100%; padding: 8px 8px 8px 30px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-white); border-radius: 6px; outline: none; appearance: none; font-family: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer;">
-                                        <option value="school" style="background: var(--bg-dark); color: white;">School</option>
-                                        <option value="college" style="background: var(--bg-dark); color: white;">College</option>
-                                        <option value="university" style="background: var(--bg-dark); color: white;" selected>University</option>
-                                    </select>
+                    <div class="calculator-mockup transit-calculator glass-card animate-on-scroll" style="transition-delay: 0.2s;">
+                        <div class="mockup-header transit-calc-header">
+                            <div class="calc-status-row">
+                                <span><i class="fa-solid fa-signal"></i> Karachi Fare Desk</span>
+                                <strong>Morning Peak Active</strong>
+                            </div>
+
+                            <div class="calc-route-row">
+                                <label class="calc-field">
+                                    <span>Student Location</span>
+                                    <div class="calc-select-wrap">
+                                        <i class="fa-solid fa-location-dot text-accent"></i>
+                                        <select id="origin-select" class="calc-select" aria-label="Student location">
+                                            <option value="gulshan" selected>Gulshan-e-Iqbal</option>
+                                            <option value="north_nazimabad">North Nazimabad</option>
+                                            <option value="pechs">PECHS</option>
+                                            <option value="clifton">Clifton</option>
+                                            <option value="malir">Malir</option>
+                                        </select>
+                                    </div>
+                                </label>
+
+                                <div class="calc-route-swap" aria-hidden="true">
+                                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
                                 </div>
-                                <i class="fa-solid fa-arrow-right-arrow-left text-muted"></i>
-                                <div style="flex: 1; position: relative;">
-                                    <i class="fa-solid fa-school" style="color: var(--accent-mint); position: absolute; left: 10px; top: 50%; transform: translateY(-50%);"></i>
-                                    <select id="dest-select" class="calc-select" style="width: 100%; padding: 8px 8px 8px 30px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-white); border-radius: 6px; outline: none; appearance: none; font-family: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer;">
-                                        <!-- Options injected by JS -->
-                                    </select>
-                                </div>
+
+                                <label class="calc-field">
+                                    <span>Campus</span>
+                                    <div class="calc-select-wrap">
+                                        <i class="fa-solid fa-school"></i>
+                                        <select id="dest-select" class="calc-select" aria-label="Campus destination">
+                                            <option value="ned" selected>NED University</option>
+                                            <option value="ku">Karachi University</option>
+                                            <option value="fast">FAST NUCES</option>
+                                            <option value="iba">IBA Karachi</option>
+                                            <option value="dhaus">DHA Suffa University</option>
+                                        </select>
+                                    </div>
+                                </label>
                             </div>
                             
-                            <div class="calc-tabs" style="display: flex; gap: 0.5rem; background: rgba(255,255,255,0.05); padding: 0.3rem; border-radius: 12px;">
-                                <button class="calc-tab active" data-mode="ride">Ride App</button>
-                                <button class="calc-tab" data-mode="bus">Public Bus</button>
-                                <button class="calc-tab" data-mode="carpool">Carpool</button>
+                            <div class="calc-tabs" role="tablist" aria-label="Transit options">
+                                <button class="calc-tab active" type="button" data-mode="ride"><i class="fa-solid fa-taxi"></i> Ride App</button>
+                                <button class="calc-tab" type="button" data-mode="bus"><i class="fa-solid fa-bus"></i> Public Bus</button>
+                                <button class="calc-tab" type="button" data-mode="carpool"><i class="fa-solid fa-car-side"></i> Carpool</button>
+                                <button class="calc-tab" type="button" data-mode="shuttle"><i class="fa-solid fa-van-shuttle"></i> Shuttle</button>
                             </div>
                         </div>
                         
-                        <div class="mockup-body" style="padding: 2rem 1.5rem; min-height: 250px; display: flex; flex-direction: column; justify-content: center; position: relative;">
-                            
-                            <!-- Dynamic Content injected via JS -->
-                            <div id="calc-content" style="text-align: center;">
-                                <!-- Default: Ride App -->
-                                <div class="calc-icon" style="font-size: 3rem; color: #ff5252; margin-bottom: 1rem;"><i class="fa-solid fa-taxi"></i></div>
-                                <h3 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Rs 650 <span style="font-size: 1rem; color: var(--text-muted); text-decoration: line-through;">Rs 450</span></h3>
-                                <div class="badge" style="background: rgba(255, 82, 82, 0.1); color: #ff5252; border-color: rgba(255, 82, 82, 0.3);"><i class="fa-solid fa-arrow-trend-up"></i> Surge Pricing Active</div>
-                                <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">Est. Time: 25 mins</p>
-                            </div>
-
+                        <div class="mockup-body transit-calc-body">
+                            <div id="calc-content" class="calc-content"></div>
+                            <div id="calc-insights" class="calc-insights"></div>
                         </div>
-                        <div class="mockup-footer" style="padding: 1rem 1.5rem; background: rgba(0, 209, 178, 0.1); border-top: 1px solid rgba(0, 209, 178, 0.2); text-align: center;">
-                            <span id="calc-recommendation" style="color: #ff5252; font-weight: 600; font-size: 0.95rem;">Expensive for daily use - best for emergencies.</span>
+                        <div class="mockup-footer transit-calc-footer">
+                            <span id="calc-recommendation">Select a route to compare every commute option.</span>
                         </div>
                     </div>
                 </div>
