@@ -1264,6 +1264,58 @@ body::after {
     }
 }
 
+/* Transit Calculator Mockup */
+.calc-select {
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23a1a1a6%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 10px top 50% !important;
+    background-size: 10px auto !important;
+}
+
+.calc-select:hover {
+    border-color: rgba(0, 209, 178, 0.4) !important;
+}
+
+.calc-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.calc-tab {
+    flex: 1;
+    min-width: 80px;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.calc-tab:hover {
+    color: var(--text-white);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.calc-tab.active {
+    background: rgba(0, 209, 178, 0.15);
+    color: var(--accent-mint);
+    border-color: rgba(0, 209, 178, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 209, 178, 0.1);
+}
+
+.calc-icon {
+    animation: bounce 2s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
 @media (max-width: 768px) {
     .nav-links {
         display: none;

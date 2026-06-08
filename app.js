@@ -154,8 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabs = document.querySelectorAll('.pomodoro-tabs .tab');
 
     if (!timerDisplay || !startBtn || !resetBtn || !tabs.length) {
-        return;
-    }
+        // Do nothing, just skip pomodoro setup
+    } else {
 
     function updateDisplay() {
         const minutes = Math.floor(timeLeft / 60);
@@ -202,18 +202,160 @@ document.addEventListener('DOMContentLoaded', () => {
         resetTimer();
     }
 
-    startBtn.addEventListener('click', toggleTimer);
-    resetBtn.addEventListener('click', resetTimer);
+        startBtn.addEventListener('click', toggleTimer);
+        resetBtn.addEventListener('click', resetTimer);
 
-    tabs.forEach(tab => {
-        tab.addEventListener('click', (e) => {
-            const selectedMode = e.target.getAttribute('data-mode');
-            if (mode !== selectedMode) {
-                switchMode(selectedMode);
-            }
+        tabs.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                const selectedMode = e.target.getAttribute('data-mode');
+                if (mode !== selectedMode) {
+                    switchMode(selectedMode);
+                }
+            });
         });
-    });
 
-    // Initialize display
-    updateDisplay();
+        // Initialize display
+        if (typeof updateDisplay === 'function') {
+            try { updateDisplay(); } catch(e) {}
+        }
+    }
+
+    // --- Transit Calculator Mockup ---
+    const calcTabs = document.querySelectorAll('.calc-tab');
+    const calcContent = document.getElementById('calc-content');
+    const calcRecommendation = document.getElementById('calc-recommendation');
+    const originSelect = document.getElementById('origin-select');
+    const destSelect = document.getElementById('dest-select');
+
+    // Dynamic Destinations
+    const destinations = {
+        school: [
+            { value: 'kgs', label: 'KGS (Karachi Grammar)' },
+            { value: 'city_school', label: 'The City School' },
+            { value: 'beaconhouse', label: 'Beaconhouse System' },
+            { value: 'bay_view', label: 'Bay View Academy' },
+            { value: 'habib', label: 'Habib Public School' }
+        ],
+        college: [
+            { value: 'adamjee', label: 'Adamjee Govt Science' },
+            { value: 'dj_science', label: 'DJ Sindh Govt' },
+            { value: 'pechs', label: 'BAMM PECHS Govt' },
+            { value: 'st_patricks', label: 'St. Patrick\'s College' },
+            { value: 'bahria', label: 'Bahria College Karsaz' }
+        ],
+        university: [
+            { value: 'ned', label: 'NED University' },
+            { value: 'ku', label: 'Karachi University (KU)' },
+            { value: 'fast', label: 'FAST NUCES' },
+            { value: 'iba', label: 'IBA' },
+            { value: 'dawood', label: 'Dawood University' }
+        ]
+    };
+
+    if (originSelect && destSelect) {
+        originSelect.addEventListener('change', () => {
+            const type = originSelect.value; // Origin select is now "Institution Type"
+            if (destinations[type]) {
+                destSelect.innerHTML = '';
+                destinations[type].forEach(inst => {
+                    const option = document.createElement('option');
+                    option.value = inst.value;
+                    option.textContent = inst.label;
+                    option.style.background = 'var(--bg-dark)';
+                    option.style.color = 'white';
+                    destSelect.appendChild(option);
+                });
+            }
+            updateCalculator();
+        });
+        
+        destSelect.addEventListener('change', updateCalculator);
+    }
+
+    // Dynamic Rate Logic
+    const getRates = (type, dest) => {
+        // Mock distance multipliers based on dest length to create variations
+        let distanceMultiplier = 1.0 + (dest.length * 0.05);
+        if (type === 'university') distanceMultiplier += 0.5;
+        if (type === 'school') distanceMultiplier -= 0.2;
+
+        const baseRide = Math.floor(400 * distanceMultiplier);
+        const surgeRide = Math.floor(baseRide * 1.5);
+        const baseBus = Math.floor(60 * distanceMultiplier);
+        const baseCarpool = Math.floor(100 * distanceMultiplier);
+
+        const timeRide = Math.floor(20 * distanceMultiplier);
+        const timeBus = Math.floor(50 * distanceMultiplier);
+        const timeCarpool = Math.floor(25 * distanceMultiplier);
+
+        return {
+            ride: {
+                html: `
+                    <div class="calc-icon" style="font-size: 3rem; color: #ff5252; margin-bottom: 1rem;"><i class="fa-solid fa-taxi"></i></div>
+                    <h3 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Rs ${surgeRide} <span style="font-size: 1rem; color: var(--text-muted); text-decoration: line-through;">Rs ${baseRide}</span></h3>
+                    <div class="badge" style="background: rgba(255, 82, 82, 0.1); color: #ff5252; border-color: rgba(255, 82, 82, 0.3);"><i class="fa-solid fa-arrow-trend-up"></i> Surge Pricing Active</div>
+                    <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">Est. Time: ${timeRide} mins</p>
+                `,
+                recommendation: '<span style="color: #ff5252; font-weight: 600; font-size: 0.95rem;">Expensive for daily use - best for emergencies.</span>'
+            },
+            bus: {
+                html: `
+                    <div class="calc-icon" style="font-size: 3rem; color: var(--accent-gold); margin-bottom: 1rem;"><i class="fa-solid fa-bus"></i></div>
+                    <h3 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Rs ${baseBus}</h3>
+                    <div class="badge" style="background: rgba(255, 189, 46, 0.1); color: var(--accent-gold); border-color: rgba(255, 189, 46, 0.3);"><i class="fa-solid fa-person-walking"></i> Requires 10m walk</div>
+                    <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">Est. Time: ${timeBus} mins (with transfers)</p>
+                `,
+                recommendation: '<span style="color: var(--accent-gold); font-weight: 600; font-size: 0.95rem;">Cheapest, but takes longest.</span>'
+            },
+            carpool: {
+                html: `
+                    <div class="calc-icon" style="font-size: 3rem; color: var(--accent-mint); margin-bottom: 1rem;"><i class="fa-solid fa-car"></i></div>
+                    <h3 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Rs ${baseCarpool}</h3>
+                    <div class="badge" style="background: rgba(0, 209, 178, 0.1); color: var(--accent-mint); border-color: rgba(0, 209, 178, 0.3);"><i class="fa-solid fa-check-circle"></i> Verified Matches</div>
+                    <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">Est. Time: ${timeCarpool} mins (Direct Route)</p>
+                `,
+                recommendation: '<span style="color: var(--accent-mint); font-weight: 600; font-size: 0.95rem;"><i class="fa-solid fa-star"></i> StudentSync Recommended</span>'
+            }
+        };
+    };
+
+    const updateCalculator = () => {
+        if (!calcContent || !originSelect || !destSelect) return;
+        
+        const activeTab = document.querySelector('.calc-tab.active');
+        const mode = activeTab ? activeTab.dataset.mode : 'ride';
+        const type = originSelect.value;
+        const dest = destSelect.value;
+        
+        const rates = getRates(type, dest);
+
+        // Animate out
+        calcContent.style.opacity = 0;
+        calcContent.style.transform = 'translateY(10px)';
+        
+        setTimeout(() => {
+            calcContent.innerHTML = rates[mode].html;
+            calcRecommendation.innerHTML = rates[mode].recommendation;
+            
+            // Animate in
+            calcContent.style.transition = 'all 0.3s ease';
+            calcContent.style.opacity = 1;
+            calcContent.style.transform = 'translateY(0)';
+        }, 300);
+    };
+
+    if (calcTabs.length && calcContent) {
+        calcTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                calcTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                updateCalculator();
+            });
+        });
+    }
+
+    if (originSelect && destSelect) {
+        // Trigger initial populate
+        originSelect.dispatchEvent(new Event('change'));
+    }
 });
