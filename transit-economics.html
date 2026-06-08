@@ -179,10 +179,10 @@
 
                             <div class="calc-route-row">
                                 <label class="calc-field">
-                                    <span>Student Location</span>
+                                    <span>Your Area</span>
                                     <div class="calc-select-wrap">
                                         <i class="fa-solid fa-location-dot text-accent"></i>
-                                        <select id="origin-select" class="calc-select" aria-label="Student location">
+                                        <select id="origin-select" class="calc-select" aria-label="Student area">
                                             <option value="gulshan" selected>Gulshan-e-Iqbal</option>
                                             <option value="north_nazimabad">North Nazimabad</option>
                                             <option value="pechs">PECHS</option>
@@ -192,24 +192,31 @@
                                     </div>
                                 </label>
 
-                                <div class="calc-route-swap" aria-hidden="true">
+                                <button type="button" id="calc-swap-btn" class="calc-route-swap" aria-label="Swap route direction" title="Swap area and campus">
                                     <i class="fa-solid fa-arrow-right-arrow-left"></i>
-                                </div>
+                                </button>
 
-                                <label class="calc-field">
-                                    <span>Campus</span>
-                                    <div class="calc-select-wrap">
-                                        <i class="fa-solid fa-school"></i>
-                                        <select id="dest-select" class="calc-select" aria-label="Campus destination">
-                                            <option value="ned" selected>NED University</option>
-                                            <option value="ku">Karachi University</option>
-                                            <option value="fast">FAST NUCES</option>
-                                            <option value="iba">IBA Karachi</option>
-                                            <option value="dhaus">DHA Suffa University</option>
-                                        </select>
+                                <label class="calc-field calc-dest-group">
+                                    <span>Destination</span>
+                                    <div class="calc-dest-dropdowns">
+                                        <div class="calc-select-wrap">
+                                            <i class="fa-solid fa-layer-group"></i>
+                                            <select id="inst-type-select" class="calc-select" aria-label="Institution type">
+                                                <option value="university" selected>University</option>
+                                                <option value="college">College</option>
+                                                <option value="school">School</option>
+                                            </select>
+                                        </div>
+                                        <div class="calc-select-wrap">
+                                            <i class="fa-solid fa-school"></i>
+                                            <select id="dest-select" class="calc-select" aria-label="Top institutions near you">
+                                                <!-- Populated dynamically based on area + type -->
+                                            </select>
+                                        </div>
                                     </div>
                                 </label>
                             </div>
+                            <p class="calc-dest-hint" id="calc-dest-hint">Top 5 universities closest to your area</p>
                             
                             <div class="calc-tabs" role="tablist" aria-label="Transit options">
                                 <button class="calc-tab active" type="button" data-mode="ride"><i class="fa-solid fa-taxi"></i> Ride App</button>

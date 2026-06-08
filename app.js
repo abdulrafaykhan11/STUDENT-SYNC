@@ -227,66 +227,91 @@ document.addEventListener('DOMContentLoaded', () => {
     const calcRecommendation = document.getElementById('calc-recommendation');
     const originSelect = document.getElementById('origin-select');
     const destSelect = document.getElementById('dest-select');
+    const instTypeSelect = document.getElementById('inst-type-select');
+    const calcSwapBtn = document.getElementById('calc-swap-btn');
+    const calcDestHint = document.getElementById('calc-dest-hint');
 
-    const transitRoutes = {
+    const areaLabels = {
+        gulshan: 'Gulshan-e-Iqbal',
+        north_nazimabad: 'North Nazimabad',
+        pechs: 'PECHS',
+        clifton: 'Clifton',
+        malir: 'Malir'
+    };
+
+    const instTypeLabels = {
+        university: 'universities',
+        college: 'colleges',
+        school: 'schools'
+    };
+
+    const institutions = {
+        ned: { name: 'NED University', type: 'university', area: 'gulshan', kmExtra: 0, signal: 'University Road clear' },
+        ku: { name: 'Karachi University', type: 'university', area: 'gulshan', kmExtra: -0.6, signal: 'Direct campus belt' },
+        fast: { name: 'FAST NUCES', type: 'university', area: 'pechs', kmExtra: 0, signal: 'Shahrah-e-Faisal traffic' },
+        iba: { name: 'IBA Karachi', type: 'university', area: 'gulshan', kmExtra: 0.8, signal: 'Main University Road' },
+        dhaus: { name: 'DHA Suffa University', type: 'university', area: 'clifton', kmExtra: 0, signal: 'Korangi Road moderate' },
+        szabist: { name: 'SZABIST Karachi', type: 'university', area: 'clifton', kmExtra: 1.2, signal: 'Clifton corridor' },
+        indus: { name: 'Indus University', type: 'university', area: 'pechs', kmExtra: 0.5, signal: 'Gulistan-e-Johar link' },
+        dj_science: { name: 'DJ Science College', type: 'college', area: 'gulshan', kmExtra: 0.3, signal: 'University Road stop' },
+        st_patricks: { name: "St. Patrick's College", type: 'college', area: 'pechs', kmExtra: 0, signal: 'Saddar approach' },
+        gcw: { name: 'Govt College for Women', type: 'college', area: 'north_nazimabad', kmExtra: 0, signal: 'Nazimabad belt' },
+        bahria_college: { name: 'Bahria College Karsaz', type: 'college', area: 'pechs', kmExtra: 0.4, signal: 'Karsaz Road active' },
+        adamjee: { name: 'Adamjee Science College', type: 'college', area: 'gulshan', kmExtra: 0.2, signal: 'Gulshan main route' },
+        djmc: { name: 'DJ Sindh Govt Science College', type: 'college', area: 'malir', kmExtra: 0, signal: 'Malir connector' },
+        kgs: { name: 'Karachi Grammar School', type: 'school', area: 'clifton', kmExtra: 0, signal: 'Clifton morning route' },
+        city_school: { name: 'The City School Gulshan', type: 'school', area: 'gulshan', kmExtra: 0, signal: 'Gulshan block route' },
+        beaconhouse: { name: 'Beaconhouse Clifton', type: 'school', area: 'clifton', kmExtra: 0.3, signal: 'Sea View corridor' },
+        fps: { name: 'Foundation Public School', type: 'school', area: 'gulshan', kmExtra: 0.5, signal: 'University Road branch' },
+        happy_home: { name: 'Happy Home School', type: 'school', area: 'pechs', kmExtra: 0, signal: 'PECHS school belt' },
+        bayview: { name: 'Bay View Academy', type: 'school', area: 'clifton', kmExtra: 0.6, signal: 'DHA link road' },
+        roots: { name: 'Roots Millennium Malir', type: 'school', area: 'malir', kmExtra: 0, signal: 'Malir Cantt route' }
+    };
+
+    const legacyRoutes = {
         gulshan: {
-            label: 'Gulshan-e-Iqbal',
-            routes: {
-                ned: { km: 5.4, congestion: 10, transfers: 0, walk: 6, seats: 4, shuttleEta: 11, signal: 'University Road clear' },
-                ku: { km: 4.8, congestion: 8, transfers: 0, walk: 8, seats: 5, shuttleEta: 9, signal: 'Direct campus belt' },
-                fast: { km: 13.8, congestion: 17, transfers: 1, walk: 10, seats: 2, shuttleEta: 18, signal: 'Shahrah-e-Faisal traffic' },
-                iba: { km: 6.2, congestion: 11, transfers: 0, walk: 7, seats: 3, shuttleEta: 10, signal: 'Main University Road' },
-                dhaus: { km: 19.5, congestion: 21, transfers: 2, walk: 12, seats: 1, shuttleEta: 24, signal: 'Long cross-city route' }
-            }
+            ned: { km: 5.4, congestion: 10, transfers: 0, walk: 6, seats: 4, shuttleEta: 11 },
+            ku: { km: 4.8, congestion: 8, transfers: 0, walk: 8, seats: 5, shuttleEta: 9 },
+            fast: { km: 13.8, congestion: 17, transfers: 1, walk: 10, seats: 2, shuttleEta: 18 },
+            iba: { km: 6.2, congestion: 11, transfers: 0, walk: 7, seats: 3, shuttleEta: 10 },
+            dhaus: { km: 19.5, congestion: 21, transfers: 2, walk: 12, seats: 1, shuttleEta: 24 }
         },
         north_nazimabad: {
-            label: 'North Nazimabad',
-            routes: {
-                ned: { km: 12.6, congestion: 16, transfers: 1, walk: 8, seats: 3, shuttleEta: 15, signal: 'Nagan to University Road' },
-                ku: { km: 13.9, congestion: 17, transfers: 1, walk: 9, seats: 3, shuttleEta: 16, signal: 'Buffer Zone delay risk' },
-                fast: { km: 20.4, congestion: 24, transfers: 2, walk: 12, seats: 2, shuttleEta: 23, signal: 'Long morning corridor' },
-                iba: { km: 14.3, congestion: 18, transfers: 1, walk: 10, seats: 2, shuttleEta: 17, signal: 'Reliable bus chain' },
-                dhaus: { km: 25.7, congestion: 29, transfers: 2, walk: 14, seats: 1, shuttleEta: 27, signal: 'Premium ride advised' }
-            }
+            ned: { km: 12.6, congestion: 16, transfers: 1, walk: 8, seats: 3, shuttleEta: 15 },
+            ku: { km: 13.9, congestion: 17, transfers: 1, walk: 9, seats: 3, shuttleEta: 16 },
+            fast: { km: 20.4, congestion: 24, transfers: 2, walk: 12, seats: 2, shuttleEta: 23 },
+            iba: { km: 14.3, congestion: 18, transfers: 1, walk: 10, seats: 2, shuttleEta: 17 },
+            dhaus: { km: 25.7, congestion: 29, transfers: 2, walk: 14, seats: 1, shuttleEta: 27 }
         },
         pechs: {
-            label: 'PECHS',
-            routes: {
-                ned: { km: 11.7, congestion: 15, transfers: 1, walk: 7, seats: 4, shuttleEta: 13, signal: 'Stadium Road option' },
-                ku: { km: 12.8, congestion: 16, transfers: 1, walk: 8, seats: 4, shuttleEta: 14, signal: 'University Road approach' },
-                fast: { km: 8.5, congestion: 12, transfers: 0, walk: 6, seats: 3, shuttleEta: 12, signal: 'Shahrah-e-Faisal direct' },
-                iba: { km: 13.5, congestion: 17, transfers: 1, walk: 9, seats: 2, shuttleEta: 16, signal: 'Campus connector active' },
-                dhaus: { km: 15.9, congestion: 19, transfers: 1, walk: 10, seats: 2, shuttleEta: 19, signal: 'Korangi Road moderate' }
-            }
+            ned: { km: 11.7, congestion: 15, transfers: 1, walk: 7, seats: 4, shuttleEta: 13 },
+            ku: { km: 12.8, congestion: 16, transfers: 1, walk: 8, seats: 4, shuttleEta: 14 },
+            fast: { km: 8.5, congestion: 12, transfers: 0, walk: 6, seats: 3, shuttleEta: 12 },
+            iba: { km: 13.5, congestion: 17, transfers: 1, walk: 9, seats: 2, shuttleEta: 16 },
+            dhaus: { km: 15.9, congestion: 19, transfers: 1, walk: 10, seats: 2, shuttleEta: 19 }
         },
         clifton: {
-            label: 'Clifton',
-            routes: {
-                ned: { km: 22.1, congestion: 26, transfers: 2, walk: 12, seats: 2, shuttleEta: 25, signal: 'City crossing route' },
-                ku: { km: 23.4, congestion: 28, transfers: 2, walk: 13, seats: 2, shuttleEta: 26, signal: 'Heavy peak traffic' },
-                fast: { km: 14.6, congestion: 18, transfers: 1, walk: 9, seats: 3, shuttleEta: 18, signal: 'DHA to Faisal link' },
-                iba: { km: 24.0, congestion: 29, transfers: 2, walk: 14, seats: 1, shuttleEta: 28, signal: 'Budget warning' },
-                dhaus: { km: 9.8, congestion: 13, transfers: 0, walk: 7, seats: 4, shuttleEta: 12, signal: 'Best west route' }
-            }
+            ned: { km: 22.1, congestion: 26, transfers: 2, walk: 12, seats: 2, shuttleEta: 25 },
+            ku: { km: 23.4, congestion: 28, transfers: 2, walk: 13, seats: 2, shuttleEta: 26 },
+            fast: { km: 14.6, congestion: 18, transfers: 1, walk: 9, seats: 3, shuttleEta: 18 },
+            iba: { km: 24.0, congestion: 29, transfers: 2, walk: 14, seats: 1, shuttleEta: 28 },
+            dhaus: { km: 9.8, congestion: 13, transfers: 0, walk: 7, seats: 4, shuttleEta: 12 }
         },
         malir: {
-            label: 'Malir',
-            routes: {
-                ned: { km: 13.2, congestion: 16, transfers: 1, walk: 8, seats: 4, shuttleEta: 14, signal: 'Safoora approach' },
-                ku: { km: 14.4, congestion: 17, transfers: 1, walk: 9, seats: 5, shuttleEta: 15, signal: 'Direct east corridor' },
-                fast: { km: 16.7, congestion: 20, transfers: 1, walk: 10, seats: 2, shuttleEta: 20, signal: 'Airport road delay' },
-                iba: { km: 15.1, congestion: 18, transfers: 1, walk: 8, seats: 3, shuttleEta: 17, signal: 'University belt route' },
-                dhaus: { km: 26.6, congestion: 31, transfers: 2, walk: 14, seats: 1, shuttleEta: 30, signal: 'Longest route today' }
-            }
+            ned: { km: 13.2, congestion: 16, transfers: 1, walk: 8, seats: 4, shuttleEta: 14 },
+            ku: { km: 14.4, congestion: 17, transfers: 1, walk: 9, seats: 5, shuttleEta: 15 },
+            fast: { km: 16.7, congestion: 20, transfers: 1, walk: 10, seats: 2, shuttleEta: 20 },
+            iba: { km: 15.1, congestion: 18, transfers: 1, walk: 8, seats: 3, shuttleEta: 17 },
+            dhaus: { km: 26.6, congestion: 31, transfers: 2, walk: 14, seats: 1, shuttleEta: 30 }
         }
     };
 
-    const campuses = {
-        ned: 'NED University',
-        ku: 'Karachi University',
-        fast: 'FAST NUCES',
-        iba: 'IBA Karachi',
-        dhaus: 'DHA Suffa University'
+    const areaDistance = {
+        gulshan: { gulshan: 4.2, north_nazimabad: 12.6, pechs: 11.7, clifton: 22.1, malir: 13.2 },
+        north_nazimabad: { gulshan: 12.6, north_nazimabad: 3.5, pechs: 14.0, clifton: 24.0, malir: 15.0 },
+        pechs: { gulshan: 11.7, north_nazimabad: 14.0, pechs: 3.8, clifton: 15.9, malir: 16.7 },
+        clifton: { gulshan: 22.1, north_nazimabad: 24.0, pechs: 15.9, clifton: 4.5, malir: 26.6 },
+        malir: { gulshan: 13.2, north_nazimabad: 15.0, pechs: 16.7, clifton: 26.6, malir: 3.6 }
     };
 
     const modeMeta = {
@@ -297,6 +322,57 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const formatRs = value => `Rs ${Math.round(value).toLocaleString()}`;
+
+    const computeRouteMetrics = (originKey, instKey) => {
+        const inst = institutions[instKey];
+        if (!inst) return null;
+
+        const legacy = legacyRoutes[originKey]?.[instKey];
+        if (legacy) {
+            return { ...legacy, signal: inst.signal };
+        }
+
+        const baseKm = (areaDistance[originKey]?.[inst.area] || 12) + (inst.kmExtra || 0);
+        const km = Math.max(2.5, Math.round(baseKm * 10) / 10);
+        const congestion = Math.min(32, Math.round(km * 0.95 + (inst.type === 'school' ? -2 : 0)));
+        const transfers = km > 20 ? 2 : km > 11 ? 1 : 0;
+        const walk = Math.min(15, Math.round(5 + transfers * 2 + (inst.type === 'school' ? 1 : 2)));
+        const seats = inst.type === 'school' ? Math.max(1, 5 - transfers) : Math.max(1, 4 - transfers);
+        const shuttleEta = Math.round(8 + km * 0.65 + transfers * 3);
+
+        return { km, congestion, transfers, walk, seats, shuttleEta, signal: inst.signal };
+    };
+
+    const getTop5Institutions = (type, originKey) => {
+        return Object.entries(institutions)
+            .filter(([, inst]) => inst.type === type)
+            .map(([key, inst]) => ({
+                key,
+                inst,
+                metrics: computeRouteMetrics(originKey, key)
+            }))
+            .filter(item => item.metrics)
+            .sort((a, b) => a.metrics.km - b.metrics.km)
+            .slice(0, 5);
+    };
+
+    const populateDestSelect = (type, originKey, preferredKey) => {
+        if (!destSelect) return;
+
+        const top5 = getTop5Institutions(type, originKey);
+        destSelect.innerHTML = top5.map(({ key, inst, metrics }) =>
+            `<option value="${key}">${inst.name} · ${metrics.km} km</option>`
+        ).join('');
+
+        if (preferredKey && top5.some(item => item.key === preferredKey)) {
+            destSelect.value = preferredKey;
+        }
+
+        if (calcDestHint) {
+            const areaName = areaLabels[originKey] || 'your area';
+            calcDestHint.textContent = `Top 5 ${instTypeLabels[type] || 'institutions'} closest to ${areaName}`;
+        }
+    };
 
     const buildOptions = route => {
         const km = route.km;
@@ -336,8 +412,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const getRoutePlan = (originKey, destKey) => {
-        const origin = transitRoutes[originKey] || transitRoutes.gulshan;
-        const route = origin.routes[destKey] || origin.routes.ned;
+        const route = computeRouteMetrics(originKey, destKey);
+        const inst = institutions[destKey];
+        if (!route || !inst) return null;
+
         const options = buildOptions(route);
         const entries = Object.entries(options);
         const cheapest = entries.reduce((best, current) => current[1].cost < best[1].cost ? current : best);
@@ -347,8 +425,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .sort((a, b) => a[2] - b[2])[0];
 
         return {
-            originLabel: origin.label,
-            campusLabel: campuses[destKey] || campuses.ned,
+            originLabel: areaLabels[originKey] || areaLabels.gulshan,
+            campusLabel: inst.name,
+            instType: inst.type,
             route,
             options,
             cheapest: cheapest[0],
@@ -391,12 +470,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="calc-price-block">
                     <span>${meta.label}</span>
                     <h3>${formatRs(selected.cost)} ${activeMode === 'ride' ? `<small>${formatRs(selected.oldCost)}</small>` : ''}</h3>
-                    <p>${plan.originLabel} to ${plan.campusLabel}</p>
+                    <p>${plan.originLabel} → ${plan.campusLabel}</p>
                 </div>
                 <div class="calc-live-pill"><i class="fa-solid fa-circle"></i> ${meta.tag}</div>
             </div>
 
             <div class="calc-metric-grid">
+                <div><span>Distance</span><strong>${plan.route.km} km</strong></div>
                 <div><span>Time</span><strong>${selected.time} min</strong></div>
                 <div><span>Reliability</span><strong>${selected.reliability}%</strong></div>
                 <div><span>Monthly Save</span><strong>${formatRs(monthlySaving)}</strong></div>
@@ -434,6 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const activeTab = document.querySelector('.calc-tab.active');
         const mode = activeTab ? activeTab.dataset.mode : 'ride';
         const plan = getRoutePlan(originSelect.value, destSelect.value);
+        if (!plan) return;
 
         calcContent.classList.add('is-updating');
         if (calcInsights) calcInsights.classList.add('is-updating');
@@ -445,9 +526,58 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 180);
     };
 
-    if (originSelect && destSelect) {
-        originSelect.addEventListener('change', updateCalculator);
+    const refreshDestOptions = (keepSelection = true) => {
+        const type = instTypeSelect ? instTypeSelect.value : 'university';
+        const originKey = originSelect.value;
+        const previous = keepSelection ? destSelect.value : null;
+        populateDestSelect(type, originKey, previous);
+    };
+
+    const swapRoute = () => {
+        if (!originSelect || !destSelect || !instTypeSelect) return;
+
+        const oldOrigin = originSelect.value;
+        const oldDest = destSelect.value;
+        const inst = institutions[oldDest];
+        if (!inst) return;
+
+        if (calcSwapBtn) {
+            calcSwapBtn.classList.add('is-swapping');
+            setTimeout(() => calcSwapBtn.classList.remove('is-swapping'), 350);
+        }
+
+        originSelect.value = inst.area;
+
+        const type = instTypeSelect.value;
+        const candidates = Object.entries(institutions)
+            .filter(([, item]) => item.type === type)
+            .map(([key, item]) => ({ key, km: computeRouteMetrics(inst.area, key)?.km || 99 }))
+            .sort((a, b) => {
+                const aNearHome = institutions[a.key].area === oldOrigin ? -1 : 0;
+                const bNearHome = institutions[b.key].area === oldOrigin ? -1 : 0;
+                if (aNearHome !== bNearHome) return aNearHome - bNearHome;
+                return a.km - b.km;
+            });
+
+        populateDestSelect(type, inst.area, candidates[0]?.key);
+        updateCalculator();
+    };
+
+    if (originSelect && destSelect && instTypeSelect) {
+        populateDestSelect(instTypeSelect.value, originSelect.value);
+        originSelect.addEventListener('change', () => {
+            refreshDestOptions(true);
+            updateCalculator();
+        });
+        instTypeSelect.addEventListener('change', () => {
+            refreshDestOptions(false);
+            updateCalculator();
+        });
         destSelect.addEventListener('change', updateCalculator);
+    }
+
+    if (calcSwapBtn) {
+        calcSwapBtn.addEventListener('click', swapRoute);
     }
 
     if (calcTabs.length && calcContent) {
