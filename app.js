@@ -716,4 +716,195 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 2800);
         });
     }
+
+    // --- Civic Voice Hub Logic ---
+    const civicInstTypeSelect = document.getElementById('civic-inst-type');
+    const civicCampusSelect = document.getElementById('civic-campus');
+    const civicForm = document.getElementById('civic-report-form');
+    const civicFeedContainer = document.getElementById('civic-feed-container');
+
+    if (civicInstTypeSelect && civicCampusSelect && civicForm && civicFeedContainer) {
+        
+        const populateCivicCampusSelect = () => {
+            const type = civicInstTypeSelect.value;
+            // Assuming origin is a default since we don't have user area here, let's just get all of that type
+            const availableCampuses = Object.entries(institutions)
+                .filter(([, inst]) => inst.type === type);
+                
+            civicCampusSelect.innerHTML = availableCampuses.map(([key, inst]) =>
+                `<option value="${inst.name}">${inst.name}</option>`
+            ).join('');
+            
+            // Ensure value is set immediately for initial render
+            if (availableCampuses.length > 0) {
+                civicCampusSelect.value = availableCampuses[0][1].name;
+            }
+            
+            // Re-render feed when campus options change
+            if (typeof renderCivicFeed === 'function') {
+                renderCivicFeed();
+            }
+        };
+
+        populateCivicCampusSelect();
+        civicInstTypeSelect.addEventListener('change', populateCivicCampusSelect);
+        civicCampusSelect.addEventListener('change', () => renderCivicFeed());
+
+        let civicPosts = [
+            // NED University
+            { id: 1, author: "Ali Raza", campus: "NED University", category: "Infrastructure", content: "The main entrance road has a massive pothole causing heavy traffic jams every morning. Needs immediate repair.", upvotes: 142, downvotes: 5, userVote: 0, replies: [{author: "Sara K.", text: "Yes, I got late to my 8:30 class because of this!"}] },
+            { id: 11, author: "Hamza Tariq", campus: "NED University", category: "Academics", content: "The new lab equipment in the electrical department is still not accessible for final year projects.", upvotes: 45, downvotes: 2, userVote: 0, replies: [] },
+            
+            // Karachi University
+            { id: 2, author: "Ayesha S.", campus: "Karachi University", category: "Admin Delay", content: "Scholarship forms are still not being processed. The deadline is tomorrow and the admin office is closed.", upvotes: 89, downvotes: 2, userVote: 0, replies: [] },
+            { id: 22, author: "Bilal", campus: "Karachi University", category: "Transport", content: "Silver Jubilee gate point buses are totally overcrowded by 1 PM. We need more frequency.", upvotes: 112, downvotes: 8, userVote: 0, replies: [{author: "Zainab", text: "Totally agree, I had to wait an hour yesterday."}] },
+
+            // IBA
+            { id: 3, author: "Usman M.", campus: "IBA Karachi", category: "Transport", content: "The 3:30 PM point bus is consistently arriving 20 minutes late. Can we please get this scheduled properly?", upvotes: 56, downvotes: 1, userVote: 0, replies: [] },
+            { id: 33, author: "Fatima", campus: "IBA Karachi", category: "Infrastructure", content: "Library AC in the silent zone is dripping water on the desks.", upvotes: 34, downvotes: 0, userVote: 0, replies: [] },
+
+            // Colleges
+            { id: 4, author: "Kashif", campus: "DJ Science College", category: "Infrastructure", content: "The chemistry lab sinks are mostly blocked. It's impossible to do practicals safely.", upvotes: 77, downvotes: 4, userVote: 0, replies: [] },
+            { id: 5, author: "Hina", campus: "Govt College for Women", category: "Admin Delay", content: "Enrollment cards for first year are still pending even though classes started a month ago.", upvotes: 92, downvotes: 1, userVote: 0, replies: [] },
+
+            // Schools
+            { id: 6, author: "Parent_101", campus: "Karachi Grammar School", category: "Transport", content: "Traffic management outside the school gate during off-time is chaotic and dangerous for kids.", upvotes: 150, downvotes: 3, userVote: 0, replies: [] }
+        ];
+
+        const renderCivicFeed = () => {
+            let currentCampus = civicCampusSelect.value;
+            if (!currentCampus && civicCampusSelect.options.length > 0) {
+                currentCampus = civicCampusSelect.options[0].value;
+            }
+            if (!currentCampus) return;
+            
+            const filteredPosts = civicPosts.filter(p => p.campus === currentCampus);
+            
+            if (filteredPosts.length === 0) {
+                civicFeedContainer.innerHTML = `<div style="text-align: center; padding: 3rem; color: var(--text-muted); background: rgba(255,255,255,0.02); border-radius: 12px;">
+                    <i class="fa-solid fa-check-circle" style="font-size: 2rem; color: var(--accent-mint); margin-bottom: 1rem; opacity: 0.5;"></i>
+                    <p>No issues reported for ${currentCampus} yet. Be the first to raise a voice!</p>
+                </div>`;
+                return;
+            }
+
+            civicFeedContainer.innerHTML = filteredPosts.map(post => `
+                <div class="civic-post" data-id="${post.id}">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <div class="author-avatar">${post.author.charAt(0)}</div>
+                            <div class="post-meta">
+                                <h4>${post.author}</h4>
+                                <span>${post.campus} • Just now</span>
+                            </div>
+                        </div>
+                        <span class="post-tag ${post.category.split(' ')[0]}">${post.category}</span>
+                    </div>
+                    <div class="post-body">
+                        <p>${post.content}</p>
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-btn upvote-btn ${post.userVote === 1 ? 'upvoted' : ''}" data-action="upvote">
+                            <i class="fa-solid fa-circle-up"></i> <span class="up-count">${post.upvotes}</span>
+                        </button>
+                        <button class="action-btn downvote-btn ${post.userVote === -1 ? 'downvoted' : ''}" data-action="downvote">
+                            <i class="fa-solid fa-circle-down"></i> <span class="down-count">${post.downvotes}</span>
+                        </button>
+                        <button class="action-btn reply-toggle-btn" data-action="reply">
+                            <i class="fa-solid fa-comment"></i> ${post.replies.length} Replies
+                        </button>
+                    </div>
+                    
+                    <div class="replies-container">
+                        <div class="replies-list">
+                            ${post.replies.map(reply => `
+                                <div class="reply-item">
+                                    <strong style="color: white; font-size: 0.9rem;">${reply.author}</strong>
+                                    <p style="margin: 0.2rem 0 0 0; font-size: 0.9rem; color: var(--text-light);">${reply.text}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="reply-input-wrap">
+                            <input type="text" placeholder="Write a reply..." class="reply-input">
+                            <button class="submit-reply-btn">Reply</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        renderCivicFeed();
+
+        // Handle New Report Submission
+        civicForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const campus = civicCampusSelect.value;
+            const category = document.getElementById('civic-category').options[document.getElementById('civic-category').selectedIndex].text;
+            const desc = document.getElementById('civic-desc').value;
+
+            if (!desc.trim()) return;
+
+            const newPost = {
+                id: Date.now(),
+                author: "Anonymous Student", // Could be dynamic if we had auth
+                campus: campus,
+                category: category,
+                content: desc,
+                upvotes: 0,
+                downvotes: 0,
+                userVote: 0,
+                replies: []
+            };
+
+            civicPosts.unshift(newPost);
+            renderCivicFeed();
+            civicForm.reset();
+        });
+
+        // Event Delegation for Upvote/Downvote/Reply
+        civicFeedContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+
+            const postEl = btn.closest('.civic-post');
+            const postId = parseInt(postEl.dataset.id);
+            const post = civicPosts.find(p => p.id === postId);
+
+            if (btn.dataset.action === 'upvote') {
+                if (post.userVote === 1) {
+                    post.upvotes--;
+                    post.userVote = 0;
+                } else {
+                    if (post.userVote === -1) post.downvotes--;
+                    post.upvotes++;
+                    post.userVote = 1;
+                }
+                renderCivicFeed();
+            } else if (btn.dataset.action === 'downvote') {
+                if (post.userVote === -1) {
+                    post.downvotes--;
+                    post.userVote = 0;
+                } else {
+                    if (post.userVote === 1) post.upvotes--;
+                    post.downvotes++;
+                    post.userVote = -1;
+                }
+                renderCivicFeed();
+            } else if (btn.dataset.action === 'reply') {
+                const repliesContainer = postEl.querySelector('.replies-container');
+                repliesContainer.style.display = repliesContainer.style.display === 'block' ? 'none' : 'block';
+            } else if (btn.classList.contains('submit-reply-btn')) {
+                const input = postEl.querySelector('.reply-input');
+                const text = input.value.trim();
+                if (text) {
+                    post.replies.push({ author: "You", text: text });
+                    renderCivicFeed();
+                    // Reopen the replies container
+                    const newPostEl = civicFeedContainer.querySelector(`.civic-post[data-id="${postId}"]`);
+                    newPostEl.querySelector('.replies-container').style.display = 'block';
+                }
+            }
+        });
+    }
+
 });
