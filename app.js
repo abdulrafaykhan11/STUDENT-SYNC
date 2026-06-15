@@ -746,29 +746,48 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        populateCivicCampusSelect();
-        civicInstTypeSelect.addEventListener('change', populateCivicCampusSelect);
-        civicCampusSelect.addEventListener('change', () => renderCivicFeed());
-
         let civicPosts = [
-            // NED University
+            // Universities
             { id: 1, author: "Ali Raza", campus: "NED University", category: "Infrastructure", content: "The main entrance road has a massive pothole causing heavy traffic jams every morning. Needs immediate repair.", upvotes: 142, downvotes: 5, userVote: 0, replies: [{author: "Sara K.", text: "Yes, I got late to my 8:30 class because of this!"}] },
             { id: 11, author: "Hamza Tariq", campus: "NED University", category: "Academics", content: "The new lab equipment in the electrical department is still not accessible for final year projects.", upvotes: 45, downvotes: 2, userVote: 0, replies: [] },
             
-            // Karachi University
             { id: 2, author: "Ayesha S.", campus: "Karachi University", category: "Admin Delay", content: "Scholarship forms are still not being processed. The deadline is tomorrow and the admin office is closed.", upvotes: 89, downvotes: 2, userVote: 0, replies: [] },
             { id: 22, author: "Bilal", campus: "Karachi University", category: "Transport", content: "Silver Jubilee gate point buses are totally overcrowded by 1 PM. We need more frequency.", upvotes: 112, downvotes: 8, userVote: 0, replies: [{author: "Zainab", text: "Totally agree, I had to wait an hour yesterday."}] },
 
-            // IBA
             { id: 3, author: "Usman M.", campus: "IBA Karachi", category: "Transport", content: "The 3:30 PM point bus is consistently arriving 20 minutes late. Can we please get this scheduled properly?", upvotes: 56, downvotes: 1, userVote: 0, replies: [] },
             { id: 33, author: "Fatima", campus: "IBA Karachi", category: "Infrastructure", content: "Library AC in the silent zone is dripping water on the desks.", upvotes: 34, downvotes: 0, userVote: 0, replies: [] },
 
+            { id: 7, author: "Ahmed", campus: "FAST NUCES", category: "Academics", content: "Midterm schedules are clashing with the coding competition dates. Admin needs to reconsider.", upvotes: 204, downvotes: 15, userVote: 0, replies: [{author: "Hassan", text: "I've emailed the HoD already."}] },
+            { id: 77, author: "Zoya", campus: "FAST NUCES", category: "Infrastructure", content: "Cafeteria seating is not enough for the new batch size. People are eating standing up.", upvotes: 150, downvotes: 3, userVote: 0, replies: [] },
+
+            { id: 8, author: "Shahmeer", campus: "DHA Suffa University", category: "Transport", content: "Parking space is completely full by 9 AM. Need a secondary parking lot.", upvotes: 88, downvotes: 1, userVote: 0, replies: [] },
+            { id: 9, author: "Mahnoor", campus: "SZABIST Karachi", category: "Admin Delay", content: "Degree issuance is taking 6 months instead of the standard 3 months. HRs are rejecting us.", upvotes: 145, downvotes: 0, userVote: 0, replies: [{author: "Kamran", text: "This is unacceptable."}] },
+
+            // Indus University purposely left blank
+
             // Colleges
             { id: 4, author: "Kashif", campus: "DJ Science College", category: "Infrastructure", content: "The chemistry lab sinks are mostly blocked. It's impossible to do practicals safely.", upvotes: 77, downvotes: 4, userVote: 0, replies: [] },
+            { id: 44, author: "Mustafa", campus: "DJ Science College", category: "Academics", content: "Physics lecturer hasn't shown up for 2 weeks.", upvotes: 60, downvotes: 2, userVote: 0, replies: [] },
+
             { id: 5, author: "Hina", campus: "Govt College for Women", category: "Admin Delay", content: "Enrollment cards for first year are still pending even though classes started a month ago.", upvotes: 92, downvotes: 1, userVote: 0, replies: [] },
+            { id: 55, author: "Sadia", campus: "Govt College for Women", category: "Harassment", content: "Street lights outside the college gate are broken, feels very unsafe in winter evenings.", upvotes: 210, downvotes: 0, userVote: 0, replies: [{author: "Rabia", text: "We need to sign a petition."}] },
+
+            { id: 12, author: "Joshua", campus: "St. Patrick's College", category: "Infrastructure", content: "Sports ground needs leveling, three students tripped and got injured last week.", upvotes: 40, downvotes: 1, userVote: 0, replies: [] },
+            { id: 13, author: "Hamid", campus: "Bahria College Karsaz", category: "Transport", content: "Morning drop-off lane gets completely blocked by VIP protocol cars. Kids are getting late.", upvotes: 130, downvotes: 5, userVote: 0, replies: [] },
+            
+            { id: 14, author: "Rizwan", campus: "Adamjee Science College", category: "Admin Delay", content: "Mark sheets distribution is a mess. Hundreds of students standing in one line.", upvotes: 85, downvotes: 2, userVote: 0, replies: [] },
+            { id: 15, author: "Noman", campus: "DJ Sindh Govt Science College", category: "Infrastructure", content: "The library fans are making a horrible noise.", upvotes: 22, downvotes: 1, userVote: 0, replies: [] },
 
             // Schools
-            { id: 6, author: "Parent_101", campus: "Karachi Grammar School", category: "Transport", content: "Traffic management outside the school gate during off-time is chaotic and dangerous for kids.", upvotes: 150, downvotes: 3, userVote: 0, replies: [] }
+            { id: 6, author: "Parent_101", campus: "Karachi Grammar School", category: "Transport", content: "Traffic management outside the school gate during off-time is chaotic and dangerous for kids.", upvotes: 150, downvotes: 3, userVote: 0, replies: [] },
+            { id: 66, author: "Alumni_Z", campus: "Karachi Grammar School", category: "Academics", content: "Alumni portal registration is throwing a 500 server error since Sunday.", upvotes: 34, downvotes: 0, userVote: 0, replies: [] },
+
+            { id: 16, author: "Mrs. Khan", campus: "The City School Gulshan", category: "Infrastructure", content: "The water coolers on the 2nd floor are dispensing warm water.", upvotes: 45, downvotes: 0, userVote: 0, replies: [] },
+            { id: 17, author: "Ali's Dad", campus: "Beaconhouse Clifton", category: "Admin Delay", content: "Fee vouchers were generated with the wrong tuition amount.", upvotes: 190, downvotes: 2, userVote: 0, replies: [{author: "Zain Mom", text: "Same here! They added an extra 5000."}] },
+            { id: 18, author: "Student_Prefect", campus: "Foundation Public School", category: "Academics", content: "We need more updated books in the O-level library section.", upvotes: 60, downvotes: 0, userVote: 0, replies: [] },
+            { id: 19, author: "Ammar", campus: "Happy Home School", category: "Transport", content: "The school vans are over-stuffing students. This violates safety protocols.", upvotes: 300, downvotes: 10, userVote: 0, replies: [] },
+            { id: 20, author: "Samina", campus: "Bay View Academy", category: "Infrastructure", content: "The art room's AC is not working.", upvotes: 12, downvotes: 0, userVote: 0, replies: [] },
+            { id: 21, author: "Farhan_Malir", campus: "Roots Millennium Malir", category: "Transport", content: "Can we get a crossing guard for the main road? It's too fast.", upvotes: 85, downvotes: 1, userVote: 0, replies: [] }
         ];
 
         const renderCivicFeed = () => {
@@ -815,7 +834,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </button>
                     </div>
                     
-                    <div class="replies-container">
+                    <div class="replies-container" style="display: ${post.replies.length > 0 ? 'block' : 'none'};">
                         <div class="replies-list">
                             ${post.replies.map(reply => `
                                 <div class="reply-item">
@@ -839,7 +858,7 @@ document.addEventListener('DOMContentLoaded', () => {
         civicForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const campus = civicCampusSelect.value;
-            const category = document.getElementById('civic-category').options[document.getElementById('civic-category').selectedIndex].text;
+            const category = "General"; // Default category since dropdown was removed
             const desc = document.getElementById('civic-desc').value;
 
             if (!desc.trim()) return;
@@ -905,6 +924,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+
+        populateCivicCampusSelect();
+        civicInstTypeSelect.addEventListener('change', populateCivicCampusSelect);
+        civicCampusSelect.addEventListener('change', () => renderCivicFeed());
     }
 
 });
