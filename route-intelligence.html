@@ -126,17 +126,23 @@
                                 <i class="fa-solid fa-arrow-right text-muted" style="opacity: 0.5;"></i>
                             </div>
 
-                            <label class="calc-field" style="flex: 1; min-width: 200px;">
+                            <label class="calc-field" style="flex: 1; min-width: 250px;">
                                 <span style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block;">Destination (Campus)</span>
-                                <div class="calc-select-wrap" style="position: relative;">
-                                    <i class="fa-solid fa-building-columns" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--accent-mint);"></i>
-                                    <select id="route-dest" class="calc-select" style="width: 100%; padding: 1rem 1rem 1rem 2.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-family: inherit; font-size: 1rem;">
-                                        <option value="ku" selected>Karachi University</option>
-                                        <option value="neduet">NED University</option>
-                                        <option value="iba">IBA Main Campus</option>
-                                        <option value="smit">SMIT (Numaish)</option>
-                                        <option value="iqra">Iqra University (Main)</option>
-                                    </select>
+                                <div class="calc-dest-dropdowns" style="display: flex; gap: 0.5rem;">
+                                    <div class="calc-select-wrap" style="position: relative; flex: 1;">
+                                        <i class="fa-solid fa-layer-group" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                                        <select id="route-inst-type" class="calc-select" style="width: 100%; padding: 1rem 1rem 1rem 2.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-family: inherit; font-size: 0.9rem;">
+                                            <option value="university" selected>University</option>
+                                            <option value="college">College</option>
+                                            <option value="school">School</option>
+                                        </select>
+                                    </div>
+                                    <div class="calc-select-wrap" style="position: relative; flex: 2;">
+                                        <i class="fa-solid fa-building-columns" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--accent-mint);"></i>
+                                        <select id="route-dest" class="calc-select" style="width: 100%; padding: 1rem 1rem 1rem 2.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-family: inherit; font-size: 0.9rem;">
+                                            <!-- Dynamically populated via JS -->
+                                        </select>
+                                    </div>
                                 </div>
                             </label>
 
@@ -205,7 +211,7 @@
                                         </div>
                                     </div>
 
-                                    <button class="btn btn-outline" style="width: 100%; margin-top: 2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                    <button id="start-navigation-btn" class="btn btn-outline" style="width: 100%; margin-top: 2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                                         <i class="fa-solid fa-location-arrow"></i> Start Navigation
                                     </button>
                                 </div>

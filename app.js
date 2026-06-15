@@ -603,6 +603,28 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (scanBtn && initialState && scanningState && resultsState) {
         
+        // Setup dropdowns dynamically
+        const routeOriginSelect = document.getElementById('route-origin');
+        const routeInstTypeSelect = document.getElementById('route-inst-type');
+        const routeDestSelect = document.getElementById('route-dest');
+
+        const populateRouteDestSelect = () => {
+            if (!routeDestSelect || !routeOriginSelect || !routeInstTypeSelect) return;
+            const type = routeInstTypeSelect.value;
+            const origin = routeOriginSelect.value;
+            // Uses getTop5Institutions defined earlier in the file
+            const top5 = getTop5Institutions(type, origin);
+            routeDestSelect.innerHTML = top5.map(({ key, inst }) =>
+                `<option value="${key}">${inst.name}</option>`
+            ).join('');
+        };
+
+        if (routeOriginSelect && routeInstTypeSelect && routeDestSelect) {
+            populateRouteDestSelect();
+            routeOriginSelect.addEventListener('change', populateRouteDestSelect);
+            routeInstTypeSelect.addEventListener('change', populateRouteDestSelect);
+        }
+
         const possibleHazards = [
             { icon: 'fa-truck-fast', title: 'Heavy Traffic Spillover', desc: 'Congestion due to broken down truck on main artery.' },
             { icon: 'fa-water', title: 'Water Logging', desc: 'Left lane flooded due to broken pipe. Slow movement.' },
@@ -677,6 +699,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const timeStr = Math.floor(Math.random() * 20 + 25) + "m";
                 document.getElementById('result-time').innerText = timeStr;
+
+                // Setup Navigation Button
+                const startNavBtn = document.getElementById('start-navigation-btn');
+                if (startNavBtn) {
+                    const newStartNavBtn = startNavBtn.cloneNode(true);
+                    startNavBtn.parentNode.replaceChild(newStartNavBtn, startNavBtn);
+                    
+                    newStartNavBtn.addEventListener('click', () => {
+                        const originSearch = encodeURIComponent(originVal + " Karachi");
+                        const destSearch = encodeURIComponent(destVal + " Karachi");
+                        window.open(`https://www.google.com/maps/dir/?api=1&origin=${originSearch}&destination=${destSearch}`, '_blank');
+                    });
+                }
 
             }, 2800);
         });
