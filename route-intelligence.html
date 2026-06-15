@@ -3,16 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coming Soon | StudentSync</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Route Intelligence | StudentSync</title>
+    <meta name="description" content="Beat Karachi's gridlock with StudentSync. Discover safe, fast, and real-time alternate routes to your campus.">
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center;">
-    <div class="bg-gradient bg-gradient-1"></div>
-    <div class="glass-card" style="padding: 4rem; max-width: 500px;">
-        <h1 class="text-gradient" style="font-size: 3rem; margin-bottom: 1rem;">Coming Soon</h1>
-        <p style="color: var(--text-muted); margin-bottom: 2rem;">We are working hard to bring you this solution.</p>
-        <a href="index.html" class="btn btn-outline" style="text-decoration: none;">Back to Home</a>
-    </div>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-gradient bg-gradient-1" style="top: 10%; left: -20%; background: radial-gradient(circle, var(--accent-coral) 0%, transparent 70%);"></div>
+    <div class="bg-gradient bg-gradient-2" style="top: 40%; right: -15%;"></div>
+    <div class="bg-gradient bg-gradient-1" style="bottom: -10%; left: 30%; background: radial-gradient(circle, var(--accent-gold) 0%, transparent 70%);"></div>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                Student<span>Sync</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html#features">Challenges</a>
+                <div class="dropdown">
+                    <a href="#" class="dropbtn active">Solutions <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem; margin-left: 3px;"></i></a>
+                    <div class="dropdown-content">
+                        <a href="transit-economics.html">Transit Economics</a>
+                        <a href="route-intelligence.html" class="active">Route Intelligence</a>
+                        <a href="civic-voice.html">Civic Voice Hub</a>
+                        <a href="conceptual-mastery.html">Conceptual Mastery</a>
+                        <a href="knowledge-base.html">Knowledge Base</a>
+                        <a href="strategic-mentorship.html">Strategic Mentorship</a>
+                    </div>
+                </div>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="contact.html" class="btn btn-primary" style="text-decoration: none;">Join Now</a>
+            </div>
+        </div>
+    </header>
+
+    <main style="padding-top: 100px;">
+        <!-- Hero Section -->
+        <section class="hero" style="min-height: auto; padding: 80px 0 60px; display: flex; flex-direction: column; justify-content: center;">
+            <div class="container text-center" style="display: flex; flex-direction: column; align-items: center;">
+                <div class="badge animate-on-scroll" style="background: rgba(255, 64, 129, 0.1); color: var(--accent-coral); border: 1px solid rgba(255, 64, 129, 0.2);"><i class="fa-solid fa-route"></i> Route Intelligence</div>
+                <h1 class="animate-on-scroll" style="transition-delay: 0.1s; margin: 0 auto 1.5rem; text-align: center; width: 100%;">Outsmart the <span class="text-gradient">Gridlock.</span></h1>
+                <p class="hero-subtitle animate-on-scroll" style="transition-delay: 0.2s; margin: 0 auto 3rem; text-align: center; max-width: 800px;">Karachi's traffic is unpredictable. From sudden protests to flooded roads, getting to campus shouldn't be a gamble. Find the fastest, safest route before you step out.</p>
+            </div>
+        </section>
+
+        <!-- The Problems Section -->
+        <section class="features" style="padding-top: 40px; padding-bottom: 60px;">
+            <div class="container">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-kicker" style="color: var(--accent-coral);">The Commute Obstacles</span>
+                    <h2>Why You're Always Late</h2>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card glass-card animate-on-scroll">
+                        <div class="feature-icon bg-crimson">
+                            <i class="fa-solid fa-hand-front"></i>
+                        </div>
+                        <h3>Unpredictable Blockages</h3>
+                        <p>Sudden protests, VIP movements, and unexpected road closures that aren't updated on standard maps until you're already stuck.</p>
+                    </div>
+
+                    <div class="feature-card glass-card animate-on-scroll" style="transition-delay: 0.1s;">
+                        <div class="feature-icon" style="background: rgba(0, 209, 178, 0.2); color: var(--accent-mint);">
+                            <i class="fa-solid fa-cloud-showers-water"></i>
+                        </div>
+                        <h3>Weather Disruptions</h3>
+                        <p>A little rain turns major arteries into rivers. Knowing which roads flood and which stay clear is essential survival knowledge.</p>
+                    </div>
+
+                    <div class="feature-card glass-card animate-on-scroll" style="transition-delay: 0.2s;">
+                        <div class="feature-icon" style="background: rgba(255, 189, 46, 0.2); color: var(--accent-gold);">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <h3>Infrastructure Decay</h3>
+                        <p>Open manholes, massive sudden potholes, and unannounced construction work that damages vehicles and causes massive delays.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Solution & Interactive Mockup Section -->
+        <section class="command-center-section" style="padding-top: 60px;">
+            <div class="container">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-kicker">Live Radar Engine</span>
+                    <h2>Intelligent Route Finder</h2>
+                    <p>Enter your commute details below to scan for live hazards and instantly generate the safest, fastest alternative route to your campus.</p>
+                </div>
+
+                <!-- Central Feature: Route Finder & Radar -->
+                <div class="route-finder-container glass-card animate-on-scroll" style="max-width: 1000px; margin: 0 auto; overflow: hidden; padding: 0;">
+                    
+                    <div class="route-finder-header" style="background: rgba(0,0,0,0.3); padding: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div class="route-inputs" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+                            <label class="calc-field" style="flex: 1; min-width: 200px;">
+                                <span style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block;">Starting Point (Your Area)</span>
+                                <div class="calc-select-wrap" style="position: relative;">
+                                    <i class="fa-solid fa-location-dot" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--accent-coral);"></i>
+                                    <select id="route-origin" class="calc-select" style="width: 100%; padding: 1rem 1rem 1rem 2.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-family: inherit; font-size: 1rem;">
+                                        <option value="gulshan" selected>Gulshan-e-Iqbal</option>
+                                        <option value="nazimabad">Nazimabad</option>
+                                        <option value="malir">Malir</option>
+                                        <option value="defence">DHA / Clifton</option>
+                                        <option value="johar">Gulistan-e-Johar</option>
+                                    </select>
+                                </div>
+                            </label>
+
+                            <div style="padding: 1rem 0; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-arrow-right text-muted" style="opacity: 0.5;"></i>
+                            </div>
+
+                            <label class="calc-field" style="flex: 1; min-width: 200px;">
+                                <span style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block;">Destination (Campus)</span>
+                                <div class="calc-select-wrap" style="position: relative;">
+                                    <i class="fa-solid fa-building-columns" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--accent-mint);"></i>
+                                    <select id="route-dest" class="calc-select" style="width: 100%; padding: 1rem 1rem 1rem 2.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-family: inherit; font-size: 1rem;">
+                                        <option value="ku" selected>Karachi University</option>
+                                        <option value="neduet">NED University</option>
+                                        <option value="iba">IBA Main Campus</option>
+                                        <option value="smit">SMIT (Numaish)</option>
+                                        <option value="iqra">Iqra University (Main)</option>
+                                    </select>
+                                </div>
+                            </label>
+
+                            <button id="scan-route-btn" class="btn btn-primary" style="padding: 1rem 2rem; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; height: 50px;">
+                                <i class="fa-solid fa-radar"></i> Scan Route
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="route-finder-body" style="padding: 2rem; position: relative; min-height: 400px; display: flex; align-items: center; justify-content: center; background: rgba(10, 10, 15, 0.5);">
+                        
+                        <!-- Initial State -->
+                        <div id="route-initial-state" style="text-align: center; color: var(--text-muted);">
+                            <i class="fa-solid fa-map-location-dot" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                            <p>Select your route and click Scan to detect live hazards.</p>
+                        </div>
+
+                        <!-- Radar Scanning Animation -->
+                        <div id="route-scanning-state" style="display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.8); z-index: 10; display: none;">
+                            <div class="radar-spinner" style="width: 80px; height: 80px; border: 3px solid rgba(255, 64, 129, 0.2); border-top-color: var(--accent-coral); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1.5rem;"></div>
+                            <h3 style="margin-bottom: 0.5rem; color: white;">Scanning Gridlock...</h3>
+                            <p id="scan-log" style="color: var(--accent-mint); font-family: monospace; font-size: 0.9rem;">Connecting to community feeds...</p>
+                        </div>
+
+                        <!-- Results Dashboard -->
+                        <div id="route-results-state" style="display: none; width: 100%; height: 100%;">
+                            <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; height: 100%;">
+                                <!-- Hazards List -->
+                                <div class="hazards-panel">
+                                    <h4 style="margin-bottom: 1rem; color: white; display: flex; align-items: center; gap: 0.5rem;">
+                                        <i class="fa-solid fa-triangle-exclamation" style="color: var(--accent-coral);"></i> Detected Hazards
+                                    </h4>
+                                    <div id="hazards-list" style="display: flex; flex-direction: column; gap: 1rem;">
+                                        <!-- Populated via JS -->
+                                    </div>
+                                </div>
+                                
+                                <!-- Route Recommendation -->
+                                <div class="route-recommendation-panel" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 2rem; display: flex; flex-direction: column; justify-content: center;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                                        <div>
+                                            <span style="background: rgba(0, 209, 178, 0.1); color: var(--accent-mint); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem; display: inline-block;">Clear Route Found</span>
+                                            <h3 id="result-route-name" style="margin: 0; color: white;">Via Lyari Expressway</h3>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <strong id="result-time" style="font-size: 1.8rem; color: white; display: block; line-height: 1;">35m</strong>
+                                            <span style="color: var(--accent-gold); font-size: 0.85rem;"><i class="fa-solid fa-arrow-down"></i> 20m saved</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="route-timeline" style="position: relative; padding-left: 20px; border-left: 2px dashed rgba(255,255,255,0.1); margin-top: 1rem;">
+                                        <div style="position: relative; margin-bottom: 1.5rem;">
+                                            <div style="position: absolute; left: -26px; top: 0; width: 10px; height: 10px; background: var(--accent-coral); border-radius: 50%;"></div>
+                                            <h5 id="timeline-start" style="margin: 0; color: white;">Gulshan-e-Iqbal</h5>
+                                            <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Leave now</p>
+                                        </div>
+                                        <div style="position: relative; margin-bottom: 1.5rem;">
+                                            <div style="position: absolute; left: -26px; top: 0; width: 10px; height: 10px; background: var(--accent-gold); border-radius: 50%;"></div>
+                                            <h5 id="timeline-via" style="margin: 0; color: white;">Take M.A Jinnah Road Alt</h5>
+                                            <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Avoiding University Rd traffic</p>
+                                        </div>
+                                        <div style="position: relative;">
+                                            <div style="position: absolute; left: -26px; top: 0; width: 10px; height: 10px; background: var(--accent-mint); border-radius: 50%;"></div>
+                                            <h5 id="timeline-end" style="margin: 0; color: white;">Karachi University</h5>
+                                            <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Arrive safely</p>
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-outline" style="width: 100%; margin-top: 2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                        <i class="fa-solid fa-location-arrow"></i> Start Navigation
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solutions Overview -->
+        <section class="features" style="padding-top: 60px; padding-bottom: 80px; position: relative;">
+            <div class="container">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-kicker" style="color: var(--accent-mint);">Beyond Navigation</span>
+                    <h2>A Smarter Way to Move</h2>
+                </div>
+                
+                <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+                    <div class="feature-card glass-card animate-on-scroll">
+                        <div class="feature-icon" style="background: rgba(0, 209, 178, 0.2); color: var(--accent-mint);">
+                            <i class="fa-solid fa-users-viewfinder"></i>
+                        </div>
+                        <h3>Crowdsourced Truth</h3>
+                        <p>Our maps are powered by live reports from thousands of students traveling at the same time, ensuring hyper-local accuracy.</p>
+                    </div>
+
+                    <div class="feature-card glass-card animate-on-scroll" style="transition-delay: 0.1s;">
+                        <div class="feature-icon bg-accent">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <h3>Dynamic Departure</h3>
+                        <p>We analyze historical traffic trends to tell you exactly when to leave your house to hit the "green wave" of traffic lights.</p>
+                    </div>
+
+                    <div class="feature-card glass-card animate-on-scroll" style="transition-delay: 0.2s;">
+                        <div class="feature-icon" style="background: rgba(255, 189, 46, 0.2); color: var(--accent-gold);">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3>Safety Corridors</h3>
+                        <p>Identify well-lit, heavily populated routes verified by the community as safe for late-night campus returns.</p>
+                    </div>
+
+                    <div class="feature-card glass-card animate-on-scroll" style="transition-delay: 0.3s;">
+                        <div class="feature-icon bg-crimson">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <h3>Instant Alerts</h3>
+                        <p>Get push notifications if a major artery on your saved route gets blocked, giving you time to reroute before leaving.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section" style="padding-top: 40px; padding-bottom: 80px;">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card glass-card animate-on-scroll">
+                        <div class="stat-icon bg-accent" style="color: var(--accent-coral);"><i class="fa-solid fa-location-crosshairs"></i></div>
+                        <div class="stat-number">12,400+</div>
+                        <div class="stat-label">Live Hazards Reported</div>
+                    </div>
+                    <div class="stat-card glass-card animate-on-scroll" style="transition-delay: 0.1s;">
+                        <div class="stat-icon" style="background: rgba(0, 209, 178, 0.1); color: var(--accent-mint);"><i class="fa-solid fa-hourglass-end"></i></div>
+                        <div class="stat-number">45,000</div>
+                        <div class="stat-label">Hours Saved Monthly</div>
+                    </div>
+                    <div class="stat-card glass-card animate-on-scroll" style="transition-delay: 0.2s;">
+                        <div class="stat-icon" style="background: rgba(255, 189, 46, 0.1); color: var(--accent-gold);"><i class="fa-solid fa-map-location-dot"></i></div>
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Route Accuracy Rate</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer glass-card">
+        <div class="container footer-container">
+            <div class="footer-col brand-col">
+                <a href="#" class="logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    Student<span>Sync</span>
+                </a>
+                <p>Empowering college students to connect, share, and thrive together.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-discord"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Challenges</h4>
+                <a href="transit-economics.html">Transit Economics</a>
+                <a href="route-intelligence.html">Route Intelligence</a>
+                <a href="civic-voice.html">Civic Voice Hub</a>
+                <a href="conceptual-mastery.html">Conceptual Mastery</a>
+                <a href="knowledge-base.html">Knowledge Base</a>
+                <a href="strategic-mentorship.html">Strategic Mentorship</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="about.html">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="#">Campus Reps</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 StudentSync. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="app.js"></script>
+    <style>
+        /* Custom Keyframes for Radar */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        select.calc-select:focus {
+            outline: none;
+            border-color: var(--accent-mint) !important;
+            box-shadow: 0 0 0 2px rgba(0, 209, 178, 0.2);
+        }
+        select.calc-select option {
+            background: #111;
+            color: white;
+        }
+    </style>
 </body>
 </html>

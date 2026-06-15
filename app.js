@@ -593,4 +593,92 @@ document.addEventListener('DOMContentLoaded', () => {
     if (originSelect && destSelect) {
         updateCalculator();
     }
+
+    // --- Route Intelligence Radar Logic ---
+    const scanBtn = document.getElementById('scan-route-btn');
+    const initialState = document.getElementById('route-initial-state');
+    const scanningState = document.getElementById('route-scanning-state');
+    const resultsState = document.getElementById('route-results-state');
+    const scanLog = document.getElementById('scan-log');
+    
+    if (scanBtn && initialState && scanningState && resultsState) {
+        
+        const possibleHazards = [
+            { icon: 'fa-truck-fast', title: 'Heavy Traffic Spillover', desc: 'Congestion due to broken down truck on main artery.' },
+            { icon: 'fa-water', title: 'Water Logging', desc: 'Left lane flooded due to broken pipe. Slow movement.' },
+            { icon: 'fa-person-harassing', title: 'Protest Blockade', desc: 'Unplanned gathering. Traffic diverted by traffic police.' },
+            { icon: 'fa-person-digging', title: 'Sudden Construction', desc: 'Open manhole repair work. Single lane passing.' },
+            { icon: 'fa-car-burst', title: 'Accident Reported', desc: 'Fender bender causing 15 min delay.' }
+        ];
+
+        const scanLogs = [
+            "Connecting to community feeds...",
+            "Analyzing University Road traffic patterns...",
+            "Checking weather and road conditions...",
+            "Detecting localized protests and VIP movements...",
+            "Calculating alternative safe corridors...",
+            "Finalizing optimum route..."
+        ];
+
+        scanBtn.addEventListener('click', () => {
+            // Setup UI for scanning
+            initialState.style.display = 'none';
+            resultsState.style.display = 'none';
+            scanningState.style.display = 'flex';
+            scanBtn.disabled = true;
+            scanBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Scanning...';
+            
+            const originVal = document.getElementById('route-origin').options[document.getElementById('route-origin').selectedIndex].text;
+            const destVal = document.getElementById('route-dest').options[document.getElementById('route-dest').selectedIndex].text;
+
+            // Simulate log updates
+            let logIndex = 0;
+            const logInterval = setInterval(() => {
+                if (logIndex < scanLogs.length) {
+                    scanLog.innerText = scanLogs[logIndex];
+                    logIndex++;
+                }
+            }, 400);
+
+            // Finish scanning after 2.8s
+            setTimeout(() => {
+                clearInterval(logInterval);
+                scanningState.style.display = 'none';
+                resultsState.style.display = 'block';
+                scanBtn.disabled = false;
+                scanBtn.innerHTML = '<i class="fa-solid fa-radar"></i> Rescan Route';
+
+                // Populate dynamic results
+                // 1. Hazards
+                const hazardCount = Math.floor(Math.random() * 2) + 1; // 1 or 2 hazards
+                const shuffledHazards = possibleHazards.sort(() => 0.5 - Math.random());
+                const selectedHazards = shuffledHazards.slice(0, hazardCount);
+                
+                const hazardsList = document.getElementById('hazards-list');
+                hazardsList.innerHTML = selectedHazards.map(h => `
+                    <div style="background: rgba(255, 64, 129, 0.05); border-left: 3px solid var(--accent-coral); padding: 1rem; border-radius: 4px;">
+                        <h5 style="margin: 0 0 0.25rem 0; color: white;"><i class="fa-solid ${h.icon}" style="color: var(--accent-coral); margin-right: 0.5rem;"></i> ${h.title}</h5>
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">${h.desc}</p>
+                    </div>
+                `).join('');
+
+                // 2. Timeline Info
+                document.getElementById('timeline-start').innerText = originVal;
+                document.getElementById('timeline-end').innerText = destVal;
+                
+                const alternatives = [
+                    "Via Lyari Expressway (Toll)", 
+                    "Via Shahrah-e-Faisal Alternate", 
+                    "Via Rashid Minhas Link Road", 
+                    "Backstreet Corridor 4"
+                ];
+                document.getElementById('result-route-name').innerText = alternatives[Math.floor(Math.random() * alternatives.length)];
+                document.getElementById('timeline-via').innerText = "Safe alternate suggested by community";
+                
+                const timeStr = Math.floor(Math.random() * 20 + 25) + "m";
+                document.getElementById('result-time').innerText = timeStr;
+
+            }, 2800);
+        });
+    }
 });
