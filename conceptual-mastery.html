@@ -3,16 +3,707 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coming Soon | StudentSync</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Conceptual Mastery | StudentSync</title>
+    <meta name="description" content="Break the cycle of rote memorization. Shift your academic focus towards deep, practical understanding with StudentSync.">
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Custom Styles for Conceptual Mastery to make it unique */
+        .bg-concept {
+            background: radial-gradient(circle at 50% 50%, rgba(142, 36, 170, 0.15), transparent 60%);
+        }
+        
+        .concept-hero-visual {
+            position: relative;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .brain-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--accent-violet);
+            box-shadow: 0 0 20px rgba(142, 36, 170, 0.2);
+            animation: floatNode 4s ease-in-out infinite;
+            backdrop-filter: blur(5px);
+            z-index: 2;
+        }
+
+        .brain-node.center {
+            width: 100px;
+            height: 100px;
+            font-size: 3rem;
+            color: var(--accent-coral);
+            border-color: rgba(255, 64, 129, 0.3);
+            box-shadow: 0 0 40px rgba(255, 64, 129, 0.3);
+            animation: pulseBrain 3s infinite;
+        }
+
+        .brain-line {
+            position: absolute;
+            background: linear-gradient(90deg, rgba(255, 64, 129, 0.5), rgba(142, 36, 170, 0.5));
+            height: 2px;
+            transform-origin: left center;
+            z-index: 1;
+        }
+
+        @keyframes floatNode {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes pulseBrain {
+            0% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 64, 129, 0.2); }
+            50% { transform: scale(1.05); box-shadow: 0 0 50px rgba(255, 64, 129, 0.5); }
+            100% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 64, 129, 0.2); }
+        }
+
+        /* Staggered Problems Layout */
+        .staggered-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            position: relative;
+        }
+        
+        .staggered-grid::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--accent-violet), var(--accent-coral), transparent);
+            transform: translateX(-50%);
+            opacity: 0.3;
+        }
+
+        .stagger-item {
+            width: calc(50% - 3rem);
+            position: relative;
+        }
+
+        .stagger-item:nth-child(odd) {
+            align-self: flex-start;
+            text-align: right;
+        }
+
+        .stagger-item:nth-child(even) {
+            align-self: flex-end;
+            text-align: left;
+        }
+
+        .stagger-item::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--glass-bg);
+            border: 2px solid var(--accent-violet);
+            border-radius: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
+
+        .stagger-item:nth-child(odd)::after {
+            right: -3rem;
+            transform: translate(50%, -50%);
+        }
+
+        .stagger-item:nth-child(even)::after {
+            left: -3rem;
+            transform: translate(-50%, -50%);
+        }
+
+        .stagger-card {
+            padding: 2.5rem;
+            border-radius: 20px;
+            background: rgba(31, 40, 51, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
+
+        .stagger-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(142, 36, 170, 0.4);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(142, 36, 170, 0.15);
+        }
+
+        .stagger-item:nth-child(odd) .stagger-card {
+            border-right: 3px solid var(--accent-violet);
+        }
+
+        .stagger-item:nth-child(even) .stagger-card {
+            border-left: 3px solid var(--accent-coral);
+        }
+
+        /* Concept Deconstructor UI */
+        .deconstructor-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            background: rgba(10, 10, 15, 0.6);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        .topic-sidebar {
+            background: rgba(255, 255, 255, 0.02);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .topic-search {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            color: white;
+            font-family: inherit;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .topic-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 500;
+        }
+
+        .topic-btn i {
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+
+        .topic-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .topic-btn.active {
+            background: linear-gradient(135deg, rgba(142, 36, 170, 0.2), rgba(255, 64, 129, 0.1));
+            border-color: rgba(142, 36, 170, 0.4);
+            color: white;
+            box-shadow: 0 4px 15px rgba(142, 36, 170, 0.1);
+        }
+
+        .topic-btn.active i {
+            color: var(--accent-coral);
+            opacity: 1;
+        }
+
+        .deconstructor-main {
+            padding: 3rem;
+            position: relative;
+        }
+
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .breakdown-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .breakdown-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .breakdown-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .bc-core::before { background: var(--accent-mint); }
+        .bc-analogy::before { background: var(--accent-gold); }
+        .bc-pitfall::before { background: var(--text-crimson); }
+        .bc-realworld::before { background: var(--accent-violet); }
+
+        .breakdown-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .bc-core .breakdown-icon { background: rgba(0, 209, 178, 0.1); color: var(--accent-mint); }
+        .bc-analogy .breakdown-icon { background: rgba(255, 189, 46, 0.1); color: var(--accent-gold); }
+        .bc-pitfall .breakdown-icon { background: rgba(255, 82, 82, 0.1); color: #ff5252; }
+        .bc-realworld .breakdown-icon { background: rgba(142, 36, 170, 0.1); color: var(--accent-violet); }
+
+        .breakdown-content {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Micro-interactions */
+        .interactive-element {
+            cursor: pointer;
+            position: relative;
+        }
+        .interactive-element::after {
+            content: 'Click to expand';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            background: rgba(0,0,0,0.8);
+            padding: 2px 8px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: 0.2s;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        .interactive-element:hover::after {
+            opacity: 1;
+        }
+
+        @media (max-width: 900px) {
+            .stagger-item {
+                width: 100%;
+                text-align: left !important;
+            }
+            .stagger-item::after {
+                display: none;
+            }
+            .staggered-grid::before {
+                left: 0;
+            }
+            .deconstructor-container {
+                grid-template-columns: 1fr;
+            }
+            .breakdown-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
-<body style="display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center;">
-    <div class="bg-gradient bg-gradient-1"></div>
-    <div class="glass-card" style="padding: 4rem; max-width: 500px;">
-        <h1 class="text-gradient" style="font-size: 3rem; margin-bottom: 1rem;">Coming Soon</h1>
-        <p style="color: var(--text-muted); margin-bottom: 2rem;">We are working hard to bring you this solution.</p>
-        <a href="index.html" class="btn btn-outline" style="text-decoration: none;">Back to Home</a>
-    </div>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-gradient bg-gradient-1" style="top: 10%; left: -20%; background: radial-gradient(circle, var(--accent-violet) 0%, transparent 70%);"></div>
+    <div class="bg-gradient bg-gradient-2" style="top: 50%; right: -10%; background: radial-gradient(circle, var(--accent-coral) 0%, transparent 70%);"></div>
+    <div class="bg-gradient bg-gradient-1" style="bottom: -10%; left: 20%; background: radial-gradient(circle, rgba(0, 209, 178, 0.4) 0%, transparent 70%);"></div>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                Student<span>Sync</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html#features">Challenges</a>
+                <div class="dropdown">
+                    <a href="#" class="dropbtn active">Solutions <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem; margin-left: 3px;"></i></a>
+                    <div class="dropdown-content">
+                        <a href="transit-economics.html">Transit Economics</a>
+                        <a href="route-intelligence.html">Route Intelligence</a>
+                        <a href="civic-voice.html">Civic Voice Hub</a>
+                        <a href="conceptual-mastery.html" class="active">Conceptual Mastery</a>
+                        <a href="knowledge-base.html">Knowledge Base</a>
+                        <a href="strategic-mentorship.html">Strategic Mentorship</a>
+                    </div>
+                </div>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="contact.html" class="btn btn-primary" style="text-decoration: none;">Join Now</a>
+            </div>
+        </div>
+    </header>
+
+    <main style="padding-top: 100px;">
+        <!-- Hero Section -->
+        <section class="hero" style="min-height: auto; padding: 60px 0 20px;">
+            <div class="container text-center" style="display: flex; flex-direction: column; align-items: center;">
+                <div class="badge animate-on-scroll" style="background: rgba(142, 36, 170, 0.1); color: var(--accent-violet); border: 1px solid rgba(142, 36, 170, 0.2);"><i class="fa-solid fa-brain"></i> Conceptual Mastery</div>
+                <h1 class="animate-on-scroll" style="transition-delay: 0.1s; margin: 0 auto 1.5rem; text-align: center; width: 100%; font-size: 4rem;">Stop Cramming. Start <span class="text-gradient">Understanding.</span></h1>
+                <p class="hero-subtitle animate-on-scroll" style="transition-delay: 0.2s; margin: 0 auto 1rem; text-align: center; max-width: 800px;">Rote memorization only gets you past the exam, not the interview. Break down complex, dry academic topics into intuitive mental models and real-world applications.</p>
+                
+                <!-- Animated Brain Visual -->
+                <div class="concept-hero-visual animate-on-scroll" style="transition-delay: 0.3s; width: 100%; max-width: 600px;">
+                    <!-- Lines -->
+                    <div class="brain-line" style="width: 120px; top: 150px; left: 180px; transform: rotate(-30deg);"></div>
+                    <div class="brain-line" style="width: 140px; top: 150px; left: 280px; transform: rotate(20deg);"></div>
+                    <div class="brain-line" style="width: 100px; top: 150px; left: 240px; transform: rotate(160deg);"></div>
+                    
+                    <!-- Nodes -->
+                    <div class="brain-node center" style="top: 100px; left: 250px;"><i class="fa-solid fa-lightbulb"></i></div>
+                    <div class="brain-node" style="top: 50px; left: 100px; animation-delay: 0.5s;"><i class="fa-solid fa-code"></i></div>
+                    <div class="brain-node" style="top: 200px; left: 400px; animation-delay: 1s;"><i class="fa-solid fa-chart-network"></i></div>
+                    <div class="brain-node" style="top: 220px; left: 120px; animation-delay: 1.5s;"><i class="fa-solid fa-atom"></i></div>
+                    <div class="brain-node" style="top: 30px; left: 420px; animation-delay: 2s;"><i class="fa-solid fa-calculator"></i></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Staggered Problem Section -->
+        <section class="features" style="padding-top: 20px; padding-bottom: 60px;">
+            <div class="container">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-kicker" style="color: var(--accent-violet);">The Learning Trap</span>
+                    <h2>Why Memorization Fails You</h2>
+                </div>
+                
+                <div class="staggered-grid animate-on-scroll">
+                    <div class="stagger-item">
+                        <div class="stagger-card">
+                            <i class="fa-solid fa-clock-rotate-left" style="font-size: 2rem; color: var(--accent-violet); margin-bottom: 1rem;"></i>
+                            <h3 style="margin-bottom: 0.5rem; font-size: 1.5rem;">Short-Term Retention</h3>
+                            <p style="color: var(--text-muted); margin: 0;">You memorize definitions the night before, pass the paper, and forget everything within 48 hours. When advanced courses rely on those basics, you're lost.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stagger-item">
+                        <div class="stagger-card">
+                            <i class="fa-solid fa-puzzle-piece" style="font-size: 2rem; color: var(--accent-coral); margin-bottom: 1rem;"></i>
+                            <h3 style="margin-bottom: 0.5rem; font-size: 1.5rem;">Lack of Application</h3>
+                            <p style="color: var(--text-muted); margin: 0;">You know the syntax of a coding loop or the formula for torque, but when faced with a real-world project or a technical interview, you don't know how to apply it.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stagger-item">
+                        <div class="stagger-card">
+                            <i class="fa-solid fa-book-skull" style="font-size: 2rem; color: var(--accent-mint); margin-bottom: 1rem;"></i>
+                            <h3 style="margin-bottom: 0.5rem; font-size: 1.5rem;">The "Dry Theory" Fatigue</h3>
+                            <p style="color: var(--text-muted); margin: 0;">Staring at heavy academic textbooks filled with jargon drains your motivation. Without an intuitive analogy, studying feels like deciphering a foreign language.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Main Interactive Feature: Concept Deconstructor -->
+        <section class="command-center-section" style="padding-top: 40px; padding-bottom: 80px;">
+            <div class="container">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-kicker" style="color: var(--accent-coral);">Core Utility</span>
+                    <h2>The Concept Deconstructor</h2>
+                    <p>Select a notoriously difficult university topic below. Watch it break down into a simple mental model you can actually understand.</p>
+                </div>
+
+                <div class="deconstructor-container animate-on-scroll" style="transition-delay: 0.2s;">
+                    <!-- Sidebar -->
+                    <div class="topic-sidebar">
+                        <h4 style="color: white; margin-bottom: 0.5rem;"><i class="fa-solid fa-layer-group" style="color: var(--accent-violet);"></i> Difficult Topics</h4>
+                        <input type="text" class="topic-search" placeholder="Search concept...">
+                        
+                        <div style="overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; padding-right: 0.5rem;">
+                            <button class="topic-btn active" data-concept="pointers">
+                                <i class="fa-brands fa-cuttlefish"></i>
+                                <span>Pointers (C/C++)</span>
+                            </button>
+                            <button class="topic-btn" data-concept="oop">
+                                <i class="fa-solid fa-cube"></i>
+                                <span>Polymorphism (OOP)</span>
+                            </button>
+                            <button class="topic-btn" data-concept="recursion">
+                                <i class="fa-solid fa-arrow-rotate-left"></i>
+                                <span>Recursion (DSA)</span>
+                            </button>
+                            <button class="topic-btn" data-concept="thermo">
+                                <i class="fa-solid fa-temperature-arrow-up"></i>
+                                <span>Entropy (Physics)</span>
+                            </button>
+                            <button class="topic-btn" data-concept="accounting">
+                                <i class="fa-solid fa-scale-balanced"></i>
+                                <span>Double Entry (Acc)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Main Display -->
+                    <div class="deconstructor-main" id="deconstructor-main">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <div style="display: inline-block; padding: 0.3rem 0.8rem; background: rgba(255, 64, 129, 0.1); color: var(--accent-coral); border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-bottom: 1rem;" id="concept-category">Computer Science</div>
+                                <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem; color: white;" id="concept-title">Pointers</h2>
+                                <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px;" id="concept-desc">Variables that store memory addresses rather than actual data values.</p>
+                            </div>
+                            <div class="interactive-element" style="width: 80px; height: 80px; background: rgba(142, 36, 170, 0.1); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--accent-violet); border: 1px solid rgba(142, 36, 170, 0.3);">
+                                <i class="fa-solid fa-map-pin" id="concept-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="breakdown-grid" id="concept-grid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alternative Learning Methods -->
+        <section class="features" style="padding-top: 40px; padding-bottom: 80px; position: relative;">
+            <div class="container">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-kicker" style="color: var(--accent-mint);">Advanced Features</span>
+                    <h2>A Better Way to Learn</h2>
+                </div>
+                
+                <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+                    <div class="feature-card glass-card animate-on-scroll">
+                        <div class="feature-icon" style="background: rgba(0, 209, 178, 0.2); color: var(--accent-mint);">
+                            <i class="fa-solid fa-network-wired"></i>
+                        </div>
+                        <h3>Mind Mapping</h3>
+                        <p>Generate automatic visual maps for dense textbook chapters to see how topics interconnect.</p>
+                    </div>
+
+                    <div class="feature-card glass-card animate-on-scroll" style="transition-delay: 0.1s;">
+                        <div class="feature-icon bg-accent">
+                            <i class="fa-solid fa-stopwatch"></i>
+                        </div>
+                        <h3>Feynman Sprints</h3>
+                        <p>Built-in 5-minute prompts where you explain a topic in plain language to solidify your own understanding.</p>
+                    </div>
+
+                    <div class="feature-card glass-card animate-on-scroll" style="transition-delay: 0.2s;">
+                        <div class="feature-icon" style="background: rgba(255, 189, 46, 0.2); color: var(--accent-gold);">
+                            <i class="fa-solid fa-cubes"></i>
+                        </div>
+                        <h3>Micro-Simulations</h3>
+                        <p>Small, interactive code playgrounds and physics sandboxes directly embedded in your study material.</p>
+                    </div>
+
+                    <div class="feature-card glass-card animate-on-scroll" style="transition-delay: 0.3s;">
+                        <div class="feature-icon" style="background: rgba(142, 36, 170, 0.2); color: var(--accent-violet);">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </div>
+                        <h3>Jargon Translator</h3>
+                        <p>Highlight complex academic text and get it instantly rewritten using everyday analogies.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer glass-card">
+        <div class="container footer-container">
+            <div class="footer-col brand-col">
+                <a href="index.html" class="logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    Student<span>Sync</span>
+                </a>
+                <p>Empowering college students to connect, share, and thrive together.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-discord"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Challenges</h4>
+                <a href="transit-economics.html">Transit Economics</a>
+                <a href="route-intelligence.html">Route Intelligence</a>
+                <a href="civic-voice.html">Civic Voice Hub</a>
+                <a href="conceptual-mastery.html">Conceptual Mastery</a>
+                <a href="knowledge-base.html">Knowledge Base</a>
+                <a href="strategic-mentorship.html">Strategic Mentorship</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="about.html">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="#">Campus Reps</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 StudentSync. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Concept Deconstructor Data
+            const conceptData = {
+                pointers: {
+                    title: "Pointers",
+                    category: "Computer Science",
+                    desc: "Variables that store memory addresses rather than actual data values.",
+                    icon: "fa-map-pin",
+                    core: "Instead of holding a number or a string, a pointer holds the EXACT location in the computer's memory where that data lives.",
+                    analogy: "Think of a house (data) and a piece of paper with an address written on it (pointer). The paper isn't the house, but it tells you exactly where to find it.",
+                    pitfall: "Dereferencing a null pointer. This is like trying to drive to an address that's blank—your program will crash instantly.",
+                    realworld: "Passing massive 4GB 3D objects to a function. Instead of copying all 4GB (slow), you just pass the pointer (fast)."
+                },
+                oop: {
+                    title: "Polymorphism",
+                    category: "Software Design",
+                    desc: "The ability of different objects to respond to the exact same method call in their own unique way.",
+                    icon: "fa-shapes",
+                    core: "A single interface can represent different underlying forms (data types or classes).",
+                    analogy: "A TV remote has a 'Power' button. You press it to turn on a TV, a soundbar, or an AC. The button is the same (interface), but each device turns on differently (implementation).",
+                    pitfall: "Overusing inheritance to achieve polymorphism, creating deep, brittle class hierarchies instead of using flexible interfaces.",
+                    realworld: "A 'draw()' command in a graphics program. You loop through a list of shapes (Circles, Squares) and call draw(). Each shape knows how to draw itself."
+                },
+                recursion: {
+                    title: "Recursion",
+                    category: "Data Structures",
+                    desc: "A method where the solution to a problem depends on solutions to smaller instances of the same problem.",
+                    icon: "fa-arrow-rotate-left",
+                    core: "A function that calls itself with a smaller input until it reaches a baseline condition to stop.",
+                    analogy: "Looking up a word in a dictionary, finding a word in the definition you don't know, and looking THAT word up. You keep going until you hit a word you know (base case).",
+                    pitfall: "Forgetting the 'Base Case'. Without a stopping condition, the function calls itself forever until it causes a Stack Overflow.",
+                    realworld: "Navigating through a computer file system. A folder contains folders, which contain folders. You write one 'searchFolder' function and it calls itself for every sub-folder."
+                },
+                thermo: {
+                    title: "Entropy",
+                    category: "Physics",
+                    desc: "A measure of the disorder, randomness, or uncertainty within a closed system.",
+                    icon: "fa-temperature-arrow-up",
+                    core: "The Second Law of Thermodynamics: The total entropy of an isolated system can never decrease over time. Things naturally become chaotic.",
+                    analogy: "Dropping a glass. It shatters into a hundred disordered pieces (high entropy). The pieces will never spontaneously jump back together to form a perfect glass (low entropy).",
+                    pitfall: "Confusing entropy with 'heat'. It's not heat itself, but rather the dispersal of energy. A hot cup of coffee loses heat to the room, dispersing energy and increasing entropy.",
+                    realworld: "Data compression. In information theory, entropy represents the minimum amount of bits needed to encode a message without losing information."
+                },
+                accounting: {
+                    title: "Double Entry",
+                    category: "Accounting",
+                    desc: "A bookkeeping system where every financial transaction has equal and opposite effects in at least two different accounts.",
+                    icon: "fa-scale-balanced",
+                    core: "The fundamental equation: Assets = Liabilities + Equity. Every action must keep this equation perfectly balanced.",
+                    analogy: "Newton's Third Law for money. For every financial action, there is an equal and opposite reaction. If you get cash (Asset up), you either borrowed it (Liability up) or earned it (Equity up).",
+                    pitfall: "Confusing Debit and Credit with 'Good' and 'Bad'. Debit just means left side, Credit means right side. Debiting cash is good, debiting an expense decreases profit.",
+                    realworld: "Auditing a company. Because every entry has a counterpart, missing money is immediately obvious because the 'scale' won't balance at the end of the month."
+                }
+            };
+
+            const conceptGrid = document.getElementById('concept-grid');
+            const topicBtns = document.querySelectorAll('.topic-btn');
+            
+            function renderBreakdown(key) {
+                const data = conceptData[key];
+                if(!data) return;
+
+                // Update Header
+                document.getElementById('concept-title').innerText = data.title;
+                document.getElementById('concept-desc').innerText = data.desc;
+                document.querySelector('.deconstructor-main .interactive-element').innerHTML = `<i class="fa-solid ${data.icon}"></i>`;
+                document.getElementById('concept-category').innerText = data.category;
+
+                // Update Grid with animation
+                conceptGrid.innerHTML = '';
+                
+                setTimeout(() => {
+                    conceptGrid.innerHTML = `
+                        <div class="breakdown-card bc-core breakdown-content" style="animation-delay: 0s;">
+                            <div class="breakdown-icon"><i class="fa-solid fa-bullseye"></i></div>
+                            <h4 style="color: white; margin-bottom: 0.5rem;">The Core Idea</h4>
+                            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">${data.core}</p>
+                        </div>
+                        <div class="breakdown-card bc-analogy breakdown-content" style="animation-delay: 0.1s;">
+                            <div class="breakdown-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                            <h4 style="color: white; margin-bottom: 0.5rem;">Mental Analogy</h4>
+                            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">${data.analogy}</p>
+                        </div>
+                        <div class="breakdown-card bc-pitfall breakdown-content" style="animation-delay: 0.2s;">
+                            <div class="breakdown-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <h4 style="color: white; margin-bottom: 0.5rem;">Common Trap</h4>
+                            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">${data.pitfall}</p>
+                        </div>
+                        <div class="breakdown-card bc-realworld breakdown-content" style="animation-delay: 0.3s;">
+                            <div class="breakdown-icon"><i class="fa-solid fa-globe"></i></div>
+                            <h4 style="color: white; margin-bottom: 0.5rem;">Real-World App</h4>
+                            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">${data.realworld}</p>
+                        </div>
+                    `;
+                }, 50);
+            }
+
+            topicBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    topicBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderBreakdown(btn.dataset.concept);
+                });
+            });
+
+            // Initial render
+            renderBreakdown('pointers');
+            
+            // Search functionality (simple visual filter)
+            const searchInput = document.querySelector('.topic-search');
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                topicBtns.forEach(btn => {
+                    const text = btn.innerText.toLowerCase();
+                    if(text.includes(term)) {
+                        btn.style.display = 'flex';
+                    } else {
+                        btn.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
