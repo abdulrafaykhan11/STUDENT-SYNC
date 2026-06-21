@@ -263,7 +263,7 @@
 
         .bc-core::before { background: var(--accent-mint); }
         .bc-analogy::before { background: var(--accent-gold); }
-        .bc-pitfall::before { background: var(--text-crimson); }
+        .bc-pitfall::before { background: #ff5252; } /* Fixed CSS variable */
         .bc-realworld::before { background: var(--accent-violet); }
 
         .breakdown-icon {
@@ -315,23 +315,331 @@
             opacity: 1;
         }
 
+        /* --- NEW UNIQUE FEATURES STYLES --- */
+
+        /* Feature 1: Feynman Dashboard */
+        .feynman-dashboard {
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            background: url('feynman-dashboard.png') center/cover no-repeat;
+            min-height: 450px;
+            display: flex;
+            align-items: flex-end;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            margin-top: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .feynman-dashboard:hover {
+            box-shadow: 0 25px 60px rgba(142, 36, 170, 0.3);
+            border-color: rgba(142, 36, 170, 0.5);
+        }
+
+        .feynman-dashboard::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(11, 12, 16, 0.95) 10%, rgba(11, 12, 16, 0.2) 70%);
+            z-index: 1;
+        }
+
+        .feynman-ui {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(31, 40, 51, 0.6);
+            backdrop-filter: blur(16px);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .audio-wave {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            height: 40px;
+        }
+
+        .audio-bar {
+            width: 4px;
+            background: var(--accent-mint);
+            border-radius: 4px;
+            animation: wave 1s ease-in-out infinite alternate;
+        }
+        
+        .audio-bar:nth-child(1) { height: 30%; animation-delay: 0s; }
+        .audio-bar:nth-child(2) { height: 60%; animation-delay: 0.1s; background: var(--accent-coral); }
+        .audio-bar:nth-child(3) { height: 100%; animation-delay: 0.2s; background: var(--accent-violet); }
+        .audio-bar:nth-child(4) { height: 40%; animation-delay: 0.3s; background: var(--accent-coral); }
+        .audio-bar:nth-child(5) { height: 70%; animation-delay: 0.4s; }
+
+        @keyframes wave {
+            0% { transform: scaleY(0.3); }
+            100% { transform: scaleY(1); }
+        }
+
+        .jargon-alert {
+            background: rgba(255, 82, 82, 0.15);
+            border: 1px solid #ff5252;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            animation: pulseAlert 2s infinite;
+        }
+
+        @keyframes pulseAlert {
+            0% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 82, 82, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0); }
+        }
+
+        /* Feature 2: Retention Simulator */
+        .retention-simulator {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-top: 2rem;
+            display: flex;
+            gap: 4rem;
+            transition: all 0.4s ease;
+        }
+        
+        .retention-simulator:hover {
+            border-color: rgba(0, 209, 178, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 209, 178, 0.1);
+        }
+
+        .retention-controls {
+            flex: 1;
+        }
+
+        .retention-bars {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            justify-content: center;
+        }
+
+        .custom-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            margin: 2rem 0;
+            transition: 0.2s;
+        }
+        
+        .custom-slider:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent-mint);
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--accent-mint);
+            transition: 0.2s;
+        }
+        
+        .custom-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .bar-container {
+            width: 100%;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            position: relative;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .retention-bar {
+            height: 100%;
+            border-radius: 14px;
+            transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bar-cramming { 
+            background: linear-gradient(90deg, #ff5252, #ff79a1); 
+            width: 100%; 
+            box-shadow: 0 0 15px rgba(255, 82, 82, 0.4);
+        }
+        .bar-mastery { 
+            background: linear-gradient(90deg, var(--accent-mint), #00e676); 
+            width: 100%; 
+            box-shadow: 0 0 15px rgba(0, 209, 178, 0.4);
+        }
+
+        .retention-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            color: white;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .retention-value {
+            font-family: monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        /* Feature 3: Neural Explorer */
+        .neural-explorer {
+            height: 450px;
+            background: radial-gradient(circle at center, rgba(31, 40, 51, 0.8), rgba(11, 12, 16, 0.9));
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+        
+        .neural-explorer:hover {
+            box-shadow: 0 15px 40px rgba(255, 189, 46, 0.2);
+            border-color: rgba(255, 189, 46, 0.4);
+        }
+
+        .neural-toggles {
+            position: absolute;
+            top: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 10;
+        }
+
+        .neural-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        .neural-toggle.active {
+            background: rgba(255, 189, 46, 0.2);
+            color: white;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 20px rgba(255, 189, 46, 0.3);
+        }
+
+        /* Linear vs Neural views */
+        #view-linear {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: 0.5s opacity, 0.5s transform;
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .linear-node {
+            width: 80px; height: 80px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-muted); font-size: 1.5rem;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .linear-line {
+            width: 50px; height: 2px; background: rgba(255, 255, 255, 0.2);
+        }
+
+        #view-neural {
+            position: absolute;
+            inset: 0;
+            display: block; /* Kept block for positioning, handled by opacity */
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.5s opacity, 0.5s transform;
+            transform: scale(0.9);
+        }
+        
+        #view-neural.show {
+            opacity: 1;
+            pointer-events: all;
+            transform: scale(1);
+        }
+
+        .n-node {
+            position: absolute;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 189, 46, 0.1);
+            border: 2px solid var(--accent-gold);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent-gold);
+            box-shadow: 0 0 20px rgba(255, 189, 46, 0.4);
+            animation: floatNode 3s infinite alternate;
+            font-size: 1.5rem;
+            z-index: 2;
+        }
+
+        .n-node:nth-child(1) { top: 30%; left: 30%; animation-delay: 0s; }
+        .n-node:nth-child(2) { top: 60%; left: 45%; animation-delay: 0.5s; background: rgba(142, 36, 170, 0.1); border-color: var(--accent-violet); color: var(--accent-violet); box-shadow: 0 0 20px rgba(142, 36, 170, 0.4);}
+        .n-node:nth-child(3) { top: 20%; left: 60%; animation-delay: 1s; background: rgba(255, 64, 129, 0.1); border-color: var(--accent-coral); color: var(--accent-coral); box-shadow: 0 0 20px rgba(255, 64, 129, 0.4);}
+        .n-node:nth-child(4) { top: 50%; left: 75%; animation-delay: 1.5s; background: rgba(0, 209, 178, 0.1); border-color: var(--accent-mint); color: var(--accent-mint); box-shadow: 0 0 20px rgba(0, 209, 178, 0.4);}
+
+        .n-line {
+            position: absolute;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-violet));
+            transform-origin: left center;
+            opacity: 0.6;
+            animation: pulseLine 2s infinite;
+            z-index: 1;
+            border-radius: 3px;
+        }
+
+        @keyframes pulseLine {
+            0% { opacity: 0.3; } 50% { opacity: 0.8; box-shadow: 0 0 10px rgba(255,255,255,0.5); } 100% { opacity: 0.3; }
+        }
+
         @media (max-width: 900px) {
-            .stagger-item {
-                width: 100%;
-                text-align: left !important;
-            }
-            .stagger-item::after {
-                display: none;
-            }
-            .staggered-grid::before {
-                left: 0;
-            }
-            .deconstructor-container {
-                grid-template-columns: 1fr;
-            }
-            .breakdown-grid {
-                grid-template-columns: 1fr;
-            }
+            .stagger-item { width: 100%; text-align: left !important; }
+            .stagger-item::after { display: none; }
+            .staggered-grid::before { left: 0; }
+            .deconstructor-container { grid-template-columns: 1fr; }
+            .breakdown-grid { grid-template-columns: 1fr; }
+            
+            .retention-simulator { flex-direction: column; gap: 2rem; padding: 2rem; }
+            .feynman-ui { flex-direction: column; gap: 1rem; align-items: flex-start; }
+            .linear-node { width: 50px; height: 50px; }
+            .linear-line { width: 20px; }
         }
     </style>
 </head>
@@ -387,7 +695,7 @@
                     <!-- Nodes -->
                     <div class="brain-node center" style="top: 100px; left: 250px;"><i class="fa-solid fa-lightbulb"></i></div>
                     <div class="brain-node" style="top: 50px; left: 100px; animation-delay: 0.5s;"><i class="fa-solid fa-code"></i></div>
-                    <div class="brain-node" style="top: 200px; left: 400px; animation-delay: 1s;"><i class="fa-solid fa-chart-network"></i></div>
+                    <div class="brain-node" style="top: 200px; left: 400px; animation-delay: 1s;"><i class="fa-solid fa-share-nodes"></i></div> <!-- BUG FIXED HERE -->
                     <div class="brain-node" style="top: 220px; left: 120px; animation-delay: 1.5s;"><i class="fa-solid fa-atom"></i></div>
                     <div class="brain-node" style="top: 30px; left: 420px; animation-delay: 2s;"><i class="fa-solid fa-calculator"></i></div>
                 </div>
@@ -431,7 +739,7 @@
         </section>
 
         <!-- The Main Interactive Feature: Concept Deconstructor -->
-        <section class="command-center-section" style="padding-top: 40px; padding-bottom: 80px;">
+        <section class="command-center-section" style="padding-top: 40px; padding-bottom: 40px;">
             <div class="container">
                 <div class="section-header animate-on-scroll">
                     <span class="section-kicker" style="color: var(--accent-coral);">Core Utility</span>
@@ -490,45 +798,105 @@
             </div>
         </section>
 
-        <!-- Alternative Learning Methods -->
+        <!-- NEW UNIQUE FEATURES SECTION -->
         <section class="features" style="padding-top: 40px; padding-bottom: 80px; position: relative;">
             <div class="container">
                 <div class="section-header animate-on-scroll">
-                    <span class="section-kicker" style="color: var(--accent-mint);">Advanced Features</span>
-                    <h2>A Better Way to Learn</h2>
+                    <span class="section-kicker" style="color: var(--accent-mint);">Advanced Mastery Features</span>
+                    <h2>Premium Learning Technologies</h2>
+                    <p>Exclusive interactive tools designed to force your brain into active recall and deep neural networking.</p>
                 </div>
                 
-                <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
-                    <div class="feature-card glass-card animate-on-scroll">
-                        <div class="feature-icon" style="background: rgba(0, 209, 178, 0.2); color: var(--accent-mint);">
-                            <i class="fa-solid fa-network-wired"></i>
+                <!-- FEATURE 1: FEYNMAN AI DASHBOARD -->
+                <div class="animate-on-scroll">
+                    <h3 style="color: white; margin-bottom: 0.5rem;"><i class="fa-solid fa-video text-accent"></i> The Feynman AI Tutor</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">Explain the topic out loud. Our AI tutor listens, analyzes your speech, and flags academic jargon to ensure you actually understand the concept simply.</p>
+                    
+                    <div class="feynman-dashboard">
+                        <div class="feynman-ui">
+                            <div>
+                                <h4 style="color: white; font-size: 1.2rem; margin-bottom: 0.2rem;">Live Session: Explaining Polymorphism</h4>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span style="color: var(--accent-mint); font-weight: 600;"><i class="fa-solid fa-microphone"></i> Recording...</span>
+                                    <div class="audio-wave">
+                                        <div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="jargon-alert">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span><strong>Jargon Detected:</strong> "Instantiating inherited classes" — Try explaining this using simpler words!</span>
+                            </div>
                         </div>
-                        <h3>Mind Mapping</h3>
-                        <p>Generate automatic visual maps for dense textbook chapters to see how topics interconnect.</p>
                     </div>
+                </div>
 
-                    <div class="feature-card glass-card animate-on-scroll" style="transition-delay: 0.1s;">
-                        <div class="feature-icon bg-accent">
-                            <i class="fa-solid fa-stopwatch"></i>
+                <!-- FEATURE 2: RETENTION DECAY SIMULATOR -->
+                <div class="animate-on-scroll" style="margin-top: 5rem;">
+                    <h3 style="color: white; margin-bottom: 0.5rem;"><i class="fa-solid fa-chart-line" style="color: var(--accent-mint);"></i> Retention Decay Simulator</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">Slide to see what happens to your memory days after learning. Notice how cramming disappears, while conceptual understanding stays permanently.</p>
+                    
+                    <div class="retention-simulator glass-card">
+                        <div class="retention-controls">
+                            <h4 style="color: white; font-size: 1.5rem;">Days Since Studying: <span id="days-val" style="color: var(--accent-mint);">1</span></h4>
+                            <input type="range" min="1" max="30" value="1" class="custom-slider" id="retention-slider">
+                            <p style="color: var(--text-muted); font-size: 0.9rem;"><i class="fa-solid fa-info-circle"></i> Move slider to simulate time passing after an exam.</p>
                         </div>
-                        <h3>Feynman Sprints</h3>
-                        <p>Built-in 5-minute prompts where you explain a topic in plain language to solidify your own understanding.</p>
+                        <div class="retention-bars">
+                            <div>
+                                <div class="retention-label">
+                                    <span><i class="fa-solid fa-book-skull"></i> Rote Memorization (Cramming)</span>
+                                    <span class="retention-value" id="cram-val" style="color: #ff5252;">100%</span>
+                                </div>
+                                <div class="bar-container">
+                                    <div class="retention-bar bar-cramming" id="cram-bar"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="retention-label">
+                                    <span><i class="fa-solid fa-brain"></i> Conceptual Mastery</span>
+                                    <span class="retention-value" id="mastery-val" style="color: var(--accent-mint);">100%</span>
+                                </div>
+                                <div class="bar-container">
+                                    <div class="retention-bar bar-mastery" id="mastery-bar"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="feature-card glass-card animate-on-scroll" style="transition-delay: 0.2s;">
-                        <div class="feature-icon" style="background: rgba(255, 189, 46, 0.2); color: var(--accent-gold);">
-                            <i class="fa-solid fa-cubes"></i>
+                <!-- FEATURE 3: NEURAL PATHWAY EXPLORER -->
+                <div class="animate-on-scroll" style="margin-top: 5rem;">
+                    <h3 style="color: white; margin-bottom: 0.5rem;"><i class="fa-solid fa-network-wired" style="color: var(--accent-gold);"></i> 3D Neural Pathway Explorer</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">Switch from standard linear textbook reading to interactive mind mapping. See how topics connect to build a stronger neural foundation.</p>
+                    
+                    <div class="neural-explorer">
+                        <div class="neural-toggles">
+                            <button class="neural-toggle active" id="btn-linear">Linear Reading</button>
+                            <button class="neural-toggle" id="btn-neural">Neural Mind Map</button>
                         </div>
-                        <h3>Micro-Simulations</h3>
-                        <p>Small, interactive code playgrounds and physics sandboxes directly embedded in your study material.</p>
-                    </div>
 
-                    <div class="feature-card glass-card animate-on-scroll" style="transition-delay: 0.3s;">
-                        <div class="feature-icon" style="background: rgba(142, 36, 170, 0.2); color: var(--accent-violet);">
-                            <i class="fa-solid fa-book-open-reader"></i>
+                        <!-- Linear View -->
+                        <div id="view-linear">
+                            <div class="linear-node"><i class="fa-solid fa-book"></i></div>
+                            <div class="linear-line"></div>
+                            <div class="linear-node"><i class="fa-solid fa-book"></i></div>
+                            <div class="linear-line"></div>
+                            <div class="linear-node"><i class="fa-solid fa-book"></i></div>
                         </div>
-                        <h3>Jargon Translator</h3>
-                        <p>Highlight complex academic text and get it instantly rewritten using everyday analogies.</p>
+
+                        <!-- Neural View -->
+                        <div id="view-neural">
+                            <div class="n-node"><i class="fa-solid fa-atom"></i></div>
+                            <div class="n-node"><i class="fa-solid fa-dna"></i></div>
+                            <div class="n-node"><i class="fa-solid fa-microscope"></i></div>
+                            <div class="n-node"><i class="fa-solid fa-flask"></i></div>
+                            
+                            <div class="n-line" style="width: 120px; top: 40%; left: 35%; transform: rotate(30deg);"></div>
+                            <div class="n-line" style="width: 180px; top: 40%; left: 35%; transform: rotate(-10deg);"></div>
+                            <div class="n-line" style="width: 150px; top: 65%; left: 48%; transform: rotate(-25deg);"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -702,6 +1070,57 @@
                         btn.style.display = 'none';
                     }
                 });
+            });
+
+            // Feature 2: Retention Decay Simulator Logic
+            const slider = document.getElementById('retention-slider');
+            const daysVal = document.getElementById('days-val');
+            const cramBar = document.getElementById('cram-bar');
+            const cramVal = document.getElementById('cram-val');
+            const masteryBar = document.getElementById('mastery-bar');
+            const masteryVal = document.getElementById('mastery-val');
+
+            slider.addEventListener('input', (e) => {
+                const days = e.target.value;
+                daysVal.innerText = days;
+                
+                // Cramming decays exponentially
+                // 1 day = 100%, 30 days = ~5%
+                const cramRet = Math.max(5, Math.round(100 * Math.exp(-0.15 * (days - 1))));
+                
+                // Mastery stays high
+                // 1 day = 100%, 30 days = ~85%
+                const masterRet = Math.max(85, Math.round(100 * Math.exp(-0.005 * (days - 1))));
+
+                cramBar.style.width = cramRet + '%';
+                cramVal.innerText = cramRet + '%';
+                
+                masteryBar.style.width = masterRet + '%';
+                masteryVal.innerText = masterRet + '%';
+            });
+
+            // Feature 3: Neural Explorer Logic
+            const btnLinear = document.getElementById('btn-linear');
+            const btnNeural = document.getElementById('btn-neural');
+            const viewLinear = document.getElementById('view-linear');
+            const viewNeural = document.getElementById('view-neural');
+
+            btnLinear.addEventListener('click', () => {
+                btnNeural.classList.remove('active');
+                btnLinear.classList.add('active');
+                viewNeural.classList.remove('show');
+                viewLinear.style.opacity = '1';
+                viewLinear.style.transform = 'scale(1)';
+            });
+
+            btnNeural.addEventListener('click', () => {
+                btnLinear.classList.remove('active');
+                btnNeural.classList.add('active');
+                viewLinear.style.opacity = '0';
+                viewLinear.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    viewNeural.classList.add('show');
+                }, 100);
             });
         });
     </script>
