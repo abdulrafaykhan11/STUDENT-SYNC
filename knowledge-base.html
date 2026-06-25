@@ -3,16 +3,966 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coming Soon | StudentSync</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Knowledge Base | StudentSync</title>
+    <meta name="description" content="Access the ultimate suite of functional study tools on the StudentSync Knowledge Base.">
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --kb-gradient: linear-gradient(135deg, var(--primary-maroon), var(--accent-coral));
+            --kb-panel: rgba(31, 40, 51, 0.42);
+            --kb-panel-strong: rgba(11, 12, 16, 0.5);
+            --kb-border: var(--glass-border);
+            --kb-border-glow: var(--glass-border-glow);
+            --spacing-section: 90px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Generic Section Styling */
+        .kb-section {
+            padding: var(--spacing-section) 0;
+            position: relative;
+        }
+        .kb-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .kb-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            color: var(--accent-coral);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: rgba(255, 64, 129, 0.1);
+            padding: 5px 15px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 64, 129, 0.3);
+        }
+        .kb-title {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+        .kb-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 740px;
+            margin: 0 auto;
+        }
+
+        .glass-box {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--glass-shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+        .glass-box:hover {
+            border-color: var(--kb-border-glow);
+            background: var(--glass-bg-hover);
+            transform: translateY(-5px);
+        }
+
+        /* Hero */
+        .hero-section {
+            padding: 180px 0 80px;
+            text-align: center;
+            min-height: 64vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 5.4rem);
+            font-weight: 800;
+            line-height: 1.02;
+            color: var(--text-white);
+            margin-bottom: 20px;
+        }
+
+        /* 1. GPA Predictor */
+        .gpa-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .gpa-input-group {
+            margin-bottom: 20px;
+        }
+        .gpa-input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .gpa-input {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: 0.3s;
+            min-width: 0;
+        }
+        .gpa-input:focus { border-color: var(--accent-mint); background: rgba(0,0,0,0.5); }
+        
+        .gpa-course-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .btn-add-course {
+            background: rgba(0, 209, 178, 0.1);
+            color: var(--accent-mint);
+            border: 1px solid rgba(0, 209, 178, 0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+        .btn-add-course:hover { background: var(--accent-mint); color: #000; }
+        
+        .gpa-gauge-container {
+            text-align: center;
+            position: relative;
+        }
+        .gpa-gauge {
+            width: 300px;
+            height: 150px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .gauge-bg {
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            border: 20px solid rgba(255,255,255,0.05);
+            position: absolute; top: 0; left: 0;
+            border-bottom-color: transparent;
+            border-right-color: transparent;
+            transform: rotate(45deg);
+        }
+        .gauge-fill {
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            border: 20px solid var(--accent-mint);
+            position: absolute; top: 0; left: 0;
+            border-bottom-color: transparent;
+            border-right-color: transparent;
+            transform: rotate(-135deg); /* Min: -135deg, Max: 45deg */
+            transition: transform 1s cubic-bezier(0.2, 1, 0.2, 1);
+        }
+        .gpa-result-text {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-top: 20px;
+            color: white;
+            text-shadow: 0 0 20px rgba(0, 209, 178, 0.5);
+        }
+
+        /* 2. Kanban Board */
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            min-height: 500px;
+        }
+        .kanban-col {
+            background: rgba(0,0,0,0.2);
+            border: 1px dashed rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: var(--transition);
+        }
+        .kanban-col.drag-over { border-color: var(--accent-mint); background: rgba(0, 209, 178, 0.06); }
+        .kanban-col-header {
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .k-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: grab;
+            transition: 0.2s;
+            overflow-wrap: anywhere;
+        }
+        .k-card:active { cursor: grabbing; transform: scale(0.98); }
+        .k-card.dragging { opacity: 0.5; border-color: var(--accent-coral); }
+        .k-add-btn {
+            background: transparent;
+            border: 1px dashed rgba(255,255,255,0.2);
+            color: var(--text-muted);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .k-add-btn:hover { background: rgba(255,255,255,0.05); color: white; border-color: white; }
+
+        /* 3. Exam Sprint Planner */
+        .planner-layout {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+        .planner-panel,
+        .planner-output {
+            background: rgba(0,0,0,0.24);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 1.25rem;
+        }
+        .planner-field {
+            display: block;
+            margin-bottom: 1rem;
+        }
+        .planner-field span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.45rem;
+        }
+        .planner-input,
+        .planner-select {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 0.8rem 0.9rem;
+            border-radius: 8px;
+            font-family: inherit;
+            outline: none;
+        }
+        .planner-select option { background: var(--bg-dark); }
+        .planner-input:focus,
+        .planner-select:focus { border-color: var(--accent-gold); }
+        .topic-builder {
+            display: grid;
+            grid-template-columns: 1.4fr 0.8fr 0.8fr;
+            gap: 0.7rem;
+            margin-bottom: 0.8rem;
+        }
+        .planner-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .planner-btn {
+            border: 0;
+            border-radius: 50px;
+            padding: 0.75rem 1.1rem;
+            color: white;
+            background: rgba(255,255,255,0.1);
+            cursor: pointer;
+            font-weight: 700;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        .planner-btn.primary { background: var(--accent-gold); color: #16120a; }
+        .planner-btn:hover { transform: translateY(-2px); }
+        .topic-list {
+            display: grid;
+            gap: 0.7rem;
+            margin-top: 1.1rem;
+        }
+        .topic-chip {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.8rem;
+            align-items: center;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 0.75rem;
+        }
+        .topic-chip strong { color: white; overflow-wrap: anywhere; }
+        .topic-chip span { color: var(--text-muted); font-size: 0.82rem; }
+        .topic-chip button {
+            background: transparent;
+            border: 0;
+            color: var(--accent-coral);
+            cursor: pointer;
+            padding: 0.3rem;
+        }
+        .planner-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .planner-metric {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 0.9rem;
+        }
+        .planner-metric strong { display: block; color: white; font-size: 1.45rem; line-height: 1; }
+        .planner-metric span { color: var(--text-muted); font-size: 0.8rem; }
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 1rem;
+        }
+        .schedule-day {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            min-height: 150px;
+        }
+        .schedule-day h4 {
+            color: var(--accent-gold);
+            margin-bottom: 0.7rem;
+        }
+        .schedule-day ul {
+            list-style: none;
+            display: grid;
+            gap: 0.55rem;
+        }
+        .schedule-day li {
+            color: var(--text-white);
+            font-size: 0.92rem;
+            padding-left: 0.8rem;
+            border-left: 2px solid rgba(255,189,46,0.45);
+            overflow-wrap: anywhere;
+        }
+        .schedule-empty { color: var(--text-muted); }
+
+        /* 4. Custom Flashcard Builder */
+        .fc-builder-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .fc-textarea {
+            width: 100%;
+            height: 100px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: none;
+            margin-bottom: 15px;
+            outline: none;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+        .fc-textarea:focus { border-color: var(--accent-violet); }
+        .fc-btn-create {
+            background: var(--kb-gradient);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: 0.3s;
+        }
+        .fc-btn-create:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(142, 36, 170, 0.3); }
+        
+        .fc-preview-area {
+            perspective: 1000px;
+            height: 300px;
+            position: relative;
+        }
+        .fc-card-3d {
+            width: 100%; height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+            outline: none;
+        }
+        .fc-card-3d.is-flipped { transform: rotateY(180deg); }
+        .fc-card-3d.pop { animation: cardPop 0.22s ease; }
+        .fc-card-3d:focus-visible .fc-face { border-color: var(--accent-coral); }
+        @keyframes cardPop {
+            50% { transform: scale(1.03); }
+        }
+        .fc-face {
+            position: absolute;
+            width: 100%; height: 100%;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            text-align: center;
+            font-size: 1.2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            overflow-wrap: anywhere;
+        }
+        .fc-face-front { background: rgba(30, 35, 45, 0.9); }
+        .fc-face-back { background: var(--kb-gradient); transform: rotateY(180deg); }
+        .fc-face h3 { margin: 0; font-size: clamp(1.2rem, 3vw, 1.7rem); line-height: 1.25; }
+        .fc-face p { margin: 0; font-weight: 600; }
+        .fc-hint {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 1rem !important;
+        }
+
+        /* 5. Active Recall Quiz Lab */
+        .quiz-layout {
+            max-width: 980px;
+            margin: 0 auto;
+        }
+        .quiz-textarea {
+            width: 100%;
+            height: 200px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 20px;
+            outline: none;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+        .quiz-textarea:focus { border-color: var(--accent-coral); }
+        .quiz-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.4rem;
+        }
+        .quiz-select {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 50px;
+            padding: 0.85rem 1rem;
+            font-family: inherit;
+            outline: none;
+        }
+        .quiz-select option { background: var(--bg-dark); }
+        .btn-quiz {
+            background: var(--accent-coral);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-quiz:hover { box-shadow: 0 0 30px rgba(255, 64, 129, 0.5); transform: translateY(-3px); }
+        .quiz-result {
+            background: rgba(255, 64, 129, 0.05);
+            border: 1px solid rgba(255, 64, 129, 0.2);
+            border-radius: 16px;
+            padding: 1.25rem;
+            display: none;
+        }
+        .quiz-result.active { display: block; animation: slideUpFade 0.5s; }
+        .quiz-score {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+        .quiz-score strong { color: var(--accent-coral); font-size: 1.4rem; }
+        .quiz-card {
+            background: rgba(0,0,0,0.22);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .quiz-card h4 { color: white; margin-bottom: 0.8rem; line-height: 1.35; }
+        .quiz-options {
+            display: grid;
+            gap: 0.6rem;
+        }
+        .quiz-option {
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: var(--text-white);
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: left;
+            cursor: pointer;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        .quiz-option:hover { border-color: var(--accent-coral); }
+        .quiz-option.correct { border-color: var(--accent-mint); background: rgba(0,209,178,0.12); }
+        .quiz-option.wrong { border-color: var(--accent-coral); background: rgba(255,64,129,0.12); }
+        .quiz-explain {
+            display: none;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+        }
+        .quiz-card.answered .quiz-explain { display: block; }
+
+        /* 6. Focus Hub */
+        .focus-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+        .todo-list {
+            background: rgba(0,0,0,0.3);
+            border-radius: 16px;
+            padding: 20px;
+            min-height: 350px;
+        }
+        .todo-input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+        .todo-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: 0.2s;
+            gap: 0.75rem;
+        }
+        .todo-item span { cursor: pointer; flex: 1; overflow-wrap: anywhere; outline: none; }
+        .todo-item span:focus-visible { color: var(--accent-mint); }
+        .todo-item.done { opacity: 0.5; text-decoration: line-through; }
+        .todo-item button { background: transparent; border: none; color: var(--accent-coral); cursor: pointer; padding: 0.35rem; }
+        
+        .timer-box {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .timer-display {
+            font-size: 5rem;
+            font-weight: 800;
+            font-family: 'Courier New', monospace;
+            background: var(--kb-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+        .timer-controls button {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 0 5px;
+            transition: 0.3s;
+        }
+        .timer-controls button:hover { background: var(--accent-violet); }
+        .timer-controls button.running { background: var(--accent-violet); }
+
+        .lofi-box {
+            height: 350px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 1024px) {
+            .gpa-grid, .fc-builder-layout, .planner-layout { grid-template-columns: 1fr; }
+            .focus-layout { grid-template-columns: 1fr; }
+            .kanban-board { grid-template-columns: 1fr; }
+            .topic-builder, .planner-metrics { grid-template-columns: 1fr; }
+            .kb-title { font-size: 2.5rem; }
+        }
+    </style>
 </head>
-<body style="display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center;">
-    <div class="bg-gradient bg-gradient-1"></div>
-    <div class="glass-card" style="padding: 4rem; max-width: 500px;">
-        <h1 class="text-gradient" style="font-size: 3rem; margin-bottom: 1rem;">Coming Soon</h1>
-        <p style="color: var(--text-muted); margin-bottom: 2rem;">We are working hard to bring you this solution.</p>
-        <a href="index.html" class="btn btn-outline" style="text-decoration: none;">Back to Home</a>
-    </div>
+<body class="knowledge-page">
+    <!-- Background Elements -->
+    <div class="bg-gradient bg-gradient-1" style="top: -10%; left: -20%; background: radial-gradient(circle, var(--accent-violet) 0%, transparent 70%);"></div>
+    <div class="bg-gradient bg-gradient-2" style="top: 42%; right: -18%; background: radial-gradient(circle, var(--accent-coral) 0%, transparent 70%);"></div>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                Student<span>Sync</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html#features">Challenges</a>
+                <div class="dropdown">
+                    <a href="#" class="dropbtn active">Solutions <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem; margin-left: 3px;"></i></a>
+                    <div class="dropdown-content">
+                        <a href="transit-economics.html">Transit Economics</a>
+                        <a href="route-intelligence.html">Route Intelligence</a>
+                        <a href="civic-voice.html">Civic Voice Hub</a>
+                        <a href="conceptual-mastery.html">Conceptual Mastery</a>
+                        <a href="knowledge-base.html" class="active">Knowledge Base</a>
+                        <a href="strategic-mentorship.html">Strategic Mentorship</a>
+                    </div>
+                </div>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="contact.html" class="btn btn-primary" style="text-decoration: none;">Join Now</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section container">
+            <span class="badge animate-on-scroll"><i class="fa-solid fa-layer-group"></i> Knowledge Base</span>
+            <h1 class="hero-title animate-on-scroll" style="transition-delay: 0.1s;">Master Your <span class="text-gradient">Degree Toolkit.</span></h1>
+            <p class="kb-subtitle">
+                Access interactive study tools for GPA planning, syllabus tracking, exam sprint planning, flashcards, recall quizzes, and focused work sessions.
+            </p>
+        </section>
+
+        <!-- Feature 1: GPA Predictor -->
+        <section class="kb-section container">
+            <div class="kb-header">
+                <span class="kb-kicker" style="color: var(--accent-mint); border-color: rgba(0, 209, 178, 0.3); background: rgba(0, 209, 178, 0.1);">Target Matrix</span>
+                <h2 class="kb-title" style="font-size: 2.5rem;">Smart GPA Predictor</h2>
+                <p class="kb-subtitle">Input your current standing and map out your required grades to hit that scholarship target.</p>
+            </div>
+            
+            <div class="glass-box gpa-grid">
+                <div>
+                    <div class="gpa-input-group">
+                        <label>Current Cumulative GPA</label>
+                        <input type="number" id="gpa-current" class="gpa-input" value="3.20" step="0.01">
+                    </div>
+                    <div class="gpa-input-group">
+                        <label>Total Credit Hours Completed</label>
+                        <input type="number" id="gpa-credits" class="gpa-input" value="60">
+                    </div>
+                    
+                    <h4 style="margin: 20px 0 10px; color: white;">This Semester's Courses</h4>
+                    <div id="gpa-courses">
+                        <div class="gpa-course-row">
+                            <input type="text" class="gpa-input" placeholder="Course Name (e.g. CS201)" value="Data Structures">
+                            <input type="number" class="gpa-input cr-input" placeholder="Credits" value="3">
+                            <select class="gpa-input gr-input">
+                                <option value="4.0">A (4.0)</option>
+                                <option value="3.67">A- (3.67)</option>
+                                <option value="3.33">B+ (3.33)</option>
+                                <option value="3.0">B (3.0)</option>
+                                <option value="2.67">B- (2.67)</option>
+                                <option value="2.0">C (2.0)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn-add-course" id="gpa-add-btn">+ Add Another Course</button>
+                </div>
+                
+                <div class="gpa-gauge-container">
+                    <div class="gpa-gauge">
+                        <div class="gauge-bg"></div>
+                        <div class="gauge-fill" id="gpa-gauge-fill"></div>
+                    </div>
+                    <h3 style="color: var(--text-muted); margin-top: 10px;">Predicted CGPA</h3>
+                    <div class="gpa-result-text" id="gpa-result">3.20</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature 2: Kanban Board -->
+        <section class="kb-section container">
+            <div class="kb-header">
+                <span class="kb-kicker" style="color: #ff9800; border-color: rgba(255, 152, 0, 0.3); background: rgba(255, 152, 0, 0.1);">Syllabus Mapping</span>
+                <h2 class="kb-title" style="font-size: 2.5rem;">Personal Study Kanban</h2>
+                <p class="kb-subtitle">Visually organize your syllabus topics. Drag and drop cards as you progress through your revision.</p>
+            </div>
+
+            <div class="glass-box">
+                <div class="kanban-board">
+                    <div class="kanban-col" id="col-todo" data-col="todo">
+                        <div class="kanban-col-header">
+                            To Study <span style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;" id="cnt-todo">3</span>
+                        </div>
+                        <div class="k-card" draggable="true">Graph Algorithms</div>
+                        <div class="k-card" draggable="true">Macroeconomics Ch 4</div>
+                        <div class="k-card" draggable="true">Calculus Integrals</div>
+                        <button class="k-add-btn" type="button" data-col="todo">+ Add Topic</button>
+                    </div>
+                    <div class="kanban-col" id="col-prog" data-col="prog">
+                        <div class="kanban-col-header" style="color: var(--accent-gold);">
+                            In Progress <span style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; color: white;" id="cnt-prog">1</span>
+                        </div>
+                        <div class="k-card" draggable="true">Database Normalization</div>
+                        <button class="k-add-btn" type="button" data-col="prog">+ Add Topic</button>
+                    </div>
+                    <div class="kanban-col" id="col-done" data-col="done">
+                        <div class="kanban-col-header" style="color: var(--accent-mint);">
+                            Mastered <span style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; color: white;" id="cnt-done">1</span>
+                        </div>
+                        <div class="k-card" draggable="true">Object Oriented Principles</div>
+                        <button class="k-add-btn" type="button" data-col="done">+ Add Topic</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature 3: Exam Sprint Planner -->
+        <section class="kb-section container">
+            <div class="kb-header">
+                <span class="kb-kicker" style="color: var(--accent-gold); border-color: rgba(255, 189, 46, 0.3); background: rgba(255, 189, 46, 0.1);">Exam Strategy</span>
+                <h2 class="kb-title" style="font-size: 2.5rem;">Exam Sprint Planner</h2>
+                <p class="kb-subtitle">Turn your topics, difficulty, and available days into a balanced revision plan that runs fully in the browser.</p>
+            </div>
+
+            <div class="glass-box planner-layout">
+                <div class="planner-panel">
+                    <label class="planner-field">
+                        <span>Exam Date</span>
+                        <input type="date" id="planner-date" class="planner-input">
+                    </label>
+                    <label class="planner-field">
+                        <span>Study Hours Per Day</span>
+                        <input type="number" id="planner-hours" class="planner-input" value="3" min="1" max="12">
+                    </label>
+                    <h3 style="margin: 1.2rem 0 0.8rem;">Add Topics</h3>
+                    <div class="topic-builder">
+                        <input type="text" id="planner-topic" class="planner-input" placeholder="Topic name">
+                        <select id="planner-difficulty" class="planner-select" aria-label="Topic difficulty">
+                            <option value="1">Easy</option>
+                            <option value="2">Medium</option>
+                            <option value="3" selected>Hard</option>
+                            <option value="4">Very Hard</option>
+                            <option value="5">Critical</option>
+                        </select>
+                        <select id="planner-confidence" class="planner-select" aria-label="Topic confidence">
+                            <option value="1">Weak</option>
+                            <option value="2" selected>Okay</option>
+                            <option value="3">Strong</option>
+                        </select>
+                    </div>
+                    <div class="planner-actions">
+                        <button class="planner-btn" id="planner-add" type="button"><i class="fa-solid fa-plus"></i> Add Topic</button>
+                        <button class="planner-btn primary" id="planner-generate" type="button"><i class="fa-solid fa-calendar-check"></i> Build Plan</button>
+                    </div>
+                    <div class="topic-list" id="planner-topic-list"></div>
+                </div>
+                <div class="planner-output">
+                    <div class="planner-metrics">
+                        <div class="planner-metric"><strong id="planner-days">0</strong><span>Days left</span></div>
+                        <div class="planner-metric"><strong id="planner-load">0h</strong><span>Total study load</span></div>
+                        <div class="planner-metric"><strong id="planner-pace">0h</strong><span>Daily target</span></div>
+                    </div>
+                    <div id="planner-schedule" class="schedule-grid">
+                        <div class="schedule-empty">Add topics, choose an exam date, then build a revision plan.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature 4: Custom Flashcard Builder -->
+        <section class="kb-section container">
+            <div class="kb-header">
+                <span class="kb-kicker" style="color: var(--accent-violet); border-color: rgba(142, 36, 170, 0.3); background: rgba(142, 36, 170, 0.1);">Active Recall</span>
+                <h2 class="kb-title" style="font-size: 2.5rem;">Custom Flashcard Builder</h2>
+                <p class="kb-subtitle">Don't rely on generic decks. Build your own targeted 3D flashcards instantly.</p>
+            </div>
+
+            <div class="glass-box fc-builder-layout">
+                <div>
+                    <h3 style="margin-bottom: 20px;">Design Your Card</h3>
+                    <textarea class="fc-textarea" id="fc-q" placeholder="Enter Question or Concept..."></textarea>
+                    <textarea class="fc-textarea" id="fc-a" placeholder="Enter the Answer..." style="height: 150px;"></textarea>
+                    <button class="fc-btn-create" id="fc-build-btn">Preview 3D Card</button>
+                </div>
+                
+                <div class="fc-preview-area">
+                    <div class="fc-card-3d" id="fc-3d" tabindex="0" role="button" aria-label="Flip flashcard">
+                        <div class="fc-face fc-face-front" id="fc-front-text">
+                            <div style="color: var(--text-muted);">
+                                <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 2rem; margin-bottom: 15px; color: var(--accent-violet);"></i><br>
+                                Your question will appear here.<br>Click to flip.
+                            </div>
+                        </div>
+                        <div class="fc-face fc-face-back" id="fc-back-text">
+                            Your answer will appear here.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature 5: Active Recall Quiz Lab -->
+        <section class="kb-section container">
+            <div class="kb-header">
+                <span class="kb-kicker" style="color: var(--accent-coral); border-color: rgba(255, 64, 129, 0.3); background: rgba(255, 64, 129, 0.1);">Recall Training</span>
+                <h2 class="kb-title" style="font-size: 2.5rem;">Active Recall Quiz Lab</h2>
+                <p class="kb-subtitle">Paste your notes and generate instant practice questions without any backend or external service.</p>
+            </div>
+
+            <div class="glass-box quiz-layout">
+                <textarea class="quiz-textarea" id="quiz-input" placeholder="Paste lecture notes, definitions, or textbook paragraphs here...">Encapsulation is an object-oriented programming principle that bundles data with the methods that operate on that data. Polymorphism allows different objects to respond to the same method call in their own way. Normalization organizes database tables to reduce redundancy and improve data integrity.</textarea>
+                <div class="quiz-toolbar">
+                    <select id="quiz-count" class="quiz-select" aria-label="Question count">
+                        <option value="3">3 Questions</option>
+                        <option value="5" selected>5 Questions</option>
+                        <option value="8">8 Questions</option>
+                    </select>
+                    <button class="btn-quiz" id="quiz-build-btn" type="button"><i class="fa-solid fa-brain"></i> Generate Quiz</button>
+                    <button class="planner-btn" id="quiz-reset-btn" type="button"><i class="fa-solid fa-rotate-left"></i> Reset Score</button>
+                </div>
+                <div class="quiz-result" id="quiz-result">
+                    <div class="quiz-score">
+                        <span>Score: <strong id="quiz-score">0/0</strong></span>
+                        <span id="quiz-feedback">Choose the best answer for each question.</span>
+                    </div>
+                    <div id="quiz-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature 6: Deep Work Hub -->
+        <section class="kb-section container" style="margin-bottom: 100px;">
+            <div class="kb-header">
+                <span class="kb-kicker" style="color: white; border-color: rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.1);">Lock In</span>
+                <h2 class="kb-title" style="font-size: 2.5rem;">The Focus Hub</h2>
+                <p class="kb-subtitle">Your distraction-free zone. Manage tasks, run the Pomodoro timer, and listen to Lofi.</p>
+            </div>
+
+            <div class="glass-box focus-layout">
+                <!-- To-Do List -->
+                <div class="todo-list">
+                    <h3 style="margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">Session Goals</h3>
+                    <input type="text" class="todo-input" id="todo-input" placeholder="Add a task & press Enter...">
+                    <div id="todo-container">
+                        <div class="todo-item">
+                            <span tabindex="0">Complete Chapter 4</span>
+                            <button type="button" aria-label="Remove task"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Timer -->
+                <div class="timer-box">
+                    <h3 style="margin-bottom: 10px; color: var(--text-muted);">Pomodoro</h3>
+                    <div class="timer-display" id="pomodoro-time">25:00</div>
+                    <div class="timer-controls">
+                        <button id="pomo-start" type="button"><i class="fa-solid fa-play"></i> Start</button>
+                        <button id="pomo-reset" type="button"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+                    </div>
+                </div>
+
+                <!-- Lofi -->
+                <div class="lofi-box">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/jfKfPfyJRdk?controls=0" title="lofi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer glass-card">
+        <div class="container footer-container">
+            <div class="footer-col brand-col">
+                <a href="index.html" class="logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    Student<span>Sync</span>
+                </a>
+                <p>Empowering college students to connect, share, and thrive together.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-discord"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Challenges</h4>
+                <a href="transit-economics.html">Transit Economics</a>
+                <a href="route-intelligence.html">Route Intelligence</a>
+                <a href="civic-voice.html">Civic Voice Hub</a>
+                <a href="conceptual-mastery.html">Conceptual Mastery</a>
+                <a href="knowledge-base.html">Knowledge Base</a>
+                <a href="strategic-mentorship.html">Strategic Mentorship</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="about.html">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="#">Campus Reps</a>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2026 StudentSync. All rights reserved.</p></div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    <script src="kb-app.js"></script>
 </body>
 </html>
