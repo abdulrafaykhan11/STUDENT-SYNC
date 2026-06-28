@@ -397,6 +397,12 @@
             padding: 0.4rem 0.75rem;
             cursor: pointer;
             font-family: inherit;
+            transition: all 0.2s ease;
+        }
+        .ama-actions button.voted {
+            background: rgba(0, 209, 178, 0.15);
+            border-color: rgba(0, 209, 178, 0.35);
+            color: var(--accent-mint);
         }
 
         @media (max-width: 992px) {
@@ -503,8 +509,8 @@
                         <div class="mentor-avatar"><i class="fa-solid fa-user-tie"></i></div>
                         <h3 style="font-size: 1.8rem; margin-bottom: 5px;" id="mentor-name">Sarah Ahmed</h3>
                         <p style="color: var(--accent-gold); font-weight: 600; margin-bottom: 15px;" id="mentor-role">Senior Software Engineer @ Google</p>
-                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">98% Match | Graduated 2019</p>
-                        <button class="m-btn" style="width: 100%; justify-content: center; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">View Full Profile</button>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 12px;" id="mentor-meta">98% Match | Graduated 2019</p>
+                        <p style="color: var(--accent-mint); font-size: 0.95rem; margin: 0;" id="mentor-email"><i class="fa-solid fa-envelope" style="margin-right: 8px;"></i><span id="mentor-email-text">sarah.ahmed@alumni.studentsync.pk</span></p>
                     </div>
                 </div>
             </div>
@@ -639,9 +645,9 @@
                 </a>
                 <p>Empowering college students to connect, share, and thrive together.</p>
                 <div class="social-links">
-                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-discord"></i></a>
+                    <a href="https://www.facebook.com/login" target="_blank" rel="noopener noreferrer" aria-label="Facebook login"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/accounts/login/" target="_blank" rel="noopener noreferrer" aria-label="Instagram login"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://x.com/i/flow/login" target="_blank" rel="noopener noreferrer" aria-label="X login" class="social-x"><span>X</span></a>
                 </div>
             </div>
             <div class="footer-col">

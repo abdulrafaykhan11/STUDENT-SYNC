@@ -506,6 +506,8 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         calcRecommendation.innerHTML = `<i class="fa-solid fa-star"></i> Recommended: ${modeMeta[plan.recommended].label} saves ${formatRs(Math.max(0, rideCost - plan.options[plan.recommended].cost))} per trip vs ride app.`;
+
+        document.dispatchEvent(new CustomEvent('transit-calc-updated', { detail: { plan, activeMode: mode } }));
     };
 
     const updateCalculator = () => {
@@ -593,6 +595,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (originSelect && destSelect) {
         updateCalculator();
     }
+
+    window.StudentSyncTransit = { getRoutePlan, formatRs };
 
     // --- Route Intelligence Radar Logic ---
     const scanBtn = document.getElementById('scan-route-btn');

@@ -238,6 +238,78 @@
             </div>
         </section>
 
+        <!-- Smart Student Tools -->
+        <section class="student-tools-section">
+            <div class="container">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-kicker" style="color: var(--accent-violet);">Student Power Tools</span>
+                    <h2>Plan Smarter, Spend Less</h2>
+                    <p>Two live tools that sync with your route calculator — built for real student budgets and daily commutes.</p>
+                </div>
+
+                <div class="student-tools-grid">
+                    <!-- Feature 1: Semester Budget Planner -->
+                    <div class="student-tool-panel glass-card animate-on-scroll" id="budget-planner">
+                        <div class="tool-header">
+                            <div class="tool-icon" style="background: rgba(142, 36, 170, 0.2); color: var(--accent-violet);">
+                                <i class="fa-solid fa-piggy-bank"></i>
+                            </div>
+                            <div>
+                                <h3>Semester Budget Planner</h3>
+                                <p class="tool-desc">Set your monthly transport allowance and instantly see if your current route fits — or which mode saves the most over a full semester.</p>
+                            </div>
+                        </div>
+                        <div class="tool-controls">
+                            <label>Monthly Budget (Rs)
+                                <input type="number" id="budget-monthly" value="3000" min="500" max="20000" step="100">
+                            </label>
+                            <label>Campus Days / Week
+                                <input type="number" id="budget-days" value="5" min="1" max="7">
+                            </label>
+                            <label>Semester Weeks
+                                <input type="number" id="budget-weeks" value="16" min="8" max="20">
+                            </label>
+                        </div>
+                        <div class="budget-meter">
+                            <div class="budget-status good" id="budget-status"><i class="fa-solid fa-circle-check"></i> Calculating...</div>
+                            <div class="budget-meter-track"><div class="budget-meter-fill" id="budget-bar-fill"></div></div>
+                        </div>
+                        <div class="budget-modes" id="budget-modes"></div>
+                        <p class="tool-footnote" id="budget-output">Select a route above to see your semester transport forecast.</p>
+                    </div>
+
+                    <!-- Feature 2: Peak Surge Advisor -->
+                    <div class="student-tool-panel glass-card animate-on-scroll" id="surge-advisor" style="transition-delay: 0.1s;">
+                        <div class="tool-header">
+                            <div class="tool-icon" style="background: rgba(255, 189, 46, 0.2); color: var(--accent-gold);">
+                                <i class="fa-solid fa-chart-simple"></i>
+                            </div>
+                            <div>
+                                <h3>Peak Surge Departure Advisor</h3>
+                                <p class="tool-desc">See hourly ride-hailing surge patterns for your commute day. Find the cheapest window to leave and avoid morning peak pricing.</p>
+                            </div>
+                        </div>
+                        <label style="display:block; margin-bottom: 0.75rem; font-size: 0.85rem; color: var(--text-muted);">
+                            Commute Day
+                            <select id="surge-day" style="display:block; width:100%; margin-top:0.35rem; padding:0.65rem 0.75rem; border-radius:10px; border:1px solid rgba(255,255,255,0.12); background:rgba(0,0,0,0.25); color:white; font-family:inherit;">
+                                <option value="monday">Monday</option>
+                                <option value="tuesday">Tuesday</option>
+                                <option value="wednesday">Wednesday</option>
+                                <option value="thursday">Thursday</option>
+                                <option value="friday">Friday</option>
+                                <option value="saturday">Saturday</option>
+                                <option value="sunday">Sunday</option>
+                            </select>
+                        </label>
+                        <div class="surge-chart" id="surge-chart" aria-label="Hourly surge chart"></div>
+                        <div class="surge-insight" id="surge-best-slot"><i class="fa-solid fa-clock"></i> Loading best departure window...</div>
+                        <div class="surge-insight" id="surge-now-tip"><i class="fa-solid fa-bolt"></i> Checking current surge...</div>
+                        <p class="tool-footnote" id="surge-save-estimate">Green bars = cheapest hours to book a ride.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Stats Section (Reused but tailored) -->
         <section class="stats-section" style="padding-top: 80px; padding-bottom: 80px;">
             <div class="container">
@@ -273,9 +345,9 @@
                 </a>
                 <p>Empowering college students to connect, share, and thrive together.</p>
                 <div class="social-links">
-                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-discord"></i></a>
+                    <a href="https://www.facebook.com/login" target="_blank" rel="noopener noreferrer" aria-label="Facebook login"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/accounts/login/" target="_blank" rel="noopener noreferrer" aria-label="Instagram login"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://x.com/i/flow/login" target="_blank" rel="noopener noreferrer" aria-label="X login" class="social-x"><span>X</span></a>
                 </div>
             </div>
             <div class="footer-col">
@@ -308,5 +380,6 @@
 
     <!-- Custom JS -->
     <script src="app.js"></script>
+    <script src="transit-features.js"></script>
 </body>
 </html>

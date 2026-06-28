@@ -223,6 +223,77 @@
             </div>
         </section>
 
+        <!-- Smart Route Tools -->
+        <section class="student-tools-section">
+            <div class="container">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-kicker" style="color: var(--accent-coral);">Student Power Tools</span>
+                    <h2>Never Miss Class, Stay Safe</h2>
+                    <p>Two live tools synced with your route scanner — know exactly when to leave and whether your path is safe at night.</p>
+                </div>
+
+                <div class="student-tools-grid">
+                    <!-- Feature 1: Class Rush Departure Clock -->
+                    <div class="student-tool-panel glass-card animate-on-scroll" id="departure-clock">
+                        <div class="tool-header">
+                            <div class="tool-icon bg-accent">
+                                <i class="fa-solid fa-alarm-clock"></i>
+                            </div>
+                            <div>
+                                <h3>Class Rush Departure Clock</h3>
+                                <p class="tool-desc">Enter your class time and get a precise "leave by" countdown — factoring in live travel time, traffic, and a campus buffer.</p>
+                            </div>
+                        </div>
+                        <div class="tool-controls" style="grid-template-columns: 1fr 1fr;">
+                            <label>Class Starts At
+                                <input type="time" id="departure-class-time" value="08:30">
+                            </label>
+                            <label>Campus Buffer
+                                <select id="departure-buffer">
+                                    <option value="5">5 min (running late)</option>
+                                    <option value="10" selected>10 min (normal)</option>
+                                    <option value="15">15 min (relaxed)</option>
+                                    <option value="20">20 min (first day)</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div id="departure-result"></div>
+                        <div class="departure-countdown calm" id="departure-countdown"><i class="fa-solid fa-hourglass-half"></i> Set your class time above.</div>
+                        <div class="departure-timeline" id="departure-timeline"></div>
+                    </div>
+
+                    <!-- Feature 2: Night Safety Route Checker -->
+                    <div class="student-tool-panel glass-card animate-on-scroll" id="safety-checker" style="transition-delay: 0.1s;">
+                        <div class="tool-header">
+                            <div class="tool-icon" style="background: rgba(0, 209, 178, 0.2); color: var(--accent-mint);">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h3>Night Safety Route Checker</h3>
+                                <p class="tool-desc">Toggle night mode to see safety scores for your route — street lighting, crowd density, CCTV coverage, and a safer alternate path.</p>
+                            </div>
+                        </div>
+                        <label class="night-toggle-wrap">
+                            <input type="checkbox" id="safety-night-mode">
+                            <span><i class="fa-solid fa-moon"></i> Returning after 8 PM (Night Mode)</span>
+                        </label>
+                        <div class="safety-layout">
+                            <div class="safety-ring-wrap">
+                                <svg width="110" height="110" viewBox="0 0 110 110" aria-hidden="true">
+                                    <circle class="safety-ring-bg" cx="55" cy="55" r="45"></circle>
+                                    <circle class="safety-ring-fill" id="safety-ring-fill" cx="55" cy="55" r="45"></circle>
+                                </svg>
+                                <div class="safety-score-center" id="safety-score"><span>--</span></div>
+                            </div>
+                            <div class="safety-metrics" id="safety-metrics"></div>
+                        </div>
+                        <div class="safety-alt-box" id="safety-alt-route"><i class="fa-solid fa-route"></i> Select your route above to analyze safety.</div>
+                        <ul class="safety-tips" id="safety-tips"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Solutions Overview -->
         <section class="features" style="padding-top: 60px; padding-bottom: 80px; position: relative;">
             <div class="container">
@@ -302,9 +373,9 @@
                 </a>
                 <p>Empowering college students to connect, share, and thrive together.</p>
                 <div class="social-links">
-                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-discord"></i></a>
+                    <a href="https://www.facebook.com/login" target="_blank" rel="noopener noreferrer" aria-label="Facebook login"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/accounts/login/" target="_blank" rel="noopener noreferrer" aria-label="Instagram login"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://x.com/i/flow/login" target="_blank" rel="noopener noreferrer" aria-label="X login" class="social-x"><span>X</span></a>
                 </div>
             </div>
             <div class="footer-col">
@@ -337,6 +408,7 @@
 
     <!-- Custom JS -->
     <script src="app.js"></script>
+    <script src="route-features.js"></script>
     <style>
         /* Custom Keyframes for Radar */
         @keyframes spin {
