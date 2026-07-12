@@ -414,6 +414,22 @@
             .timeline-item::after { left: 21px; }
             .timeline-item:nth-child(even)::after { left: 21px; }
             .ama-input-group { flex-direction: column; }
+            .hero-section { padding: 150px 0 60px; min-height: auto; }
+            .kb-section { padding: 70px 0; }
+            .time-slots { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 576px) {
+            .hero-section { padding: 120px 0 40px; }
+            .hero-title { font-size: clamp(2rem, 8vw, 2.75rem); }
+            .glass-panel { padding: 1.25rem; }
+            .mentor-card { width: 100%; padding: 1.25rem; }
+            .match-result-area { min-height: 280px; }
+            .calendar-grid { gap: 4px; }
+            .cal-day { padding: 8px 0; font-size: 0.85rem; }
+            .time-slots { grid-template-columns: 1fr; }
+            .ama-input-group .m-input { width: 100%; }
+            .ama-meta { flex-direction: column; gap: 0.35rem; align-items: flex-start; }
         }
     </style>
 </head>

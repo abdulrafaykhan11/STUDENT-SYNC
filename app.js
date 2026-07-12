@@ -935,3 +935,55 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+// ── Mobile Hamburger Menu ──
+document.addEventListener('DOMContentLoaded', () => {
+    const navContainer = document.querySelector('.nav-container');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (navContainer && navLinks && !document.querySelector('.mobile-menu-btn')) {
+        const menuBtn = document.createElement('button');
+        menuBtn.className = 'mobile-menu-btn';
+        menuBtn.setAttribute('aria-label', 'Toggle menu');
+        menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+
+        // Insert before nav-actions (right side)
+        const navActions = navContainer.querySelector('.nav-actions');
+        if (navActions) {
+            navContainer.insertBefore(menuBtn, navActions);
+        } else {
+            navContainer.appendChild(menuBtn);
+        }
+
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navLinks.classList.toggle('active');
+            menuBtn.innerHTML = navLinks.classList.contains('active')
+                ? '<i class="fa-solid fa-xmark"></i>'
+                : '<i class="fa-solid fa-bars"></i>';
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navContainer.contains(e.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+            }
+        });
+
+        // Close menu when resizing back to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 992 && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+            }
+        });
+    }
+});

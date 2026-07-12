@@ -633,13 +633,22 @@
             .stagger-item { width: 100%; text-align: left !important; }
             .stagger-item::after { display: none; }
             .staggered-grid::before { left: 0; }
-            .deconstructor-container { grid-template-columns: 1fr; }
+            .deconstructor-container { grid-template-columns: 1fr; min-height: auto; }
             .breakdown-grid { grid-template-columns: 1fr; }
             
             .retention-simulator { flex-direction: column; gap: 2rem; padding: 2rem; }
             .feynman-ui { flex-direction: column; gap: 1rem; align-items: flex-start; }
             .linear-node { width: 50px; height: 50px; }
             .linear-line { width: 20px; }
+            .concept-hero-visual { height: 220px; overflow: hidden; }
+            .brain-node { transform: scale(0.85); }
+            .brain-node.center { transform: scale(0.9); }
+        }
+
+        @media (max-width: 576px) {
+            .stagger-card { padding: 1.25rem; }
+            .topic-sidebar { padding: 1.25rem; }
+            .deconstructor-container { border-radius: 16px; }
         }
     </style>
 </head>
@@ -682,7 +691,7 @@
         <section class="hero" style="min-height: auto; padding: 60px 0 20px;">
             <div class="container text-center" style="display: flex; flex-direction: column; align-items: center;">
                 <div class="badge animate-on-scroll" style="background: rgba(142, 36, 170, 0.1); color: var(--accent-violet); border: 1px solid rgba(142, 36, 170, 0.2);"><i class="fa-solid fa-brain"></i> Conceptual Mastery</div>
-                <h1 class="animate-on-scroll" style="transition-delay: 0.1s; margin: 0 auto 1.5rem; text-align: center; width: 100%; font-size: 4rem;">Stop Cramming. Start <span class="text-gradient">Understanding.</span></h1>
+                <h1 class="page-hero-title animate-on-scroll" style="transition-delay: 0.1s;">Stop Cramming. Start <span class="text-gradient">Understanding.</span></h1>
                 <p class="hero-subtitle animate-on-scroll" style="transition-delay: 0.2s; margin: 0 auto 1rem; text-align: center; max-width: 800px;">Rote memorization only gets you past the exam, not the interview. Break down complex, dry academic topics into intuitive mental models and real-world applications.</p>
                 
                 <!-- Animated Brain Visual -->

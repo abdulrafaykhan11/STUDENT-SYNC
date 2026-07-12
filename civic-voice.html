@@ -52,7 +52,7 @@
         <section class="hero" style="min-height: auto; padding: 80px 0 60px; display: flex; flex-direction: column; justify-content: center;">
             <div class="container text-center" style="display: flex; flex-direction: column; align-items: center;">
                 <div class="badge animate-on-scroll" style="background: rgba(142, 36, 170, 0.1); color: var(--accent-violet); border: 1px solid rgba(142, 36, 170, 0.2);"><i class="fa-solid fa-bullhorn"></i> Civic Voice Hub</div>
-                <h1 class="animate-on-scroll" style="transition-delay: 0.1s; margin: 0 auto 1.5rem; text-align: center; width: 100%;">Amplify Your Voice. <span class="text-gradient">Fix Your Campus.</span></h1>
+                <h1 class="page-hero-title animate-on-scroll" style="transition-delay: 0.1s;">Amplify Your Voice. <span class="text-gradient">Fix Your Campus.</span></h1>
                 <p class="hero-subtitle animate-on-scroll" style="transition-delay: 0.2s; margin: 0 auto 3rem; text-align: center; max-width: 800px;">Stop complaining in isolated WhatsApp groups. Report administrative delays, infrastructure decay, and campus issues publicly. When thousands of students speak together, administrations listen.</p>
             </div>
         </section>
@@ -102,10 +102,10 @@
                     <p>Report issues, upvote critical problems, and discuss solutions. Your campus dashboard for real change.</p>
                 </div>
 
-                <div class="command-grid" style="grid-template-columns: 1fr 1.5fr; align-items: flex-start; gap: 3rem;">
+                <div class="command-grid civic-command-grid">
                     
                     <!-- Left: Report Form -->
-                    <div class="glass-card animate-on-scroll" style="padding: 2rem; position: sticky; top: 120px;">
+                    <div class="glass-card civic-report-sticky animate-on-scroll" style="padding: 2rem;">
                         <h3 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-pen-to-square text-accent"></i> Raise Your Voice</h3>
                         
                         <form id="civic-report-form" style="display: flex; flex-direction: column; gap: 1.5rem;">
@@ -150,9 +150,9 @@
                     <!-- Right: Live Feed -->
                     <div class="animate-on-scroll" style="transition-delay: 0.2s;">
                         
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
+                        <div class="civic-feed-header">
                             <h3 style="margin: 0;">Recent Reports</h3>
-                            <div class="feed-filters" style="display: flex; gap: 1rem;">
+                            <div class="feed-filters" style="display: flex; gap: 1rem; flex-wrap: wrap;">
                                 <span style="color: var(--accent-mint); font-size: 0.9rem; cursor: pointer; font-weight: 500;"><i class="fa-solid fa-fire"></i> Trending</span>
                                 <span style="color: var(--text-muted); font-size: 0.9rem; cursor: pointer;">Newest</span>
                             </div>
@@ -413,6 +413,12 @@
             padding: 0 1.5rem;
             font-weight: 600;
             cursor: pointer;
+        }
+
+        @media (max-width: 576px) {
+            .civic-post {
+                padding: 1rem;
+            }
         }
     </style>
 </body>

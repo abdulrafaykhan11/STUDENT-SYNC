@@ -260,8 +260,21 @@
 
         @media (max-width: 992px) {
             .story-layout { grid-template-columns: 1fr; gap: 40px; }
-            .hero-title { font-size: 3rem; }
+            .hero-section { padding: 160px 0 70px; min-height: auto; }
+            .hero-title { font-size: clamp(2.5rem, 8vw, 4rem); }
+            .hero-desc { font-size: 1.1rem; }
             .glass-panel { padding: 2rem; }
+            .a-section { padding: 70px 0; }
+            .arsenal-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 576px) {
+            .hero-section { padding: 130px 0 50px; }
+            .glass-panel { padding: 1.25rem; border-radius: 16px; }
+            .arsenal-card { padding: 1.75rem 1.25rem; }
+            .story-stats { grid-template-columns: 1fr; }
+            .r-item { padding-left: 64px; margin-bottom: 36px; }
+            .r-content h3 { font-size: 1.2rem; }
         }
     </style>
 </head>

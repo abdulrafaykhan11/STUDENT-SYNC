@@ -53,7 +53,7 @@
         <section class="hero" style="min-height: auto; padding: 80px 0 60px; display: flex; flex-direction: column; justify-content: center;">
             <div class="container text-center" style="display: flex; flex-direction: column; align-items: center;">
                 <div class="badge animate-on-scroll" style="background: rgba(255, 64, 129, 0.1); color: var(--accent-coral); border: 1px solid rgba(255, 64, 129, 0.2);"><i class="fa-solid fa-route"></i> Route Intelligence</div>
-                <h1 class="animate-on-scroll" style="transition-delay: 0.1s; margin: 0 auto 1.5rem; text-align: center; width: 100%;">Outsmart the <span class="text-gradient">Gridlock.</span></h1>
+                <h1 class="page-hero-title animate-on-scroll" style="transition-delay: 0.1s;">Outsmart the <span class="text-gradient">Gridlock.</span></h1>
                 <p class="hero-subtitle animate-on-scroll" style="transition-delay: 0.2s; margin: 0 auto 3rem; text-align: center; max-width: 800px;">Karachi's traffic is unpredictable. From sudden protests to flooded roads, getting to campus shouldn't be a gamble. Find the fastest, safest route before you step out.</p>
             </div>
         </section>
@@ -107,8 +107,8 @@
                 <div class="route-finder-container glass-card animate-on-scroll" style="max-width: 1000px; margin: 0 auto; overflow: hidden; padding: 0;">
                     
                     <div class="route-finder-header" style="background: rgba(0,0,0,0.3); padding: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <div class="route-inputs" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
-                            <label class="calc-field" style="flex: 1; min-width: 200px;">
+                        <div class="route-inputs">
+                            <label class="calc-field route-dest-group">
                                 <span style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block;">Starting Point (Your Area)</span>
                                 <div class="calc-select-wrap" style="position: relative;">
                                     <i class="fa-solid fa-location-dot" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--accent-coral);"></i>
@@ -126,9 +126,9 @@
                                 <i class="fa-solid fa-arrow-right text-muted" style="opacity: 0.5;"></i>
                             </div>
 
-                            <label class="calc-field" style="flex: 1; min-width: 250px;">
+                            <label class="calc-field route-dest-group">
                                 <span style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block;">Destination (Campus)</span>
-                                <div class="calc-dest-dropdowns" style="display: flex; gap: 0.5rem;">
+                                <div class="calc-dest-dropdowns calc-dest-dropdowns-row">
                                     <div class="calc-select-wrap" style="position: relative; flex: 1;">
                                         <i class="fa-solid fa-layer-group" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
                                         <select id="route-inst-type" class="calc-select" style="width: 100%; padding: 1rem 1rem 1rem 2.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-family: inherit; font-size: 0.9rem;">
@@ -169,7 +169,7 @@
 
                         <!-- Results Dashboard -->
                         <div id="route-results-state" style="display: none; width: 100%; height: 100%;">
-                            <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; height: 100%;">
+                            <div class="route-results-grid">
                                 <!-- Hazards List -->
                                 <div class="hazards-panel">
                                     <h4 style="margin-bottom: 1rem; color: white; display: flex; align-items: center; gap: 0.5rem;">

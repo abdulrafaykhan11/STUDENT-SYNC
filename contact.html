@@ -91,12 +91,27 @@
         .validation-icon.fa-circle-xmark { color: #ff4d4f; opacity: 1; }
 
         @media (max-width: 768px) {
+            .contact-section {
+                padding: 100px 0 40px;
+            }
+
             .contact-grid {
                 grid-template-columns: 1fr !important;
                 gap: 2rem !important;
             }
+
             .contact-info-panel {
                 padding: 2rem !important;
+            }
+
+            .form-container,
+            .id-card-container {
+                padding: 1.5rem !important;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
             }
         }
     </style>
@@ -124,7 +139,7 @@
 
     <main>
         <section class="contact-section">
-            <div class="container contact-grid" style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; align-items: flex-start;">
+            <div class="container contact-grid">
                 
                 <!-- Contact Information & Details -->
                 <div class="contact-info-panel glass-card" style="padding: 3rem; display: flex; flex-direction: column; gap: 2rem;">
