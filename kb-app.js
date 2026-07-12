@@ -101,28 +101,135 @@ document.addEventListener('DOMContentLoaded', () => {
        Feature 2: Personal Kanban Board
        ========================================= */
     const kCols = document.querySelectorAll('.kanban-col');
+    const KANBAN_ORDER = ['todo', 'prog', 'done'];
     let draggedItem = null;
+    let selectedKanbanCard = null;
+
+    const isTouchPrimaryDevice = () => !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    const clearKanbanSelection = () => {
+        selectedKanbanCard?.classList.remove('is-selected');
+        selectedKanbanCard = null;
+        kCols.forEach(col => col.classList.remove('can-receive'));
+    };
+
+    const highlightReceiveColumns = card => {
+        kCols.forEach(col => {
+            if (col.contains(card)) col.classList.remove('can-receive');
+            else col.classList.add('can-receive');
+        });
+    };
+
+    const getColumnId = colEl => colEl?.dataset.col || colEl?.id?.replace('col-', '');
+
+    const getColumnById = colId => document.getElementById(`col-${colId}`);
+
+    const getColumnIndex = colId => KANBAN_ORDER.indexOf(colId);
 
     const updateKanbanCounts = () => {
-        const countMap = {
-            'cnt-todo': 'col-todo',
-            'cnt-prog': 'col-prog',
-            'cnt-done': 'col-done'
-        };
-
-        Object.entries(countMap).forEach(([counterId, colId]) => {
-            const counter = document.getElementById(counterId);
-            const column = document.getElementById(colId);
+        KANBAN_ORDER.forEach(colId => {
+            const counter = document.getElementById(`cnt-${colId}`);
+            const column = getColumnById(colId);
             if (counter && column) {
                 counter.textContent = column.querySelectorAll('.k-card').length;
             }
         });
     };
 
+    const insertCardBeforeAddButton = (col, card) => {
+        const btn = col.querySelector('.k-add-btn');
+        col.insertBefore(card, btn);
+    };
+
+    const updateMoveButtons = card => {
+        const col = card.closest('.kanban-col');
+        if (!col) return;
+
+        const colId = getColumnId(col);
+        const index = getColumnIndex(colId);
+        const prevBtn = card.querySelector('[data-move="prev"]');
+        const nextBtn = card.querySelector('[data-move="next"]');
+
+        if (prevBtn) prevBtn.disabled = index <= 0;
+        if (nextBtn) nextBtn.disabled = index >= KANBAN_ORDER.length - 1;
+    };
+
+    const moveCard = (card, direction) => {
+        const col = card.closest('.kanban-col');
+        if (!col) return;
+
+        const currentIndex = getColumnIndex(getColumnId(col));
+        const targetIndex = currentIndex + direction;
+        if (targetIndex < 0 || targetIndex >= KANBAN_ORDER.length) return;
+
+        const targetCol = getColumnById(KANBAN_ORDER[targetIndex]);
+        if (!targetCol) return;
+
+        insertCardBeforeAddButton(targetCol, card);
+        updateMoveButtons(card);
+        updateKanbanCounts();
+    };
+
+    const buildKanbanCard = text => {
+        const card = document.createElement('div');
+        card.className = 'k-card';
+
+        const body = document.createElement('div');
+        body.className = 'k-card-body';
+        body.textContent = text;
+
+        const actions = document.createElement('div');
+        actions.className = 'k-card-actions';
+
+        const prevBtn = document.createElement('button');
+        prevBtn.type = 'button';
+        prevBtn.className = 'k-move-btn';
+        prevBtn.dataset.move = 'prev';
+        prevBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> Back';
+        prevBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            moveCard(card, -1);
+        });
+
+        const nextBtn = document.createElement('button');
+        nextBtn.type = 'button';
+        nextBtn.className = 'k-move-btn';
+        nextBtn.dataset.move = 'next';
+        nextBtn.innerHTML = 'Next <i class="fa-solid fa-arrow-right"></i>';
+        nextBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            moveCard(card, 1);
+        });
+
+        actions.append(prevBtn, nextBtn);
+        card.append(body, actions);
+        attachDragEvents(card);
+        updateMoveButtons(card);
+        return card;
+    };
+
+    const upgradeLegacyCard = card => {
+        if (card.querySelector('.k-card-body')) {
+            attachDragEvents(card);
+            updateMoveButtons(card);
+            return card;
+        }
+
+        const text = card.textContent.trim();
+        const upgraded = buildKanbanCard(text);
+        card.replaceWith(upgraded);
+        return upgraded;
+    };
+
     const attachDragEvents = card => {
+        if (card.dataset.dragReady === 'true') return;
+        card.dataset.dragReady = 'true';
         card.setAttribute('draggable', 'true');
-        card.addEventListener('dragstart', () => {
+
+        card.addEventListener('dragstart', e => {
             draggedItem = card;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', card.querySelector('.k-card-body')?.textContent || '');
             requestAnimationFrame(() => card.classList.add('dragging'));
         });
 
@@ -130,44 +237,78 @@ document.addEventListener('DOMContentLoaded', () => {
             card.classList.remove('dragging');
             draggedItem = null;
             updateKanbanCounts();
+            document.querySelectorAll('.kanban-col').forEach(col => col.classList.remove('drag-over'));
+        });
+
+        card.addEventListener('click', e => {
+            if (e.target.closest('.k-move-btn') || !isTouchPrimaryDevice()) return;
+
+            e.stopPropagation();
+            if (selectedKanbanCard === card) {
+                clearKanbanSelection();
+                return;
+            }
+
+            selectedKanbanCard?.classList.remove('is-selected');
+            selectedKanbanCard = card;
+            card.classList.add('is-selected');
+            highlightReceiveColumns(card);
         });
     };
 
-    document.querySelectorAll('.k-card').forEach(attachDragEvents);
+    document.querySelectorAll('.k-card').forEach(card => upgradeLegacyCard(card));
 
     kCols.forEach(col => {
-        col.addEventListener('dragover', e => e.preventDefault());
+        col.addEventListener('dragover', e => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        });
+
         col.addEventListener('dragenter', e => {
             e.preventDefault();
             col.classList.add('drag-over');
         });
+
         col.addEventListener('dragleave', e => {
             if (!col.contains(e.relatedTarget)) col.classList.remove('drag-over');
         });
+
         col.addEventListener('drop', e => {
             e.preventDefault();
             col.classList.remove('drag-over');
             if (!draggedItem) return;
-            const btn = col.querySelector('.k-add-btn');
-            col.insertBefore(draggedItem, btn);
+
+            insertCardBeforeAddButton(col, draggedItem);
+            updateMoveButtons(draggedItem);
             updateKanbanCounts();
         });
+
+        col.addEventListener('click', e => {
+            if (!selectedKanbanCard || !isTouchPrimaryDevice()) return;
+            if (selectedKanbanCard.closest('.kanban-col') === col) return;
+            if (e.target.closest('.k-add-btn')) return;
+
+            insertCardBeforeAddButton(col, selectedKanbanCard);
+            updateMoveButtons(selectedKanbanCard);
+            clearKanbanSelection();
+            updateKanbanCounts();
+        });
+    });
+
+    document.addEventListener('click', e => {
+        if (!selectedKanbanCard) return;
+        if (e.target.closest('.kanban-board')) return;
+        clearKanbanSelection();
     });
 
     const addKanbanCard = colId => {
         const text = prompt('Enter the new syllabus topic:');
         if (!text || !text.trim()) return;
 
-        const col = document.getElementById(`col-${colId}`);
+        const col = getColumnById(colId);
         if (!col) return;
 
-        const card = document.createElement('div');
-        card.className = 'k-card';
-        card.textContent = text.trim();
-        attachDragEvents(card);
-
-        const btn = col.querySelector('.k-add-btn');
-        col.insertBefore(card, btn);
+        insertCardBeforeAddButton(col, buildKanbanCard(text.trim()));
         updateKanbanCounts();
     };
 
@@ -573,12 +714,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isCorrect) option.classList.add('wrong');
             updateQuizScore();
         });
-
-        renderQuiz();
     }
 
     /* =========================================
-       Feature 6: Focus Hub (Timer + To-Do)
+       Feature 6: Focus Hub (Timer + To-Do + Lofi)
        ========================================= */
     const todoInput = document.getElementById('todo-input');
     const todoContainer = document.getElementById('todo-container');
@@ -679,5 +818,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         updatePomo();
+    }
+
+    const lofiLoadBtn = document.getElementById('lofi-load-btn');
+    const lofiFrame = document.getElementById('lofi-frame');
+    const lofiPlaceholder = document.getElementById('lofi-placeholder');
+
+    if (lofiLoadBtn && lofiFrame && lofiPlaceholder) {
+        lofiLoadBtn.addEventListener('click', () => {
+            lofiFrame.src = 'https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?autoplay=1&controls=1&modestbranding=1&rel=0&playsinline=1';
+            lofiFrame.classList.add('is-active');
+            lofiPlaceholder.style.display = 'none';
+        });
     }
 });

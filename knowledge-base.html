@@ -203,6 +203,11 @@
             transition: var(--transition);
         }
         .kanban-col.drag-over { border-color: var(--accent-mint); background: rgba(0, 209, 178, 0.06); }
+        .kanban-col.can-receive {
+            border-color: rgba(0, 209, 178, 0.45);
+            background: rgba(0, 209, 178, 0.08);
+            box-shadow: inset 0 0 0 1px rgba(0, 209, 178, 0.2);
+        }
         .kanban-col-header {
             font-size: 1.2rem;
             font-weight: 700;
@@ -221,9 +226,47 @@
             cursor: grab;
             transition: 0.2s;
             overflow-wrap: anywhere;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
         .k-card:active { cursor: grabbing; transform: scale(0.98); }
         .k-card.dragging { opacity: 0.5; border-color: var(--accent-coral); }
+        .k-card.is-selected {
+            border-color: var(--accent-mint);
+            box-shadow: 0 0 0 2px rgba(0, 209, 178, 0.25);
+        }
+        .k-card-body {
+            margin-bottom: 0.65rem;
+            line-height: 1.45;
+        }
+        .k-card-actions {
+            display: flex;
+            gap: 0.35rem;
+            flex-wrap: wrap;
+        }
+        .k-move-btn {
+            flex: 1;
+            min-width: 0;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            color: var(--text-muted);
+            border-radius: 6px;
+            padding: 0.35rem 0.5rem;
+            font-size: 0.72rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .k-move-btn:hover:not(:disabled) {
+            color: var(--text-white);
+            border-color: rgba(0, 209, 178, 0.35);
+            background: rgba(0, 209, 178, 0.1);
+        }
+        .k-move-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
         .k-add-btn {
             background: transparent;
             border: 1px dashed rgba(255,255,255,0.2);
@@ -618,11 +661,73 @@
         .timer-controls button.running { background: var(--accent-violet); }
 
         .lofi-box {
-            height: 350px;
+            min-height: 220px;
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.35);
+            position: relative;
         }
+        .lofi-player {
+            width: 100%;
+            height: 100%;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+        }
+        .lofi-placeholder {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .lofi-placeholder i {
+            font-size: 2.5rem;
+            color: var(--accent-violet);
+            opacity: 0.85;
+        }
+        .lofi-placeholder p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin: 0;
+            max-width: 260px;
+        }
+        .lofi-load-btn {
+            border: 0;
+            border-radius: 50px;
+            padding: 0.75rem 1.25rem;
+            background: linear-gradient(135deg, var(--accent-violet), var(--accent-coral));
+            color: white;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+        .lofi-load-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(142, 36, 170, 0.35);
+        }
+        .lofi-open-link {
+            color: var(--accent-mint);
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+        .lofi-open-link:hover { text-decoration: underline; }
+        .lofi-frame {
+            width: 100%;
+            height: 100%;
+            min-height: 220px;
+            border: 0;
+            display: none;
+        }
+        .lofi-frame.is-active { display: block; }
 
         @keyframes slideUpFade {
             from { opacity: 0; transform: translateY(20px); }
@@ -649,7 +754,12 @@
             .gpa-result-text { font-size: 2.75rem; }
             .fc-preview-area { height: 240px; }
             .timer-display { font-size: 3rem; }
-            .lofi-box { height: 220px; }
+            .lofi-box,
+            .lofi-player,
+            .lofi-frame.is-active {
+                min-height: 220px;
+                height: auto;
+            }
             .quiz-toolbar { flex-direction: column; align-items: stretch; }
             .btn-quiz { width: 100%; justify-content: center; }
         }
@@ -751,7 +861,7 @@
             <div class="kb-header">
                 <span class="kb-kicker" style="color: #ff9800; border-color: rgba(255, 152, 0, 0.3); background: rgba(255, 152, 0, 0.1);">Syllabus Mapping</span>
                 <h2 class="kb-title" style="font-size: 2.5rem;">Personal Study Kanban</h2>
-                <p class="kb-subtitle">Visually organize your syllabus topics. Drag and drop cards as you progress through your revision.</p>
+                <p class="kb-subtitle">Visually organize your syllabus topics. Drag cards on desktop, or use the move buttons on phone and tablet.</p>
             </div>
 
             <div class="glass-box">
@@ -760,23 +870,23 @@
                         <div class="kanban-col-header">
                             To Study <span style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;" id="cnt-todo">3</span>
                         </div>
-                        <div class="k-card" draggable="true">Graph Algorithms</div>
-                        <div class="k-card" draggable="true">Macroeconomics Ch 4</div>
-                        <div class="k-card" draggable="true">Calculus Integrals</div>
+                        <div class="k-card">Graph Algorithms</div>
+                        <div class="k-card">Macroeconomics Ch 4</div>
+                        <div class="k-card">Calculus Integrals</div>
                         <button class="k-add-btn" type="button" data-col="todo">+ Add Topic</button>
                     </div>
                     <div class="kanban-col" id="col-prog" data-col="prog">
                         <div class="kanban-col-header" style="color: var(--accent-gold);">
                             In Progress <span style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; color: white;" id="cnt-prog">1</span>
                         </div>
-                        <div class="k-card" draggable="true">Database Normalization</div>
+                        <div class="k-card">Database Normalization</div>
                         <button class="k-add-btn" type="button" data-col="prog">+ Add Topic</button>
                     </div>
                     <div class="kanban-col" id="col-done" data-col="done">
                         <div class="kanban-col-header" style="color: var(--accent-mint);">
                             Mastered <span style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; color: white;" id="cnt-done">1</span>
                         </div>
-                        <div class="k-card" draggable="true">Object Oriented Principles</div>
+                        <div class="k-card">Object Oriented Principles</div>
                         <button class="k-add-btn" type="button" data-col="done">+ Add Topic</button>
                     </div>
                 </div>
@@ -930,7 +1040,24 @@
 
                 <!-- Lofi -->
                 <div class="lofi-box">
-                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/jfKfPfyJRdk?controls=0" title="lofi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="lofi-player">
+                        <div class="lofi-placeholder" id="lofi-placeholder">
+                            <i class="fa-solid fa-headphones"></i>
+                            <p>Load the Lofi study radio when you are ready to focus.</p>
+                            <!-- <button type="button" class="lofi-load-btn" id="lofi-load-btn">
+                                <i class="fa-solid fa-play"></i> Play Lofi Radio
+                            </button> -->
+                            <a class="lofi-open-link" href="https://youtu.be/lTRiuFIWV54?si=DChBQd7onEmOQh7d" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
+                        </div>
+                        <iframe
+                            class="lofi-frame"
+                            id="lofi-frame"
+                            title="Lofi hip hop radio"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            loading="lazy"></iframe>
+                    </div>
                 </div>
             </div>
         </section>
