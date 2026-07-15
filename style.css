@@ -1869,6 +1869,10 @@ body::after {
     margin-bottom: 1.25rem;
 }
 
+.tool-controls-2-col {
+    grid-template-columns: repeat(2, 1fr);
+}
+
 .tool-controls label {
     display: flex;
     flex-direction: column;
@@ -2200,10 +2204,24 @@ body::after {
         grid-template-columns: 1fr;
     }
 
+    .tool-controls-2-col {
+        grid-template-columns: 1fr;
+    }
+
     .safety-layout {
         grid-template-columns: 1fr;
         justify-items: center;
         text-align: center;
+    }
+    
+    .budget-mode-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .budget-mode-stats {
+        text-align: left;
     }
 }
 
