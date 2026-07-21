@@ -15,56 +15,134 @@ document.addEventListener('DOMContentLoaded', () => {
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
     /* =========================================
-       Feature 1: Smart Academic Communicator
+       Feature 1: Feynman Simplicity Engine
        ========================================= */
-    const emailPurpose = document.getElementById('email-purpose');
-    const emailProf = document.getElementById('email-prof');
-    const emailCourse = document.getElementById('email-course');
-    const emailDetails = document.getElementById('email-details');
-    const emailGenerateBtn = document.getElementById('email-generate-btn');
-    const emailCopyBtn = document.getElementById('email-copy-btn');
-    const emailOutput = document.getElementById('email-output');
+    const feynmanInput = document.getElementById('feynman-input');
+    const feynmanClear = document.getElementById('feynman-clear');
+    const feynmanGauge = document.getElementById('feynman-gauge');
+    const feynmanScoreVal = document.getElementById('feynman-score-val');
+    const feynmanStatus = document.getElementById('feynman-status');
+    const feynmanGrade = document.getElementById('feynman-grade');
+    const feynmanJargon = document.getElementById('feynman-jargon');
 
-    const emailTemplates = {
-        extension: (prof, course, details) => `Subject: Extension Request - ${course}\n\nDear Professor ${prof},\n\nI hope this email finds you well.\n\nI am writing to respectfully request a short extension on the upcoming deadline for ${course}. ${details ? 'Due to ' + details + ', I have fallen slightly behind.' : 'I have encountered some unexpected circumstances.'} \n\nI am deeply committed to submitting high-quality work and would greatly appreciate an additional 48 hours to complete the assignment to the best of my ability.\n\nThank you for your time and understanding.\n\nBest regards,\n[Your Name]\n[Your Student ID]`,
-        
-        recommendation: (prof, course, details) => `Subject: Letter of Recommendation Request - [Your Name]\n\nDear Professor ${prof},\n\nI hope you are having a great week.\n\nI was a student in your ${course} class, and I really enjoyed your teaching style and the material we covered. ${details ? 'Specifically, I loved learning about ' + details + '.' : ''}\n\nI am currently applying for [Program/Job] and I was wondering if you would be willing to write a strong letter of recommendation on my behalf? I believe your perspective on my academic abilities would greatly strengthen my application.\n\nI have attached my resume and transcripts for your reference. Please let me know if this is possible, and I would be happy to provide any further information.\n\nBest regards,\n[Your Name]`,
-        
-        research: (prof, course, details) => `Subject: Inquiry Regarding Research Opportunities\n\nDear Professor ${prof},\n\nI hope this email finds you well.\n\nI am a student currently taking ${course} and I am very interested in your research on ${details || '[Specific Research Topic]'}. \n\nI would love to learn more about your work and see if there are any opportunities for undergraduate students to get involved in your lab or research projects this upcoming semester. \n\nWould you be open to a brief meeting to discuss this further?\n\nThank you for your time and consideration.\n\nBest regards,\n[Your Name]\n[Your Student ID]`,
-        
-        doubt: (prof, course, details) => `Subject: Clarification on Recent Lecture - ${course}\n\nDear Professor ${prof},\n\nI hope you are doing well.\n\nI am currently reviewing the material for ${course} and I have a quick question regarding ${details || 'the concepts discussed in our last lecture'}. \n\nCould you please clarify [insert specific question here]? I am struggling to fully grasp the connection and would appreciate your guidance.\n\nIf it's easier to discuss in person, I would be happy to stop by during your next office hours.\n\nThank you,\n[Your Name]\n[Your Student ID]`,
-        
-        absence: (prof, course, details) => `Subject: Excused Absence - ${course}\n\nDear Professor ${prof},\n\nI hope this email finds you well.\n\nI am writing to inform you that I will unfortunately not be able to attend the ${course} lecture on [Date] due to ${details || 'unforeseen circumstances'}. \n\nI will make sure to catch up on the missed material and get the notes from a classmate. Please let me know if there is anything specific I need to do to make up for my absence.\n\nThank you for your understanding.\n\nBest regards,\n[Your Name]\n[Your Student ID]`
+    const jargonList = new Set([
+        'utilize', 'facilitate', 'implement', 'paradigm', 'synergy', 'leverage',
+        'methodology', 'framework', 'juxtapose', 'mitigate', 'optimize', 'subsequently',
+        'comprehensive', 'conceptualize', 'delineate', 'elucidate', 'empirical',
+        'heuristic', 'pedagogical', 'proliferate', 'ubiquitous', 'ameliorate',
+        'ascertain', 'dichotomy', 'epistemology', 'hermeneutic', 'obfuscate',
+        'paradoxical', 'quintessential', 'ramification'
+    ]);
+
+    const countSyllables = (word) => {
+        word = word.toLowerCase();
+        if (word.length <= 3) return 1;
+        word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+        word = word.replace(/^y/, '');
+        const match = word.match(/[aeiouy]{1,2}/g);
+        return match ? match.length : 1;
     };
 
-    if (emailGenerateBtn && emailOutput) {
-        emailGenerateBtn.addEventListener('click', () => {
-            const purpose = emailPurpose?.value || 'extension';
-            const prof = emailProf?.value.trim() || '[Professor Last Name]';
-            const course = emailCourse?.value.trim() || '[Course Name]';
-            const details = emailDetails?.value.trim() || '';
+    const analyzeText = () => {
+        if (!feynmanInput) return;
+        
+        const text = feynmanInput.value.trim();
+        if (text.length === 0) {
+            resetFeynmanUI();
+            return;
+        }
+
+        const words = text.split(/\s+/).filter(w => w.length > 0);
+        const wordCount = words.length;
+        
+        // Count sentences, default to 1 if no punctuation
+        const sentences = Math.max(1, text.split(/[.!?]+/).filter(s => s.trim().length > 0).length);
+        
+        let syllableCount = 0;
+        let jargonCount = 0;
+
+        words.forEach(w => {
+            const cleanWord = w.toLowerCase().replace(/[^a-z]/g, '');
+            if (!cleanWord) return;
             
-            const templateFunction = emailTemplates[purpose];
-            if (templateFunction) {
-                emailOutput.value = templateFunction(prof, course, details);
+            const syllables = countSyllables(cleanWord);
+            syllableCount += syllables;
+            
+            // Jargon = words in the list OR any word with 4+ syllables
+            if (jargonList.has(cleanWord) || syllables >= 4) {
+                jargonCount++;
             }
         });
+
+        // Flesch-Kincaid Grade Level Formula
+        const gradeLevel = (0.39 * (wordCount / sentences)) + (11.8 * (syllableCount / wordCount)) - 15.59;
+        const clampedGrade = Math.max(0, Math.min(20, gradeLevel));
         
-        emailCopyBtn?.addEventListener('click', () => {
-            if (!emailOutput.value) return;
-            
-            emailOutput.select();
-            emailOutput.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(emailOutput.value).then(() => {
-                const originalText = emailCopyBtn.innerHTML;
-                emailCopyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-                setTimeout(() => {
-                    emailCopyBtn.innerHTML = originalText;
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
+        // Simplicity Score (100 = 5th grade or lower, 0 = 20th grade or higher)
+        let simplicityScore = 100 - ((clampedGrade - 5) / 15 * 100);
+        
+        // If they only typed a few words, prevent the score from instantly jumping to 100
+        if (wordCount < 4) {
+            simplicityScore = Math.max(0, Math.min(50, simplicityScore)); // Cap at 50 until a real sentence is formed
+        } else {
+            simplicityScore = Math.max(0, Math.min(100, Math.round(simplicityScore)));
+        }
+
+        updateFeynmanUI(Math.round(simplicityScore), clampedGrade.toFixed(1), jargonCount);
+    };
+
+    const updateFeynmanUI = (score, grade, jargon) => {
+        feynmanScoreVal.textContent = score;
+        feynmanGrade.textContent = grade;
+        feynmanJargon.textContent = jargon;
+        
+        // Gauge length is 283
+        const dashOffset = 283 - (283 * (score / 100));
+        feynmanGauge.style.strokeDashoffset = dashOffset;
+        
+        let color = 'var(--text-muted)';
+        let statusText = '';
+        
+        if (score >= 80) {
+            color = 'var(--accent-mint)';
+            statusText = 'Crystal Clear';
+        } else if (score >= 50) {
+            color = 'var(--accent-gold)';
+            statusText = 'Getting There';
+        } else {
+            color = 'var(--accent-coral)';
+            statusText = 'Too Complex';
+        }
+        
+        feynmanGauge.style.stroke = color;
+        feynmanStatus.style.color = color;
+        feynmanStatus.textContent = statusText;
+    };
+
+    const resetFeynmanUI = () => {
+        if (!feynmanInput) return;
+        feynmanScoreVal.textContent = '0';
+        feynmanGrade.textContent = '-';
+        feynmanJargon.textContent = '0';
+        feynmanGauge.style.strokeDashoffset = '283';
+        feynmanGauge.style.stroke = 'var(--text-muted)';
+        feynmanStatus.style.color = 'var(--text-muted)';
+        feynmanStatus.textContent = 'Start typing...';
+    };
+
+    if (feynmanInput) {
+        let debounceTimer;
+        feynmanInput.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(analyzeText, 300);
         });
+        
+        feynmanClear?.addEventListener('click', () => {
+            feynmanInput.value = '';
+            resetFeynmanUI();
+        });
+        
+        resetFeynmanUI();
     }
 
     /* =========================================
