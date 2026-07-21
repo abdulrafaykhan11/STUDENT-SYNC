@@ -806,50 +806,52 @@
             </p>
         </section>
 
-        <!-- Feature 1: GPA Predictor -->
+        <!-- Feature 1: Smart Academic Communicator -->
         <section class="kb-section container">
             <div class="kb-header">
-                <span class="kb-kicker" style="color: var(--accent-mint); border-color: rgba(0, 209, 178, 0.3); background: rgba(0, 209, 178, 0.1);">Target Matrix</span>
-                <h2 class="kb-title" style="font-size: 2.5rem;">Smart GPA Predictor</h2>
-                <p class="kb-subtitle">Input your current standing and map out your required grades to hit that scholarship target.</p>
+                <span class="kb-kicker" style="color: var(--accent-mint); border-color: rgba(0, 209, 178, 0.3); background: rgba(0, 209, 178, 0.1);">Professional Outreach</span>
+                <h2 class="kb-title" style="font-size: 2.5rem;">Smart Academic Communicator</h2>
+                <p class="kb-subtitle">Instantly generate polished, professional emails to your professors for extensions, recommendations, or research opportunities.</p>
             </div>
             
             <div class="glass-box gpa-grid">
                 <div>
                     <div class="gpa-input-group">
-                        <label>Current Cumulative GPA</label>
-                        <input type="number" id="gpa-current" class="gpa-input" value="3.20" step="0.01">
+                        <label>Email Purpose</label>
+                        <select id="email-purpose" class="gpa-input" style="font-family: inherit;">
+                            <option value="extension">Deadline Extension</option>
+                            <option value="recommendation">Letter of Recommendation</option>
+                            <option value="research">Research Opportunity</option>
+                            <option value="doubt">Concept Clarification</option>
+                            <option value="absence">Excused Absence</option>
+                        </select>
                     </div>
                     <div class="gpa-input-group">
-                        <label>Total Credit Hours Completed</label>
-                        <input type="number" id="gpa-credits" class="gpa-input" value="60">
+                        <label>Professor's Last Name</label>
+                        <input type="text" id="email-prof" class="gpa-input" placeholder="e.g. Smith">
+                    </div>
+                    <div class="gpa-input-group">
+                        <label>Course Name / Code</label>
+                        <input type="text" id="email-course" class="gpa-input" placeholder="e.g. CS201 Data Structures">
+                    </div>
+                    <div class="gpa-input-group">
+                        <label>Key Details / Context</label>
+                        <input type="text" id="email-details" class="gpa-input" placeholder="e.g. medical emergency, or assignment 3">
                     </div>
                     
-                    <h4 style="margin: 20px 0 10px; color: white;">This Semester's Courses</h4>
-                    <div id="gpa-courses">
-                        <div class="gpa-course-row">
-                            <input type="text" class="gpa-input" placeholder="Course Name (e.g. CS201)" value="Data Structures">
-                            <input type="number" class="gpa-input cr-input" placeholder="Credits" value="3">
-                            <select class="gpa-input gr-input">
-                                <option value="4.0">A (4.0)</option>
-                                <option value="3.67">A- (3.67)</option>
-                                <option value="3.33">B+ (3.33)</option>
-                                <option value="3.0">B (3.0)</option>
-                                <option value="2.67">B- (2.67)</option>
-                                <option value="2.0">C (2.0)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="btn-add-course" id="gpa-add-btn">+ Add Another Course</button>
+                    <button class="fc-btn-create" id="email-generate-btn" style="margin-top: 10px;">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Template
+                    </button>
                 </div>
                 
-                <div class="gpa-gauge-container">
-                    <div class="gpa-gauge">
-                        <div class="gauge-bg"></div>
-                        <div class="gauge-fill" id="gpa-gauge-fill"></div>
+                <div style="height: 100%; display: flex; flex-direction: column;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h4 style="color: white; margin: 0;">Generated Email</h4>
+                        <button id="email-copy-btn" style="background: transparent; border: none; color: var(--accent-mint); cursor: pointer; font-size: 0.9rem; font-weight: 600;">
+                            <i class="fa-regular fa-copy"></i> Copy
+                        </button>
                     </div>
-                    <h3 style="color: var(--text-muted); margin-top: 10px;">Predicted CGPA</h3>
-                    <div class="gpa-result-text" id="gpa-result">3.20</div>
+                    <textarea id="email-output" class="fc-textarea" style="flex: 1; height: 100%; min-height: 250px; margin-bottom: 0;" readonly placeholder="Your professional email template will appear here..."></textarea>
                 </div>
             </div>
         </section>

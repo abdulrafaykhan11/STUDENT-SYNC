@@ -15,86 +15,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
     /* =========================================
-       Feature 1: Smart GPA Predictor
+       Feature 1: Smart Academic Communicator
        ========================================= */
-    const gpaCurrent = document.getElementById('gpa-current');
-    const gpaCredits = document.getElementById('gpa-credits');
-    const gpaCourses = document.getElementById('gpa-courses');
-    const btnAddCourse = document.getElementById('gpa-add-btn');
-    const gpaResult = document.getElementById('gpa-result');
-    const gpaGaugeFill = document.getElementById('gpa-gauge-fill');
+    const emailPurpose = document.getElementById('email-purpose');
+    const emailProf = document.getElementById('email-prof');
+    const emailCourse = document.getElementById('email-course');
+    const emailDetails = document.getElementById('email-details');
+    const emailGenerateBtn = document.getElementById('email-generate-btn');
+    const emailCopyBtn = document.getElementById('email-copy-btn');
+    const emailOutput = document.getElementById('email-output');
 
-    const createCourseRow = () => {
-        const row = document.createElement('div');
-        row.className = 'gpa-course-row';
-
-        const nameInput = document.createElement('input');
-        nameInput.type = 'text';
-        nameInput.className = 'gpa-input';
-        nameInput.placeholder = 'Course Name';
-
-        const creditInput = document.createElement('input');
-        creditInput.type = 'number';
-        creditInput.className = 'gpa-input cr-input';
-        creditInput.placeholder = 'Credits';
-        creditInput.value = '3';
-        creditInput.min = '0';
-        creditInput.step = '1';
-
-        const gradeSelect = document.createElement('select');
-        gradeSelect.className = 'gpa-input gr-input';
-        [
-            ['4.0', 'A (4.0)'],
-            ['3.67', 'A- (3.67)'],
-            ['3.33', 'B+ (3.33)'],
-            ['3.0', 'B (3.0)'],
-            ['2.67', 'B- (2.67)'],
-            ['2.0', 'C (2.0)'],
-            ['0', 'F (0.0)']
-        ].forEach(([value, label]) => {
-            const option = document.createElement('option');
-            option.value = value;
-            option.textContent = label;
-            gradeSelect.appendChild(option);
-        });
-
-        row.append(nameInput, creditInput, gradeSelect);
-        return row;
+    const emailTemplates = {
+        extension: (prof, course, details) => `Subject: Extension Request - ${course}\n\nDear Professor ${prof},\n\nI hope this email finds you well.\n\nI am writing to respectfully request a short extension on the upcoming deadline for ${course}. ${details ? 'Due to ' + details + ', I have fallen slightly behind.' : 'I have encountered some unexpected circumstances.'} \n\nI am deeply committed to submitting high-quality work and would greatly appreciate an additional 48 hours to complete the assignment to the best of my ability.\n\nThank you for your time and understanding.\n\nBest regards,\n[Your Name]\n[Your Student ID]`,
+        
+        recommendation: (prof, course, details) => `Subject: Letter of Recommendation Request - [Your Name]\n\nDear Professor ${prof},\n\nI hope you are having a great week.\n\nI was a student in your ${course} class, and I really enjoyed your teaching style and the material we covered. ${details ? 'Specifically, I loved learning about ' + details + '.' : ''}\n\nI am currently applying for [Program/Job] and I was wondering if you would be willing to write a strong letter of recommendation on my behalf? I believe your perspective on my academic abilities would greatly strengthen my application.\n\nI have attached my resume and transcripts for your reference. Please let me know if this is possible, and I would be happy to provide any further information.\n\nBest regards,\n[Your Name]`,
+        
+        research: (prof, course, details) => `Subject: Inquiry Regarding Research Opportunities\n\nDear Professor ${prof},\n\nI hope this email finds you well.\n\nI am a student currently taking ${course} and I am very interested in your research on ${details || '[Specific Research Topic]'}. \n\nI would love to learn more about your work and see if there are any opportunities for undergraduate students to get involved in your lab or research projects this upcoming semester. \n\nWould you be open to a brief meeting to discuss this further?\n\nThank you for your time and consideration.\n\nBest regards,\n[Your Name]\n[Your Student ID]`,
+        
+        doubt: (prof, course, details) => `Subject: Clarification on Recent Lecture - ${course}\n\nDear Professor ${prof},\n\nI hope you are doing well.\n\nI am currently reviewing the material for ${course} and I have a quick question regarding ${details || 'the concepts discussed in our last lecture'}. \n\nCould you please clarify [insert specific question here]? I am struggling to fully grasp the connection and would appreciate your guidance.\n\nIf it's easier to discuss in person, I would be happy to stop by during your next office hours.\n\nThank you,\n[Your Name]\n[Your Student ID]`,
+        
+        absence: (prof, course, details) => `Subject: Excused Absence - ${course}\n\nDear Professor ${prof},\n\nI hope this email finds you well.\n\nI am writing to inform you that I will unfortunately not be able to attend the ${course} lecture on [Date] due to ${details || 'unforeseen circumstances'}. \n\nI will make sure to catch up on the missed material and get the notes from a classmate. Please let me know if there is anything specific I need to do to make up for my absence.\n\nThank you for your understanding.\n\nBest regards,\n[Your Name]\n[Your Student ID]`
     };
 
-    const calculateGPA = () => {
-        if (!gpaCurrent || !gpaCredits || !gpaCourses || !gpaResult) return;
-
-        const currentGpa = clamp(parseFloat(gpaCurrent.value) || 0, 0, 4);
-        const completedCredits = Math.max(parseFloat(gpaCredits.value) || 0, 0);
-        let totalPoints = currentGpa * completedCredits;
-        let totalCredits = completedCredits;
-
-        gpaCourses.querySelectorAll('.gpa-course-row').forEach(row => {
-            const credits = Math.max(parseFloat(row.querySelector('.cr-input')?.value) || 0, 0);
-            const grade = clamp(parseFloat(row.querySelector('.gr-input')?.value) || 0, 0, 4);
-            totalPoints += credits * grade;
-            totalCredits += credits;
+    if (emailGenerateBtn && emailOutput) {
+        emailGenerateBtn.addEventListener('click', () => {
+            const purpose = emailPurpose?.value || 'extension';
+            const prof = emailProf?.value.trim() || '[Professor Last Name]';
+            const course = emailCourse?.value.trim() || '[Course Name]';
+            const details = emailDetails?.value.trim() || '';
+            
+            const templateFunction = emailTemplates[purpose];
+            if (templateFunction) {
+                emailOutput.value = templateFunction(prof, course, details);
+            }
         });
-
-        const finalGpa = totalCredits > 0 ? clamp(totalPoints / totalCredits, 0, 4) : 0;
-        gpaResult.textContent = finalGpa.toFixed(2);
-
-        if (gpaGaugeFill) {
-            const rotation = -135 + ((finalGpa / 4) * 180);
-            gpaGaugeFill.style.transform = `rotate(${rotation}deg)`;
-        }
-    };
-
-    if (gpaCurrent && gpaCredits && gpaCourses && btnAddCourse) {
-        gpaCurrent.addEventListener('input', calculateGPA);
-        gpaCredits.addEventListener('input', calculateGPA);
-        gpaCourses.addEventListener('input', calculateGPA);
-        btnAddCourse.addEventListener('click', () => {
-            gpaCourses.appendChild(createCourseRow());
-            calculateGPA();
+        
+        emailCopyBtn?.addEventListener('click', () => {
+            if (!emailOutput.value) return;
+            
+            emailOutput.select();
+            emailOutput.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(emailOutput.value).then(() => {
+                const originalText = emailCopyBtn.innerHTML;
+                emailCopyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                setTimeout(() => {
+                    emailCopyBtn.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
         });
-        calculateGPA();
     }
 
     /* =========================================
