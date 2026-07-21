@@ -686,9 +686,9 @@
                                 <i class="fa-brands fa-php"></i>
                                 <span>PHP</span>
                             </button>
-                            <button class="topic-btn" data-concept="laravel">
-                                <i class="fa-brands fa-laravel"></i>
-                                <span>Laravel</span>
+                            <button class="topic-btn" data-concept="mysql">
+                                <i class="fa-solid fa-database"></i>
+                                <span>MySQL</span>
                             </button>
                             <button class="topic-btn" data-concept="react">
                                 <i class="fa-brands fa-react"></i>
@@ -738,41 +738,90 @@
         </section>
 
         <!-- LAST-MINUTE CRAMMER PLANNER SECTION -->
-        <section class="features" style="padding-top: 40px; padding-bottom: 60px; position: relative;">
+        <section class="features" id="crammer-section" style="padding-top: 40px; padding-bottom: 60px; position: relative;">
             <div class="container">
                 <div class="section-header">
                     <span class="section-kicker" style="color: #ff5252;"><i class="fa-solid fa-fire"></i> Emergency Triage</span>
                     <h2>The Night-Before Crammer Planner</h2>
-                    <p>Exam tomorrow? Stop panicking. Tell us your status, and we'll generate a brutal, high-yield study schedule optimized for survival.</p>
+                    <p>Exam tomorrow? Answer 3 quick questions and get a <strong>personalized, step-by-step battle plan</strong> that routes you directly to the right tools inside StudentSync — no Googling required.</p>
                 </div>
-                
-                <div class="crammer-container glass-card" style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; padding: 2rem; align-items: start;">
-                    <div class="crammer-inputs">
-                        <div style="margin-bottom: 1.5rem;">
+
+                <!-- STEP 1: Subject Selector -->
+                <div id="crammer-step1" class="glass-card" style="padding: 2rem;">
+                    <h3 style="color: white; margin-bottom: 0.3rem; font-size: 1.4rem;"><i class="fa-solid fa-circle-1" style="color: var(--accent-coral);"></i> Which exam are you preparing for?</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Select your subject — your battle plan will be 100% customized to that topic's hardest concepts.</p>
+                    <div id="subject-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.8rem;">
+                        <button class="subject-btn" data-key="html" style="background:rgba(227,76,38,0.1); border: 1px solid rgba(227,76,38,0.3); color:white; padding:1rem; border-radius:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:0.5rem; font-family:inherit; font-size:0.95rem; font-weight:600; transition:all 0.2s;">
+                            <i class="fa-brands fa-html5" style="font-size:2rem; color:#e34c26;"></i> HTML
+                        </button>
+                        <button class="subject-btn" data-key="css" style="background:rgba(38,77,228,0.1); border: 1px solid rgba(38,77,228,0.3); color:white; padding:1rem; border-radius:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:0.5rem; font-family:inherit; font-size:0.95rem; font-weight:600; transition:all 0.2s;">
+                            <i class="fa-brands fa-css3-alt" style="font-size:2rem; color:#264de4;"></i> CSS
+                        </button>
+                        <button class="subject-btn" data-key="javascript" style="background:rgba(247,223,30,0.1); border: 1px solid rgba(247,223,30,0.3); color:white; padding:1rem; border-radius:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:0.5rem; font-family:inherit; font-size:0.95rem; font-weight:600; transition:all 0.2s;">
+                            <i class="fa-brands fa-js" style="font-size:2rem; color:#f7df1e;"></i> JavaScript
+                        </button>
+                        <button class="subject-btn" data-key="python" style="background:rgba(55,118,171,0.1); border: 1px solid rgba(55,118,171,0.3); color:white; padding:1rem; border-radius:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:0.5rem; font-family:inherit; font-size:0.95rem; font-weight:600; transition:all 0.2s;">
+                            <i class="fa-brands fa-python" style="font-size:2rem; color:#3776AB;"></i> Python
+                        </button>
+                        <button class="subject-btn" data-key="php" style="background:rgba(119,123,180,0.1); border: 1px solid rgba(119,123,180,0.3); color:white; padding:1rem; border-radius:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:0.5rem; font-family:inherit; font-size:0.95rem; font-weight:600; transition:all 0.2s;">
+                            <i class="fa-brands fa-php" style="font-size:2rem; color:#777BB4;"></i> PHP
+                        </button>
+                        <button class="subject-btn" data-key="mysql" style="background:rgba(68,121,161,0.1); border: 1px solid rgba(68,121,161,0.3); color:white; padding:1rem; border-radius:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:0.5rem; font-family:inherit; font-size:0.95rem; font-weight:600; transition:all 0.2s;">
+                            <i class="fa-solid fa-database" style="font-size:2rem; color:#4479A1;"></i> MySQL
+                        </button>
+                        <button class="subject-btn" data-key="react" style="background:rgba(97,218,251,0.1); border: 1px solid rgba(97,218,251,0.3); color:white; padding:1rem; border-radius:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:0.5rem; font-family:inherit; font-size:0.95rem; font-weight:600; transition:all 0.2s;">
+                            <i class="fa-brands fa-react" style="font-size:2rem; color:#61DAFB;"></i> React
+                        </button>
+                        <button class="subject-btn" data-key="nodejs" style="background:rgba(104,160,99,0.1); border: 1px solid rgba(104,160,99,0.3); color:white; padding:1rem; border-radius:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:0.5rem; font-family:inherit; font-size:0.95rem; font-weight:600; transition:all 0.2s;">
+                            <i class="fa-brands fa-node-js" style="font-size:2rem; color:#68A063;"></i> Node.js
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Situation Input (hidden until subject chosen) -->
+                <div id="crammer-step2" class="glass-card" style="padding: 2rem; display: none; margin-top: 1.5rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+                        <div>
+                            <h3 style="color: white; font-size: 1.4rem; margin-bottom:0.2rem;"><i class="fa-solid fa-circle-2" style="color: var(--accent-gold);"></i> Assess your situation</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin:0;">Exam subject: <strong id="selected-subject-label" style="color:white;"></strong></p>
+                        </div>
+                        <button id="change-subject-btn" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:var(--text-muted); padding:0.5rem 1rem; border-radius:8px; cursor:pointer; font-family:inherit; font-size:0.85rem;">← Change Subject</button>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom:1.5rem;">
+                        <div>
                             <label style="color: white; font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                                 Hours Until Exam: <span id="hours-val" style="color: var(--accent-coral);">12 hrs</span>
                             </label>
-                            <input type="range" min="2" max="24" value="12" class="custom-slider" id="hours-slider" style="width: 100%;">
+                            <input type="range" min="12" max="24" value="12" class="custom-slider" id="hours-slider" style="width: 100%;">
+                            <div style="display:flex; justify-content:space-between; color:var(--text-muted); font-size:0.75rem; margin-top:0.3rem;"><span>12 hrs</span><span>24 hrs</span></div>
                         </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <label style="color: white; font-weight: 600; margin-bottom: 0.5rem; display: block;">Current Prep Level:</label>
+                        <div>
+                            <label style="color: white; font-weight: 600; margin-bottom: 0.5rem; display: block;">How prepared are you right now?</label>
                             <select id="prep-select" class="topic-search" style="width: 100%; cursor: pointer;">
-                                <option value="0">0% - Clueless</option>
-                                <option value="30">30% - Know the basics</option>
-                                <option value="70">70% - Just need revision</option>
+                                <option value="0">0% — Haven't started at all</option>
+                                <option value="30">30% — Know the basics / seen it</option>
+                                <option value="70">70% — Know it, just need revision</option>
                             </select>
                         </div>
-                        <button id="generate-plan-btn" class="btn btn-primary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-bolt"></i> Generate Battle Plan</button>
                     </div>
-                    <div class="crammer-output" id="crammer-output" style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.05); min-height: 250px;">
-                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted); flex-direction: column; gap: 1rem; text-align: center;">
-                            <i class="fa-solid fa-clipboard-list" style="font-size: 3rem; opacity: 0.5;"></i>
-                            <p>Adjust the sliders and click generate to get your survival schedule.</p>
-                        </div>
+
+                    <button id="generate-plan-btn" class="btn btn-primary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 0.5rem; font-size:1.1rem; padding:1rem;">
+                        <i class="fa-solid fa-bolt"></i> Generate My Personalized Battle Plan
+                    </button>
+                </div>
+
+                <!-- OUTPUT -->
+                <div id="crammer-output-wrap" style="display:none; margin-top:1.5rem;">
+                    <div id="crammer-output" class="glass-card" style="padding: 2rem;"></div>
+                    <div style="text-align:center; margin-top:1rem;">
+                        <button id="crammer-restart-btn" style="background:transparent; border:1px solid rgba(255,255,255,0.15); color:var(--text-muted); padding:0.6rem 1.5rem; border-radius:8px; cursor:pointer; font-family:inherit;">← Start Over</button>
                     </div>
                 </div>
+
             </div>
         </section>
+
 
         <!-- CONCEPT CLARITY TOOLKIT SECTION -->
         <section class="features" style="padding-top: 40px; padding-bottom: 80px; position: relative;">
@@ -967,15 +1016,15 @@
                     pitfall: "Not sanitizing user input, leading to SQL injection. Never put raw user data directly into database queries — always use prepared statements with PDO or MySQLi.",
                     realworld: "WordPress powers 43% of all websites and is built entirely with PHP. Facebook originally ran on PHP before creating their own PHP compiler (HHVM)."
                 },
-                laravel: {
-                    title: "Laravel",
-                    category: "PHP Framework",
-                    desc: "An elegant PHP framework following the MVC pattern, designed for building modern, maintainable web applications.",
-                    icon: "fa-cubes",
-                    core: "Laravel provides pre-built tools for routing, database management (Eloquent ORM), authentication, and templating (Blade). It follows MVC — Model handles data, View handles UI, Controller handles logic.",
-                    analogy: "If PHP is raw cooking ingredients, Laravel is a fully-equipped kitchen with recipes, pre-measured spices, and a sous chef. You still cook, but the framework handles the tedious prep work.",
-                    pitfall: "Over-relying on Eloquent for complex queries. While convenient, Eloquent can generate inefficient SQL with N+1 query problems. Use eager loading (with()) to load relationships in batch.",
-                    realworld: "Companies like 9GAG, Deltanet Travel, and BBC use Laravel. It's the go-to choice for rapid development of RESTful APIs and full-stack applications."
+                mysql: {
+                    title: "MySQL",
+                    category: "Database Management",
+                    desc: "The world's most popular open-source relational database — used to store, organize, and retrieve structured data for web applications.",
+                    icon: "fa-database",
+                    core: "MySQL stores data in tables with rows and columns (like Excel). You interact with it using SQL (Structured Query Language) — commands like SELECT, INSERT, UPDATE, DELETE. It works with PHP, Python, Node.js and almost every backend technology.",
+                    analogy: "Think of MySQL as a giant, organized filing cabinet in an office. Each drawer is a table (e.g. 'Users', 'Orders'). Each file is a row. SQL is the instruction you give to the filing clerk — 'Get me all files from Users where age is above 18'.",
+                    pitfall: "Using raw user input directly in SQL queries — this causes SQL Injection. A hacker can type ' OR '1'='1 into a login field and bypass your entire authentication. ALWAYS use prepared statements.",
+                    realworld: "Facebook, YouTube, Twitter, and WordPress all use MySQL to store user data, posts, and media metadata. It's the backbone of the internet's data layer."
                 },
                 react: {
                     title: "React",
@@ -1005,64 +1054,64 @@
                     title: "HTML", icon: "fa-brands fa-html5", color: "#e34c26",
                     ytTitle: "HTML Full Course for Beginners", ytChannel: "freeCodeCamp",
                     ytUrl: "https://www.youtube.com/watch?v=kUMe1FH4CHE", ytDuration: "4 hrs 10 min",
-                    noteTitle: "CodeWithHarry Notes",
-                    noteFile: "https://www.codewithharry.com/notes/",
+                    noteTitle: "Quality Notes",
+                    noteFile: "https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/notes/HTML_Complete_Notes.pdf",
                     w3Url: "https://www.w3schools.com/html/"
                 },
                 css: {
                     title: "CSS", icon: "fa-brands fa-css3-alt", color: "#264de4",
                     ytTitle: "CSS Full Course — Flexbox, Grid & More", ytChannel: "freeCodeCamp",
                     ytUrl: "https://www.youtube.com/watch?v=OXGznpKZ_sA", ytDuration: "6 hrs 18 min",
-                    noteTitle: "CodeWithHarry Notes",
-                    noteFile: "https://www.codewithharry.com/notes/",
+                    noteTitle: "Quality Notes",
+                    noteFile: "https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/notes/CSS_Complete_Notes.pdf",
                     w3Url: "https://www.w3schools.com/css/"
                 },
                 javascript: {
                     title: "JavaScript", icon: "fa-brands fa-js", color: "#f7df1e",
                     ytTitle: "JavaScript Full Course for Beginners", ytChannel: "Bro Code",
                     ytUrl: "https://www.youtube.com/watch?v=lfmg-EJ8gm4", ytDuration: "12 hrs",
-                    noteTitle: "CodeWithHarry Notes",
-                    noteFile: "https://www.codewithharry.com/notes/",
+                    noteTitle: "Quality Notes",
+                    noteFile: "https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/notes/JS_Chapterwise_Notes.pdf",
                     w3Url: "https://www.w3schools.com/js/"
                 },
                 python: {
                     title: "Python", icon: "fa-brands fa-python", color: "#3776AB",
                     ytTitle: "Python Full Course for Beginners", ytChannel: "Programming with Mosh",
                     ytUrl: "https://www.youtube.com/watch?v=_uQrJ0TkZlc", ytDuration: "6 hrs 14 min",
-                    noteTitle: "CodeWithHarry Notes",
-                    noteFile: "https://www.codewithharry.com/notes/",
+                    noteTitle: "Quality Notes",
+                    noteFile: "https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/notes/Python_Complete_Notes.pdf",
                     w3Url: "https://www.w3schools.com/python/"
                 },
                 php: {
                     title: "PHP", icon: "fa-brands fa-php", color: "#777BB4",
                     ytTitle: "PHP Full Course for Beginners", ytChannel: "Traversy Media",
                     ytUrl: "https://www.youtube.com/watch?v=BUCiSSyIGGU", ytDuration: "3 hrs 30 min",
-                    noteTitle: "CodeWithHarry Notes",
-                    noteFile: "https://www.codewithharry.com/notes/",
+                    noteTitle: "Quality Notes",
+                    noteFile: "https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/cheatsheets/Php%20Cheatsheet.pdf",
                     w3Url: "https://www.w3schools.com/php/"
                 },
-                laravel: {
-                    title: "Laravel", icon: "fa-brands fa-laravel", color: "#FF2D20",
-                    ytTitle: "Laravel Full Course From Scratch", ytChannel: "Traversy Media",
-                    ytUrl: "https://www.youtube.com/watch?v=MYyJ4PuL4pY", ytDuration: "4 hrs 25 min",
-                    noteTitle: "Laravel Docs",
-                    noteFile: "https://laravel.com/docs",
-                    w3Url: "https://laravel.com/docs"
+                mysql: {
+                    title: "MySQL", icon: "fa-solid fa-database", color: "#4479A1",
+                    ytTitle: "MySQL Full Course for Beginners", ytChannel: "freeCodeCamp",
+                    ytUrl: "https://www.youtube.com/watch?v=HXV3zeQKqGY", ytDuration: "4 hrs 20 min",
+                    noteTitle: "Quality Notes",
+                    noteFile: "https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/YouTube/MySQL%20Handbook.pdf",
+                    w3Url: "https://www.w3schools.com/mysql/"
                 },
                 react: {
                     title: "React", icon: "fa-brands fa-react", color: "#61DAFB",
                     ytTitle: "React JS Full Course for Beginners", ytChannel: "Bro Code",
                     ytUrl: "https://www.youtube.com/watch?v=CgkZ7MvWUAA", ytDuration: "3 hrs 26 min",
-                    noteTitle: "CodeWithHarry Notes",
-                    noteFile: "https://www.codewithharry.com/notes/",
+                    noteTitle: "Quality Notes",
+                    noteFile: "https://www.newline.co/fullstack-react/assets/media/sGEMe/MNzue/30-days-of-react-ebook-fullstackio.pdf",
                     w3Url: "https://www.w3schools.com/react/"
                 },
                 nodejs: {
                     title: "Node.js", icon: "fa-brands fa-node-js", color: "#68A063",
                     ytTitle: "Node.js Full Course for Beginners", ytChannel: "freeCodeCamp",
                     ytUrl: "https://www.youtube.com/watch?v=Oe421EPjeBE", ytDuration: "8 hrs",
-                    noteTitle: "CodeWithHarry Notes",
-                    noteFile: "https://www.codewithharry.com/notes/",
+                    noteTitle: "Quality Notes",
+                    noteFile: "https://www.anuragkapur.com/assets/blog/programming/node/PDF-Guide-Node-Andrew-Mead-v3.pdf",
                     w3Url: "https://www.w3schools.com/nodejs/"
                 }
             };
@@ -1166,83 +1215,292 @@
             }
             ytGrid.innerHTML = ytHTML;
 
-            // --- EMERGENCY CRAMMER PLANNER ---
+            // ====================================================
+            // NIGHT-BEFORE CRAMMER PLANNER — Full Engine
+            // ====================================================
+            const subjectMeta = {
+                html: {
+                    label: 'HTML', color: '#e34c26',
+                    pitfalls: ['Forgetting semantic tags (nav, article, section vs div)', 'Inline vs block element confusion', 'Not closing tags properly, id vs class mixup'],
+                    hotTopics: ['Semantic HTML5 tags', 'Forms & input types', 'HTML structure (head/body/meta)', 'Tables', 'Lists & anchors'],
+                    deconstruct: 'html',
+                    ytAnchor: '#yt-notes-grid',
+                    w3link: 'https://www.w3schools.com/html/'
+                },
+                css: {
+                    label: 'CSS', color: '#264de4',
+                    pitfalls: ['Flexbox vs Grid confusion', 'Specificity wars (which rule wins?)', 'Position: absolute/relative/fixed mix-up', 'Box model (margin vs padding vs border)'],
+                    hotTopics: ['Flexbox layout', 'CSS Grid', 'Box model', 'Selectors & specificity', 'Responsive media queries'],
+                    deconstruct: 'css',
+                    ytAnchor: '#yt-notes-grid',
+                    w3link: 'https://www.w3schools.com/css/'
+                },
+                javascript: {
+                    label: 'JavaScript', color: '#f7df1e',
+                    pitfalls: ['var vs let vs const scope issues', 'Async/await vs Promises confusion', 'this keyword context', 'Arrow functions vs regular functions', 'Event bubbling vs capturing'],
+                    hotTopics: ['DOM manipulation', 'Events & callbacks', 'Promises & async/await', 'Array methods (map/filter/reduce)', 'ES6+ syntax (destructuring, spread)'],
+                    deconstruct: 'javascript',
+                    ytAnchor: '#yt-notes-grid',
+                    w3link: 'https://www.w3schools.com/js/'
+                },
+                python: {
+                    label: 'Python', color: '#3776AB',
+                    pitfalls: ['Indentation errors', 'Mutable default arguments in functions', 'List vs tuple vs dictionary confusion', 'Global vs local variable scope'],
+                    hotTopics: ['OOP (classes, inheritance)', 'List comprehensions', 'File I/O', 'Built-in functions', 'Exception handling'],
+                    deconstruct: 'python',
+                    ytAnchor: '#yt-notes-grid',
+                    w3link: 'https://www.w3schools.com/python/'
+                },
+                php: {
+                    label: 'PHP', color: '#777BB4',
+                    pitfalls: ['$ prefix missing on variables', 'echo vs print vs var_dump', 'GET vs POST confusion', 'SQL injection via unsanitized inputs', 'Session vs Cookie handling'],
+                    hotTopics: ['Variables & data types', 'Functions & arrays', 'MySQL connection & queries', 'Sessions & cookies', 'Form handling (GET/POST)'],
+                    deconstruct: 'php',
+                    ytAnchor: '#yt-notes-grid',
+                    w3link: 'https://www.w3schools.com/php/'
+                },
+                mysql: {
+                    label: 'MySQL', color: '#4479A1',
+                    pitfalls: ['SQL Injection via unsanitized inputs — always use prepared statements', 'INNER JOIN vs LEFT JOIN confusion (missing rows!)', 'Forgetting WHERE clause in UPDATE/DELETE (changes ALL rows)', 'GROUP BY without proper aggregate functions', 'Not indexing columns used in WHERE/JOIN (slow queries)'],
+                    hotTopics: ['SELECT, INSERT, UPDATE, DELETE basics', 'JOINs (INNER, LEFT, RIGHT)', 'WHERE, GROUP BY, ORDER BY, HAVING', 'Primary keys, foreign keys & indexes', 'CREATE TABLE & ALTER TABLE'],
+                    deconstruct: 'mysql',
+                    ytAnchor: '#yt-notes-grid',
+                    w3link: 'https://www.w3schools.com/mysql/'
+                },
+                react: {
+                    label: 'React', color: '#61DAFB',
+                    pitfalls: ['State mutation instead of setState', 'Missing keys in list rendering', 'useEffect dependency array mistakes', 'Props vs State confusion', 'Re-rendering performance issues'],
+                    hotTopics: ['JSX syntax', 'Props & state', 'useState & useEffect hooks', 'Component lifecycle', 'Event handling in React'],
+                    deconstruct: 'react',
+                    ytAnchor: '#yt-notes-grid',
+                    w3link: 'https://www.w3schools.com/react/'
+                },
+                nodejs: {
+                    label: 'Node.js', color: '#68A063',
+                    pitfalls: ['Blocking the event loop with sync code', 'Callback hell vs Promises', 'Module.exports vs ES6 import confusion', 'Error-first callback pattern forgotten', 'Not handling async errors properly'],
+                    hotTopics: ['Event loop & non-blocking I/O', 'Express.js routing & middleware', 'npm & package.json', 'REST API creation', 'File system (fs module)'],
+                    deconstruct: 'nodejs',
+                    ytAnchor: '#yt-notes-grid',
+                    w3link: 'https://www.w3schools.com/nodejs/'
+                }
+            };
+
+            let selectedSubject = null;
+            const step1 = document.getElementById('crammer-step1');
+            const step2 = document.getElementById('crammer-step2');
+            const outputWrap = document.getElementById('crammer-output-wrap');
+            const output = document.getElementById('crammer-output');
+            const selectedLabel = document.getElementById('selected-subject-label');
             const hoursSlider = document.getElementById('hours-slider');
             const hoursVal = document.getElementById('hours-val');
             const prepSelect = document.getElementById('prep-select');
             const generateBtn = document.getElementById('generate-plan-btn');
-            const crammerOutput = document.getElementById('crammer-output');
+            const changeSubjectBtn = document.getElementById('change-subject-btn');
+            const restartBtn = document.getElementById('crammer-restart-btn');
 
-            if (hoursSlider && generateBtn) {
+            function makeLink(href, label, icon, color) {
+                return `<a href="${href}" target="${href.startsWith('http') ? '_blank' : '_self'}" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:0.4rem; color:${color}; text-decoration:underline; font-weight:600;">${icon ? `<i class="${icon}"></i>` : ''} ${label}</a>`;
+            }
+
+            function phaseCard(borderColor, bgColor, icon, title, content) {
+                return `<div style="background:${bgColor}; border-left:4px solid ${borderColor}; padding:1rem 1.2rem; border-radius:8px; margin-bottom:0.8rem;">
+                    <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;"><i class="${icon}" style="color:${borderColor};"></i><strong style="color:white;">${title}</strong></div>
+                    <div style="color:var(--text-muted); font-size:0.9rem; line-height:1.6;">${content}</div>
+                </div>`;
+            }
+
+            function pitfallList(pitfalls) {
+                return pitfalls.map(p => `<li style="margin-bottom:0.3rem;">⚠️ ${p}</li>`).join('');
+            }
+            function hotTopicList(topics) {
+                return topics.map(t => `<li style="margin-bottom:0.3rem;">🎯 ${t}</li>`).join('');
+            }
+
+            function generatePlan(subjectKey, hrs, prep) {
+                const s = subjectMeta[subjectKey];
+                const sleep = hrs > 12 ? 6 : (hrs > 6 ? 3 : 0);
+                const study = Math.max(1, hrs - sleep);
+                const color = s.color;
+
+                const conceptLink = makeLink(`#`, `Concept Deconstructor for ${s.label}`, 'fa-solid fa-layer-group', color);
+                const videoLink = makeLink(s.ytAnchor, `${s.label} Video Tutorial`, 'fa-brands fa-youtube', '#ff0000');
+                const notesLink = makeLink('https://www.codewithharry.com/notes/', 'CodeWithHarry Notes', 'fa-solid fa-file-arrow-down', '#00d1b2');
+                const w3Link = makeLink(s.w3link, `W3Schools ${s.label} Reference`, 'fa-solid fa-book-open', '#04AA6D');
+                const quizLink = makeLink('knowledge-base.html#quiz-lab', 'Active Recall Quiz Lab', 'fa-solid fa-brain', '#ff5252');
+                const flashLink = makeLink('knowledge-base.html#flashcard-builder', '3D Flashcard Builder', 'fa-solid fa-layer-group', '#8e24aa');
+                const focusLink = makeLink('knowledge-base.html#focus-hub', 'Pomodoro + Lofi Focus Hub', 'fa-solid fa-headphones', '#00d1b2');
+                const feynLink = makeLink('knowledge-base.html#feynman-engine', 'Feynman Simplicity Engine', 'fa-solid fa-chalkboard-user', '#00d1b2');
+                const kanbanLink = makeLink('knowledge-base.html#kanban-board-section', 'Syllabus Kanban Board', 'fa-solid fa-table-columns', '#ff9800');
+                const plannerLink = makeLink('knowledge-base.html#exam-planner', 'Exam Sprint Planner', 'fa-solid fa-calendar-check', '#ffbd2e');
+
+                let header = '';
+                let phases = '';
+
+                if (prep === 0) {
+                    // EMERGENCY: 0% prep
+                    const p1 = Math.max(1, Math.floor(study * 0.5));
+                    const p2 = Math.max(1, Math.floor(study * 0.3));
+                    const p3 = Math.max(1, study - p1 - p2);
+
+                    header = `<div style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1.2rem; flex-wrap:wrap;">
+                        <span style="background:rgba(255,82,82,0.15); border:1px solid #ff5252; color:#ff5252; padding:0.4rem 1rem; border-radius:50px; font-weight:700; font-size:0.9rem;"><i class="fa-solid fa-triangle-exclamation"></i> EMERGENCY MODE</span>
+                        <span style="color:var(--text-muted); font-size:0.9rem;">${hrs} hrs total · ${study} hrs study · ${sleep} hrs sleep · Subject: <strong style="color:white;">${s.label}</strong></span>
+                    </div>
+                    <div style="background:rgba(255,82,82,0.07); border:1px solid rgba(255,82,82,0.2); border-radius:10px; padding:1rem; margin-bottom:1rem;">
+                        <strong style="color:#ff5252; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">Your Exam: ${s.label} — Critical Traps to Memorize First</strong>
+                        <ul style="margin:0.6rem 0 0; padding-left:1.2rem; color:var(--text-muted); font-size:0.88rem; line-height:1.8;">${pitfallList(s.pitfalls)}</ul>
+                    </div>`;
+
+                    phases = `
+                        ${phaseCard('#ff5252','rgba(255,82,82,0.08)','fa-solid fa-video',`Phase 1 — Crash Course (${p1} hrs)`,
+                        `Your ONLY job right now is to get a mental map fast. Do NOT open a textbook.<br>
+                        → Watch the ${videoLink} on <strong>1.75x speed</strong>.<br>
+                        → While watching, pause every 10 min and summarize what you just learned in one sentence. Write it down.<br>
+                        → Focus your watch on these exact topics: <em>${s.hotTopics.slice(0,3).join(', ')}</em>`)}
+
+                        ${phaseCard('#8e24aa','rgba(142,36,170,0.08)','fa-solid fa-brain',`Phase 2 — Panic-Proof Quiz Drill (${p2} hrs)`,
+                        `Paste the notes you just wrote into the ${quizLink} in our Knowledge Base. Generate 5-8 questions and repeat until you score 80%+.<br>
+                        → Download the ${notesLink} and scan headings only — ignore paragraphs.<br>
+                        → Make 5 quick flashcards for your worst pitfalls using the ${flashLink}.`)}
+
+                        ${phaseCard('#00d1b2','rgba(0,209,178,0.08)','fa-solid fa-bed',`Phase 3 — Mandatory Sleep (${sleep} hrs)`,
+                        `<strong>Do not skip this.</strong> Sleep is when your brain converts short-term memory to long-term. Cutting sleep for more study is counter-productive — it guarantees you'll blank in the exam.<br>
+                        → Set 1 alarm, no snoozing. Wake up 30 min early for a final silent review of your 5 flashcards.`)}
+                        
+                        ${p3 > 0 ? phaseCard('#ffbd2e','rgba(255,189,46,0.08)','fa-solid fa-clock',`Bonus Filler (${p3} hrs)`,
+                        `If time remains: read ${w3Link} — specifically Examples & Try It sections only. These are exam-ready snippets you can directly recall.`) : ''}`;
+
+                } else if (prep === 30) {
+                    // TRIAGE: 30% prep
+                    const p1 = Math.max(1, Math.floor(study * 0.35));
+                    const p2 = Math.max(1, Math.floor(study * 0.35));
+                    const p3 = Math.max(1, Math.floor(study * 0.2));
+
+                    header = `<div style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1.2rem; flex-wrap:wrap;">
+                        <span style="background:rgba(255,189,46,0.15); border:1px solid var(--accent-gold); color:var(--accent-gold); padding:0.4rem 1rem; border-radius:50px; font-weight:700; font-size:0.9rem;"><i class="fa-solid fa-hammer"></i> TRIAGE MODE</span>
+                        <span style="color:var(--text-muted); font-size:0.9rem;">${hrs} hrs total · ${study} hrs study · ${sleep} hrs sleep · Subject: <strong style="color:white;">${s.label}</strong></span>
+                    </div>
+                    <div style="background:rgba(255,189,46,0.07); border:1px solid rgba(255,189,46,0.2); border-radius:10px; padding:1rem; margin-bottom:1rem;">
+                        <strong style="color:var(--accent-gold); font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">${s.label} — Priority Topics For Your Exam</strong>
+                        <ul style="margin:0.6rem 0 0; padding-left:1.2rem; color:var(--text-muted); font-size:0.88rem; line-height:1.8;">${hotTopicList(s.hotTopics)}</ul>
+                    </div>`;
+
+                    phases = `
+                        ${phaseCard(color,'rgba(255,255,255,0.04)','fa-solid fa-crosshairs',`Phase 1 — Targeted Deconstruction (${p1} hrs)`,
+                        `You know the basics — now fix your mental gaps fast using the ${conceptLink} tool right here on this page.<br>
+                        → Select <strong>${s.label}</strong> from the sidebar and read the "Common Trap" and "Core Idea" sections carefully.<br>
+                        → Open ${w3Link} and work through <em>only</em> the topics you are weak in: <em>${s.hotTopics.slice(2).join(', ')}</em>.<br>
+                        → Take notes in your own words — do NOT copy paste.`)}
+
+                        ${phaseCard('#8e24aa','rgba(142,36,170,0.08)','fa-solid fa-pen-to-square',`Phase 2 — Active Recall Drilling (${p2} hrs)`,
+                        `This is where you build exam-confidence. Go to the ${quizLink} — paste your hand-written notes and generate 8 questions.<br>
+                        → Score below 70%? Re-read only the failed questions, then redo the quiz.<br>
+                        → Build ${flashLink} for your <strong>5 weakest topics</strong> and self-test without looking at answers.`)}
+
+                        ${phaseCard('#00d1b2','rgba(0,209,178,0.08)','fa-solid fa-headphones',`Phase 3 — Focus Lock-In (${p3} hrs)`,
+                        `Switch to the ${focusLink} in Knowledge Base. Set a 25-min Pomodoro. No phone — just revision.<br>
+                        → Final pass: use the ${kanbanLink} to sort your topics into "Weak / OK / Strong" columns. Only study the Weak ones.`)}
+
+                        ${phaseCard('#ff5252','rgba(255,82,82,0.08)','fa-solid fa-bed',`Phase 4 — Sleep (${sleep} hrs)`,
+                        `Wake up 20 min before the exam. Flip through your flashcards silently — no new studying.`)}`;
+
+                } else {
+                    // POLISH: 70% prep
+                    const p1 = Math.max(1, Math.floor(study * 0.4));
+                    const p2 = Math.max(1, Math.floor(study * 0.3));
+                    const p3 = Math.max(1, study - p1 - p2);
+
+                    header = `<div style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1.2rem; flex-wrap:wrap;">
+                        <span style="background:rgba(0,209,178,0.15); border:1px solid var(--accent-mint); color:var(--accent-mint); padding:0.4rem 1rem; border-radius:50px; font-weight:700; font-size:0.9rem;"><i class="fa-solid fa-check-double"></i> POLISH MODE</span>
+                        <span style="color:var(--text-muted); font-size:0.9rem;">${hrs} hrs total · ${study} hrs study · ${sleep} hrs sleep · Subject: <strong style="color:white;">${s.label}</strong></span>
+                    </div>
+                    <div style="background:rgba(0,209,178,0.07); border:1px solid rgba(0,209,178,0.2); border-radius:10px; padding:1rem; margin-bottom:1rem;">
+                        <strong style="color:var(--accent-mint); font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">${s.label} — Common Exam Traps (Even Strong Students Miss These)</strong>
+                        <ul style="margin:0.6rem 0 0; padding-left:1.2rem; color:var(--text-muted); font-size:0.88rem; line-height:1.8;">${pitfallList(s.pitfalls)}</ul>
+                    </div>`;
+
+                    phases = `
+                        ${phaseCard('#00d1b2','rgba(0,209,178,0.08)','fa-solid fa-bolt',`Phase 1 — Feynman Stress Test (${p1} hrs)`,
+                        `You think you know it — prove it. Open the ${feynLink} in Knowledge Base and explain each of the 5 hottest ${s.label} topics out loud in simple English.<br>
+                        → <em>Topics to explain:</em> ${s.hotTopics.join(', ')}.<br>
+                        → If you hesitate for more than 3 seconds on any topic, that is your exam trap. Go to the ${conceptLink} for an instant mental model.`)}
+
+                        ${phaseCard('#8e24aa','rgba(142,36,170,0.08)','fa-solid fa-layer-group',`Phase 2 — Flashcard Speed Run (${p2} hrs)`,
+                        `Build 10 flashcards for edge cases and common traps using the ${flashLink}.<br>
+                        → Focus on the <em>tricky variants</em> listed above — these are exactly what examiners test students who "know" the topic.<br>
+                        → Aim for 100% accuracy. If you miss any, add it back to the deck.`)}
+
+                        ${phaseCard('#ffbd2e','rgba(255,189,46,0.08)','fa-solid fa-headphones',`Phase 3 — Deep Work + Final Review (${p3} hrs)`,
+                        `Lock in with the ${focusLink}. Set a 25-min Pomodoro. Final review: scan ${w3Link} for any syntax you haven't used recently.<br>
+                        → Use the ${plannerLink} to build a last-minute timed revision schedule if you have multiple exam parts.`)}
+
+                        ${phaseCard('#ff5252','rgba(255,82,82,0.08)','fa-solid fa-bed',`Phase 4 — Full Rest (${sleep} hrs)`,
+                        `You are prepared. <strong>Sleep is your performance enhancer now</strong> — it's more valuable than another hour of study at this stage. Get the full ${sleep} hours. Your brain will consolidate everything overnight.`)}`;
+                }
+
+                return `${header}<div style="display:flex; flex-direction:column;">${phases}</div>
+                <div style="border-top:1px solid rgba(255,255,255,0.06); margin-top:1rem; padding-top:1rem; display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center;">
+                    <span style="color:var(--text-muted); font-size:0.82rem; font-weight:600;">Quick access:</span>
+                    <a href="${s.ytAnchor}" style="color:${color}; font-size:0.82rem; border:1px solid rgba(255,255,255,0.1); padding:0.25rem 0.6rem; border-radius:6px; text-decoration:none;"><i class="fa-brands fa-youtube"></i> ${s.label} Video</a>
+                    <a href="https://www.codewithharry.com/notes/" target="_blank" style="color:#00d1b2; font-size:0.82rem; border:1px solid rgba(255,255,255,0.1); padding:0.25rem 0.6rem; border-radius:6px; text-decoration:none;"><i class="fa-solid fa-file-arrow-down"></i> CWH Notes</a>
+                    <a href="knowledge-base.html#quiz-lab" style="color:#ff5252; font-size:0.82rem; border:1px solid rgba(255,255,255,0.1); padding:0.25rem 0.6rem; border-radius:6px; text-decoration:none;"><i class="fa-solid fa-brain"></i> Quiz Lab</a>
+                    <a href="knowledge-base.html#flashcard-builder" style="color:#8e24aa; font-size:0.82rem; border:1px solid rgba(255,255,255,0.1); padding:0.25rem 0.6rem; border-radius:6px; text-decoration:none;"><i class="fa-solid fa-layer-group"></i> Flashcards</a>
+                    <a href="knowledge-base.html#focus-hub" style="color:#00d1b2; font-size:0.82rem; border:1px solid rgba(255,255,255,0.1); padding:0.25rem 0.6rem; border-radius:6px; text-decoration:none;"><i class="fa-solid fa-headphones"></i> Focus Hub</a>
+                </div>`;
+            }
+
+            // Wire up step 1 subject buttons
+            document.querySelectorAll('.subject-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selectedSubject = btn.dataset.key;
+                    selectedLabel.textContent = subjectMeta[selectedSubject].label;
+                    step1.style.display = 'none';
+                    step2.style.display = 'block';
+                    outputWrap.style.display = 'none';
+                });
+                btn.addEventListener('mouseenter', () => { btn.style.transform = 'translateY(-4px)'; btn.style.boxShadow = '0 8px 20px rgba(0,0,0,0.3)'; });
+                btn.addEventListener('mouseleave', () => { btn.style.transform = ''; btn.style.boxShadow = ''; });
+            });
+
+            // Hours slider
+            if (hoursSlider) {
                 hoursSlider.addEventListener('input', (e) => {
                     hoursVal.innerText = `${e.target.value} hrs`;
                 });
+            }
 
+            // Change subject
+            if (changeSubjectBtn) {
+                changeSubjectBtn.addEventListener('click', () => {
+                    step2.style.display = 'none';
+                    outputWrap.style.display = 'none';
+                    step1.style.display = 'block';
+                });
+            }
+
+            // Generate plan
+            if (generateBtn) {
                 generateBtn.addEventListener('click', () => {
+                    if (!selectedSubject) return;
                     const hrs = parseInt(hoursSlider.value);
                     const prep = parseInt(prepSelect.value);
-                    
-                    let sleep = hrs > 12 ? 6 : (hrs > 6 ? 3 : 0);
-                    let studyHrs = hrs - sleep;
-                    
-                    let plan = '';
-                    if (prep === 0) {
-                        plan = `
-                            <h4 style="color: #ff5252; margin-bottom: 1rem;"><i class="fa-solid fa-triangle-exclamation"></i> Emergency Mode Active</h4>
-                            <div style="display:flex; flex-direction:column; gap:0.8rem;">
-                                <div style="background: rgba(255,64,129,0.1); border-left: 4px solid var(--accent-coral); padding: 1rem; border-radius: 6px;">
-                                    <strong><i class="fa-solid fa-video"></i> Phase 1: High-Yield Crash Course (${Math.max(1, Math.floor(studyHrs*0.5))} hrs)</strong><br>
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Do NOT read the textbook. Watch a 1-shot YouTube summary video on 1.5x speed.</span>
-                                </div>
-                                <div style="background: rgba(142,36,170,0.1); border-left: 4px solid var(--accent-violet); padding: 1rem; border-radius: 6px;">
-                                    <strong><i class="fa-solid fa-file-contract"></i> Phase 2: Past 5 Years Papers (${Math.max(1, Math.floor(studyHrs*0.3))} hrs)</strong><br>
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Memorize the repeated questions. 80% of exams come from 20% of topics.</span>
-                                </div>
-                                <div style="background: rgba(0,209,178,0.1); border-left: 4px solid var(--accent-mint); padding: 1rem; border-radius: 6px;">
-                                    <strong><i class="fa-solid fa-bed"></i> Phase 3: Forced Rest (${sleep} hrs)</strong><br>
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Sleep is mandatory to convert short-term memory to long-term. Do not skip this.</span>
-                                </div>
-                            </div>
-                        `;
-                    } else if (prep === 30) {
-                        plan = `
-                            <h4 style="color: var(--accent-gold); margin-bottom: 1rem;"><i class="fa-solid fa-hammer"></i> Triage Mode Active</h4>
-                            <div style="display:flex; flex-direction:column; gap:0.8rem;">
-                                <div style="background: rgba(255,189,46,0.1); border-left: 4px solid var(--accent-gold); padding: 1rem; border-radius: 6px;">
-                                    <strong><i class="fa-solid fa-book-open"></i> Phase 1: Targeted Reading (${Math.max(1, Math.floor(studyHrs*0.4))} hrs)</strong><br>
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Only study the chapters you are weak in. Ignore what you already know.</span>
-                                </div>
-                                <div style="background: rgba(142,36,170,0.1); border-left: 4px solid var(--accent-violet); padding: 1rem; border-radius: 6px;">
-                                    <strong><i class="fa-solid fa-pen-to-square"></i> Phase 2: Practice & Recall (${Math.max(1, Math.floor(studyHrs*0.4))} hrs)</strong><br>
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Solve past paper questions blindly. If you get stuck, look at the solution immediately.</span>
-                                </div>
-                                <div style="background: rgba(0,209,178,0.1); border-left: 4px solid var(--accent-mint); padding: 1rem; border-radius: 6px;">
-                                    <strong><i class="fa-solid fa-bed"></i> Phase 3: Forced Rest (${sleep} hrs)</strong><br>
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Brain needs rest. Wake up 1 hour early for final formula revision.</span>
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        plan = `
-                            <h4 style="color: var(--accent-mint); margin-bottom: 1rem;"><i class="fa-solid fa-check-double"></i> Polish Mode Active</h4>
-                            <div style="display:flex; flex-direction:column; gap:0.8rem;">
-                                <div style="background: rgba(0,209,178,0.1); border-left: 4px solid var(--accent-mint); padding: 1rem; border-radius: 6px;">
-                                    <strong><i class="fa-solid fa-bolt"></i> Phase 1: Rapid Active Recall (${Math.max(1, Math.floor(studyHrs*0.6))} hrs)</strong><br>
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Use flashcards and mind maps. Do not read notes line-by-line.</span>
-                                </div>
-                                <div style="background: rgba(142,36,170,0.1); border-left: 4px solid var(--accent-violet); padding: 1rem; border-radius: 6px;">
-                                    <strong><i class="fa-solid fa-person-chalkboard"></i> Phase 2: The Feynman Run (${Math.max(1, Math.floor(studyHrs*0.4))} hrs)</strong><br>
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Explain the hardest concepts out loud. Fix any gaps in your logic.</span>
-                                </div>
-                                <div style="background: rgba(255,189,46,0.1); border-left: 4px solid var(--accent-gold); padding: 1rem; border-radius: 6px;">
-                                    <strong><i class="fa-solid fa-bed"></i> Phase 3: Rest & Digest (${sleep} hrs)</strong><br>
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">You are well prepared. Get proper sleep to maximize focus during the exam.</span>
-                                </div>
-                            </div>
-                        `;
-                    }
+                    output.innerHTML = generatePlan(selectedSubject, hrs, prep);
+                    step2.style.display = 'none';
+                    outputWrap.style.display = 'block';
+                    document.getElementById('crammer-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            }
 
-                    crammerOutput.innerHTML = plan;
+            // Restart
+            if (restartBtn) {
+                restartBtn.addEventListener('click', () => {
+                    selectedSubject = null;
+                    outputWrap.style.display = 'none';
+                    step2.style.display = 'none';
+                    step1.style.display = 'block';
+                    hoursSlider.value = 12;
+                    hoursVal.innerText = '12 hrs';
+                    prepSelect.value = '0';
                 });
             }
         });
