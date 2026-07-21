@@ -228,6 +228,34 @@
             opacity: 1;
         }
 
+        /* Custom Scrollbar for Topic List */
+        .topic-list-container {
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-right: 0.5rem;
+            max-height: 420px;
+        }
+
+        .topic-list-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .topic-list-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+
+        .topic-list-container::-webkit-scrollbar-thumb {
+            background: rgba(142, 36, 170, 0.3);
+            border-radius: 10px;
+        }
+
+        .topic-list-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(142, 36, 170, 0.6);
+        }
+
         .deconstructor-main {
             padding: 3rem;
             position: relative;
@@ -320,338 +348,210 @@
 
         /* --- NEW UNIQUE FEATURES STYLES --- */
 
-        /* Feature 1: Feynman Dashboard */
-        .feynman-dashboard {
-            border-radius: 24px;
+        /* Mobile Responsiveness for Crammer Planner */
+        @media (max-width: 900px) {
+            .crammer-container {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        /* YouTube & Notes Grid */
+        .yt-notes-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .yt-note-card {
+            background: rgba(31, 40, 51, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
             overflow: hidden;
-            position: relative;
-            background: url('feynman-dashboard.png') center/cover no-repeat;
-            min-height: 450px;
-            display: flex;
-            align-items: flex-end;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            margin-top: 2rem;
             transition: all 0.4s ease;
         }
 
-        .feynman-dashboard:hover {
-            box-shadow: 0 25px 60px rgba(142, 36, 170, 0.3);
-            border-color: rgba(142, 36, 170, 0.5);
+        .yt-note-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(142, 36, 170, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(142, 36, 170, 0.1);
         }
 
-        .feynman-dashboard::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(11, 12, 16, 0.95) 10%, rgba(11, 12, 16, 0.2) 70%);
-            z-index: 1;
-        }
-
-        .feynman-ui {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(31, 40, 51, 0.6);
-            backdrop-filter: blur(16px);
-            padding: 1.5rem 2rem;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .audio-wave {
+        .yt-note-header {
             display: flex;
             align-items: center;
-            gap: 4px;
-            height: 40px;
-        }
-
-        .audio-bar {
-            width: 4px;
-            background: var(--accent-mint);
-            border-radius: 4px;
-            animation: wave 1s ease-in-out infinite alternate;
-        }
-        
-        .audio-bar:nth-child(1) { height: 30%; animation-delay: 0s; }
-        .audio-bar:nth-child(2) { height: 60%; animation-delay: 0.1s; background: var(--accent-coral); }
-        .audio-bar:nth-child(3) { height: 100%; animation-delay: 0.2s; background: var(--accent-violet); }
-        .audio-bar:nth-child(4) { height: 40%; animation-delay: 0.3s; background: var(--accent-coral); }
-        .audio-bar:nth-child(5) { height: 70%; animation-delay: 0.4s; }
-
-        @keyframes wave {
-            0% { transform: scaleY(0.3); }
-            100% { transform: scaleY(1); }
-        }
-
-        .jargon-alert {
-            background: rgba(255, 82, 82, 0.15);
-            border: 1px solid #ff5252;
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-            animation: pulseAlert 2s infinite;
-        }
-
-        @keyframes pulseAlert {
-            0% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 82, 82, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0); }
-        }
-
-        /* Feature 2: Retention Simulator */
-        .retention-simulator {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 3rem;
-            margin-top: 2rem;
-            display: flex;
-            gap: 4rem;
-            transition: all 0.4s ease;
-        }
-        
-        .retention-simulator:hover {
-            border-color: rgba(0, 209, 178, 0.4);
-            box-shadow: 0 10px 30px rgba(0, 209, 178, 0.1);
-        }
-
-        .retention-controls {
-            flex: 1;
-        }
-
-        .retention-bars {
-            flex: 1.5;
-            display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
-            justify-content: center;
-        }
-
-        .custom-slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 8px;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.1);
-            outline: none;
-            margin: 2rem 0;
-            transition: 0.2s;
-        }
-        
-        .custom-slider:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .custom-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--accent-mint);
-            cursor: pointer;
-            box-shadow: 0 0 15px var(--accent-mint);
-            transition: 0.2s;
-        }
-        
-        .custom-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        .bar-container {
-            width: 100%;
-            height: 28px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 14px;
-            position: relative;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        .retention-bar {
-            height: 100%;
-            border-radius: 14px;
-            transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .bar-cramming { 
-            background: linear-gradient(90deg, #ff5252, #ff79a1); 
-            width: 100%; 
-            box-shadow: 0 0 15px rgba(255, 82, 82, 0.4);
-        }
-        .bar-mastery { 
-            background: linear-gradient(90deg, var(--accent-mint), #00e676); 
-            width: 100%; 
-            box-shadow: 0 0 15px rgba(0, 209, 178, 0.4);
-        }
-
-        .retention-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.8rem;
-            color: white;
-            font-weight: 500;
-            font-size: 1.1rem;
-        }
-
-        .retention-value {
-            font-family: monospace;
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        /* Feature 3: Neural Explorer */
-        .neural-explorer {
-            height: 450px;
-            background: radial-gradient(circle at center, rgba(31, 40, 51, 0.8), rgba(11, 12, 16, 0.9));
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            margin-top: 2rem;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.5s ease;
-        }
-        
-        .neural-explorer:hover {
-            box-shadow: 0 15px 40px rgba(255, 189, 46, 0.2);
-            border-color: rgba(255, 189, 46, 0.4);
-        }
-
-        .neural-toggles {
-            position: absolute;
-            top: 2rem;
-            display: flex;
             gap: 1rem;
-            z-index: 10;
+            padding: 1.25rem 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .neural-toggle {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-muted);
-            padding: 0.8rem 1.5rem;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: inherit;
-            font-weight: 600;
-        }
-
-        .neural-toggle.active {
-            background: rgba(255, 189, 46, 0.2);
-            color: white;
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 20px rgba(255, 189, 46, 0.3);
-        }
-
-        /* Linear vs Neural views */
-        #view-linear {
+        .yt-note-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
-            gap: 20px;
-            transition: 0.5s opacity, 0.5s transform;
-            opacity: 1;
-            transform: scale(1);
-        }
-        
-        .linear-node {
-            width: 80px; height: 80px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--text-muted); font-size: 1.5rem;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        .linear-line {
-            width: 50px; height: 2px; background: rgba(255, 255, 255, 0.2);
-        }
-
-        #view-neural {
-            position: absolute;
-            inset: 0;
-            display: block; /* Kept block for positioning, handled by opacity */
-            opacity: 0;
-            pointer-events: none;
-            transition: 0.5s opacity, 0.5s transform;
-            transform: scale(0.9);
-        }
-        
-        #view-neural.show {
-            opacity: 1;
-            pointer-events: all;
-            transform: scale(1);
-        }
-
-        .n-node {
-            position: absolute;
-            width: 60px; height: 60px;
-            border-radius: 50%;
-            background: rgba(255, 189, 46, 0.1);
-            border: 2px solid var(--accent-gold);
-            display: flex; align-items: center; justify-content: center;
-            color: var(--accent-gold);
-            box-shadow: 0 0 20px rgba(255, 189, 46, 0.4);
-            animation: floatNode 3s infinite alternate;
+            justify-content: center;
             font-size: 1.5rem;
-            z-index: 2;
+            flex-shrink: 0;
         }
 
-        .n-node:nth-child(1) { top: 30%; left: 30%; animation-delay: 0s; }
-        .n-node:nth-child(2) { top: 60%; left: 45%; animation-delay: 0.5s; background: rgba(142, 36, 170, 0.1); border-color: var(--accent-violet); color: var(--accent-violet); box-shadow: 0 0 20px rgba(142, 36, 170, 0.4);}
-        .n-node:nth-child(3) { top: 20%; left: 60%; animation-delay: 1s; background: rgba(255, 64, 129, 0.1); border-color: var(--accent-coral); color: var(--accent-coral); box-shadow: 0 0 20px rgba(255, 64, 129, 0.4);}
-        .n-node:nth-child(4) { top: 50%; left: 75%; animation-delay: 1.5s; background: rgba(0, 209, 178, 0.1); border-color: var(--accent-mint); color: var(--accent-mint); box-shadow: 0 0 20px rgba(0, 209, 178, 0.4);}
-
-        .n-line {
-            position: absolute;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-gold), var(--accent-violet));
-            transform-origin: left center;
-            opacity: 0.6;
-            animation: pulseLine 2s infinite;
-            z-index: 1;
-            border-radius: 3px;
+        .yt-note-body {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
-        @keyframes pulseLine {
-            0% { opacity: 0.3; } 50% { opacity: 0.8; box-shadow: 0 0 10px rgba(255,255,255,0.5); } 100% { opacity: 0.3; }
+        .yt-link-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 0, 0, 0.06);
+            border: 1px solid rgba(255, 0, 0, 0.15);
+            border-radius: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
 
+        .yt-link-card:hover {
+            background: rgba(255, 0, 0, 0.12);
+            border-color: rgba(255, 0, 0, 0.35);
+            transform: translateX(4px);
+        }
+
+        .yt-play-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff4444;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .note-download-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.9rem 1rem;
+            background: rgba(0, 209, 178, 0.06);
+            border: 1px solid rgba(0, 209, 178, 0.15);
+            border-radius: 14px;
+            color: var(--accent-mint);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .note-download-btn:hover {
+            background: rgba(0, 209, 178, 0.14);
+            border-color: rgba(0, 209, 178, 0.4);
+            transform: translateX(4px);
+        }
+
+        .note-download-btn i:first-child {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        /* Concept Clarity Toolkit */
+        .toolkit-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .toolkit-card {
+            background: rgba(31, 40, 51, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .toolkit-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 64, 129, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 64, 129, 0.1);
+        }
+
+        .toolkit-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .toolkit-card h3 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .toolkit-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .toolkit-tip {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: rgba(255, 189, 46, 0.05);
+            border: 1px solid rgba(255, 189, 46, 0.12);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .toolkit-tip i {
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        /* Responsive */
         @media (max-width: 900px) {
             .stagger-item { width: 100%; text-align: left !important; }
             .stagger-item::after { display: none; }
             .staggered-grid::before { left: 0; }
             .deconstructor-container { grid-template-columns: 1fr; min-height: auto; }
             .breakdown-grid { grid-template-columns: 1fr; }
-            
             .retention-simulator { flex-direction: column; gap: 2rem; padding: 2rem; }
-            .feynman-ui { flex-direction: column; gap: 1rem; align-items: flex-start; }
-            .linear-node { width: 50px; height: 50px; }
-            .linear-line { width: 20px; }
             .concept-hero-visual { aspect-ratio: 2 / 1; overflow: hidden; margin-top: 1rem; }
             .brain-node { transform: scale(0.65); }
             .brain-node.center { transform: scale(0.7); }
+            .yt-notes-grid { grid-template-columns: 1fr; }
+            .toolkit-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 576px) {
             .stagger-card { padding: 1.25rem; }
             .topic-sidebar { padding: 1.25rem; }
             .deconstructor-container { border-radius: 16px; }
+            .toolkit-grid { grid-template-columns: 1fr; }
+            .toolkit-card { padding: 1.5rem; }
+            .yt-note-header { padding: 1rem; }
+            .yt-note-body { padding: 1rem; }
+            .yt-link-card { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+            .note-download-btn { font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -762,29 +662,41 @@
                 <div class="deconstructor-container animate-on-scroll" style="transition-delay: 0.2s;">
                     <!-- Sidebar -->
                     <div class="topic-sidebar">
-                        <h4 style="color: white; margin-bottom: 0.5rem;"><i class="fa-solid fa-layer-group" style="color: var(--accent-violet);"></i> Difficult Topics</h4>
-                        <input type="text" class="topic-search" placeholder="Search concept...">
+                        <h4 style="color: white; margin-bottom: 0.5rem;"><i class="fa-solid fa-layer-group" style="color: var(--accent-violet);"></i> Tech Topics</h4>
+                        <input type="text" class="topic-search" placeholder="Search topic...">
                         
-                        <div style="overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; padding-right: 0.5rem;">
-                            <button class="topic-btn active" data-concept="pointers">
-                                <i class="fa-brands fa-cuttlefish"></i>
-                                <span>Pointers (C/C++)</span>
+                        <div class="topic-list-container">
+                            <button class="topic-btn active" data-concept="html">
+                                <i class="fa-brands fa-html5"></i>
+                                <span>HTML</span>
                             </button>
-                            <button class="topic-btn" data-concept="oop">
-                                <i class="fa-solid fa-cube"></i>
-                                <span>Polymorphism (OOP)</span>
+                            <button class="topic-btn" data-concept="css">
+                                <i class="fa-brands fa-css3-alt"></i>
+                                <span>CSS</span>
                             </button>
-                            <button class="topic-btn" data-concept="recursion">
-                                <i class="fa-solid fa-arrow-rotate-left"></i>
-                                <span>Recursion (DSA)</span>
+                            <button class="topic-btn" data-concept="javascript">
+                                <i class="fa-brands fa-js"></i>
+                                <span>JavaScript</span>
                             </button>
-                            <button class="topic-btn" data-concept="thermo">
-                                <i class="fa-solid fa-temperature-arrow-up"></i>
-                                <span>Entropy (Physics)</span>
+                            <button class="topic-btn" data-concept="python">
+                                <i class="fa-brands fa-python"></i>
+                                <span>Python</span>
                             </button>
-                            <button class="topic-btn" data-concept="accounting">
-                                <i class="fa-solid fa-scale-balanced"></i>
-                                <span>Double Entry (Acc)</span>
+                            <button class="topic-btn" data-concept="php">
+                                <i class="fa-brands fa-php"></i>
+                                <span>PHP</span>
+                            </button>
+                            <button class="topic-btn" data-concept="laravel">
+                                <i class="fa-brands fa-laravel"></i>
+                                <span>Laravel</span>
+                            </button>
+                            <button class="topic-btn" data-concept="react">
+                                <i class="fa-brands fa-react"></i>
+                                <span>React</span>
+                            </button>
+                            <button class="topic-btn" data-concept="nodejs">
+                                <i class="fa-brands fa-node-js"></i>
+                                <span>Node.js</span>
                             </button>
                         </div>
                     </div>
@@ -810,104 +722,144 @@
             </div>
         </section>
 
-        <!-- NEW UNIQUE FEATURES SECTION -->
+        <!-- YOUTUBE VIDEOS & NOTES SECTION -->
+        <section class="features" style="padding-top: 40px; padding-bottom: 60px; position: relative;">
+            <div class="container">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-kicker" style="color: var(--accent-mint);"><i class="fa-solid fa-play-circle"></i> Video Tutorials & Study Notes</span>
+                    <h2>Learn From The Best — Watch & Download</h2>
+                    <p>Curated YouTube masterclass videos and comprehensive downloadable notes for every topic in The Concept Deconstructor.</p>
+                </div>
+
+                <div class="yt-notes-grid" id="yt-notes-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- LAST-MINUTE CRAMMER PLANNER SECTION -->
+        <section class="features" style="padding-top: 40px; padding-bottom: 60px; position: relative;">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-kicker" style="color: #ff5252;"><i class="fa-solid fa-fire"></i> Emergency Triage</span>
+                    <h2>The Night-Before Crammer Planner</h2>
+                    <p>Exam tomorrow? Stop panicking. Tell us your status, and we'll generate a brutal, high-yield study schedule optimized for survival.</p>
+                </div>
+                
+                <div class="crammer-container glass-card" style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; padding: 2rem; align-items: start;">
+                    <div class="crammer-inputs">
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="color: white; font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                Hours Until Exam: <span id="hours-val" style="color: var(--accent-coral);">12 hrs</span>
+                            </label>
+                            <input type="range" min="2" max="24" value="12" class="custom-slider" id="hours-slider" style="width: 100%;">
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="color: white; font-weight: 600; margin-bottom: 0.5rem; display: block;">Current Prep Level:</label>
+                            <select id="prep-select" class="topic-search" style="width: 100%; cursor: pointer;">
+                                <option value="0">0% - Clueless</option>
+                                <option value="30">30% - Know the basics</option>
+                                <option value="70">70% - Just need revision</option>
+                            </select>
+                        </div>
+                        <button id="generate-plan-btn" class="btn btn-primary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-bolt"></i> Generate Battle Plan</button>
+                    </div>
+                    <div class="crammer-output" id="crammer-output" style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.05); min-height: 250px;">
+                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted); flex-direction: column; gap: 1rem; text-align: center;">
+                            <i class="fa-solid fa-clipboard-list" style="font-size: 3rem; opacity: 0.5;"></i>
+                            <p>Adjust the sliders and click generate to get your survival schedule.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCEPT CLARITY TOOLKIT SECTION -->
         <section class="features" style="padding-top: 40px; padding-bottom: 80px; position: relative;">
             <div class="container">
                 <div class="section-header animate-on-scroll">
-                    <span class="section-kicker" style="color: var(--accent-mint);">Advanced Mastery Features</span>
-                    <h2>Premium Learning Technologies</h2>
-                    <p>Exclusive interactive tools designed to force your brain into active recall and deep neural networking.</p>
+                    <span class="section-kicker" style="color: var(--accent-coral);"><i class="fa-solid fa-toolbox"></i> Concept Clarity Toolkit</span>
+                    <h2>Master Any Concept Like a Pro</h2>
+                    <p>Proven study strategies, mental frameworks, and techniques used by top students worldwide to deeply understand and retain any topic.</p>
                 </div>
-                
-                <!-- FEATURE 1: FEYNMAN AI DASHBOARD -->
-                <div class="animate-on-scroll">
-                    <h3 style="color: white; margin-bottom: 0.5rem;"><i class="fa-solid fa-video text-accent"></i> The Feynman AI Tutor</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 1rem;">Explain the topic out loud. Our AI tutor listens, analyzes your speech, and flags academic jargon to ensure you actually understand the concept simply.</p>
-                    
-                    <div class="feynman-dashboard">
-                        <div class="feynman-ui">
-                            <div>
-                                <h4 style="color: white; font-size: 1.2rem; margin-bottom: 0.2rem;">Live Session: Explaining Polymorphism</h4>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <span style="color: var(--accent-mint); font-weight: 600;"><i class="fa-solid fa-microphone"></i> Recording...</span>
-                                    <div class="audio-wave">
-                                        <div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="jargon-alert">
-                                <i class="fa-solid fa-triangle-exclamation"></i>
-                                <span><strong>Jargon Detected:</strong> "Instantiating inherited classes" — Try explaining this using simpler words!</span>
-                            </div>
+
+                <!-- Toolkit Cards Grid -->
+                <div class="toolkit-grid">
+                    <!-- Card 1 -->
+                    <div class="toolkit-card">
+                        <div class="toolkit-icon" style="background: rgba(255, 64, 129, 0.1); color: var(--accent-coral);">
+                            <i class="fa-solid fa-pen-fancy"></i>
+                        </div>
+                        <h3>Active Recall</h3>
+                        <p>Close your notes and try to write down everything you remember about a topic. The struggle of retrieving information is what strengthens your memory.</p>
+                        <div class="toolkit-tip">
+                            <i class="fa-solid fa-lightbulb" style="color: var(--accent-gold);"></i>
+                            <span>After studying a chapter, close the book and write a summary from memory. Compare with the original to find gaps.</span>
                         </div>
                     </div>
-                </div>
 
-                <!-- FEATURE 2: RETENTION DECAY SIMULATOR -->
-                <div class="animate-on-scroll" style="margin-top: 5rem;">
-                    <h3 style="color: white; margin-bottom: 0.5rem;"><i class="fa-solid fa-chart-line" style="color: var(--accent-mint);"></i> Retention Decay Simulator</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 1rem;">Slide to see what happens to your memory days after learning. Notice how cramming disappears, while conceptual understanding stays permanently.</p>
-                    
-                    <div class="retention-simulator glass-card">
-                        <div class="retention-controls">
-                            <h4 style="color: white; font-size: 1.5rem;">Days Since Studying: <span id="days-val" style="color: var(--accent-mint);">1</span></h4>
-                            <input type="range" min="1" max="30" value="1" class="custom-slider" id="retention-slider">
-                            <p style="color: var(--text-muted); font-size: 0.9rem;"><i class="fa-solid fa-info-circle"></i> Move slider to simulate time passing after an exam.</p>
+                    <!-- Card 2 -->
+                    <div class="toolkit-card">
+                        <div class="toolkit-icon" style="background: rgba(142, 36, 170, 0.1); color: var(--accent-violet);">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
                         </div>
-                        <div class="retention-bars">
-                            <div>
-                                <div class="retention-label">
-                                    <span><i class="fa-solid fa-book-skull"></i> Rote Memorization (Cramming)</span>
-                                    <span class="retention-value" id="cram-val" style="color: #ff5252;">100%</span>
-                                </div>
-                                <div class="bar-container">
-                                    <div class="retention-bar bar-cramming" id="cram-bar"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="retention-label">
-                                    <span><i class="fa-solid fa-brain"></i> Conceptual Mastery</span>
-                                    <span class="retention-value" id="mastery-val" style="color: var(--accent-mint);">100%</span>
-                                </div>
-                                <div class="bar-container">
-                                    <div class="retention-bar bar-mastery" id="mastery-bar"></div>
-                                </div>
-                            </div>
+                        <h3>Spaced Repetition</h3>
+                        <p>Review material at increasing intervals — 1 day, 3 days, 7 days, 14 days. This fights the forgetting curve and moves knowledge into long-term memory.</p>
+                        <div class="toolkit-tip">
+                            <i class="fa-solid fa-lightbulb" style="color: var(--accent-gold);"></i>
+                            <span>Use a calendar to schedule review sessions. Mark topics with colors based on confidence level.</span>
                         </div>
                     </div>
-                </div>
 
-                <!-- FEATURE 3: NEURAL PATHWAY EXPLORER -->
-                <div class="animate-on-scroll" style="margin-top: 5rem;">
-                    <h3 style="color: white; margin-bottom: 0.5rem;"><i class="fa-solid fa-network-wired" style="color: var(--accent-gold);"></i> 3D Neural Pathway Explorer</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 1rem;">Switch from standard linear textbook reading to interactive mind mapping. See how topics connect to build a stronger neural foundation.</p>
-                    
-                    <div class="neural-explorer">
-                        <div class="neural-toggles">
-                            <button class="neural-toggle active" id="btn-linear">Linear Reading</button>
-                            <button class="neural-toggle" id="btn-neural">Neural Mind Map</button>
+                    <!-- Card 3 -->
+                    <div class="toolkit-card">
+                        <div class="toolkit-icon" style="background: rgba(0, 209, 178, 0.1); color: var(--accent-mint);">
+                            <i class="fa-solid fa-chalkboard-user"></i>
                         </div>
-
-                        <!-- Linear View -->
-                        <div id="view-linear">
-                            <div class="linear-node"><i class="fa-solid fa-book"></i></div>
-                            <div class="linear-line"></div>
-                            <div class="linear-node"><i class="fa-solid fa-book"></i></div>
-                            <div class="linear-line"></div>
-                            <div class="linear-node"><i class="fa-solid fa-book"></i></div>
+                        <h3>Feynman Technique</h3>
+                        <p>Explain the concept as if you're teaching a 12-year-old. If you can't explain it simply, you don't understand it deeply enough.</p>
+                        <div class="toolkit-tip">
+                            <i class="fa-solid fa-lightbulb" style="color: var(--accent-gold);"></i>
+                            <span>Record yourself explaining a topic. Play it back and notice where you hesitate — those are your weak spots.</span>
                         </div>
+                    </div>
 
-                        <!-- Neural View -->
-                        <div id="view-neural">
-                            <div class="n-node"><i class="fa-solid fa-atom"></i></div>
-                            <div class="n-node"><i class="fa-solid fa-dna"></i></div>
-                            <div class="n-node"><i class="fa-solid fa-microscope"></i></div>
-                            <div class="n-node"><i class="fa-solid fa-flask"></i></div>
-                            
-                            <div class="n-line" style="width: 120px; top: 40%; left: 35%; transform: rotate(30deg);"></div>
-                            <div class="n-line" style="width: 180px; top: 40%; left: 35%; transform: rotate(-10deg);"></div>
-                            <div class="n-line" style="width: 150px; top: 65%; left: 48%; transform: rotate(-25deg);"></div>
+                    <!-- Card 4 -->
+                    <div class="toolkit-card">
+                        <div class="toolkit-icon" style="background: rgba(255, 189, 46, 0.1); color: var(--accent-gold);">
+                            <i class="fa-solid fa-diagram-project"></i>
+                        </div>
+                        <h3>Mind Mapping</h3>
+                        <p>Create visual diagrams connecting related concepts. This mirrors how your brain naturally organizes information through neural pathways.</p>
+                        <div class="toolkit-tip">
+                            <i class="fa-solid fa-lightbulb" style="color: var(--accent-gold);"></i>
+                            <span>Start with the main concept in the center. Branch out to sub-topics and use colors to categorize relationships.</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="toolkit-card">
+                        <div class="toolkit-icon" style="background: rgba(255, 82, 82, 0.1); color: #ff5252;">
+                            <i class="fa-solid fa-code-compare"></i>
+                        </div>
+                        <h3>Compare & Contrast</h3>
+                        <p>Put two similar concepts side by side and list their differences and similarities. This eliminates confusion between closely related topics.</p>
+                        <div class="toolkit-tip">
+                            <i class="fa-solid fa-lightbulb" style="color: var(--accent-gold);"></i>
+                            <span>Example: Create a table comparing var vs let vs const in JavaScript to see scope, hoisting, and reassignment differences.</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="toolkit-card">
+                        <div class="toolkit-icon" style="background: rgba(142, 36, 170, 0.15); color: #bb86fc;">
+                            <i class="fa-solid fa-hands-asl-interpreting"></i>
+                        </div>
+                        <h3>Rubber Duck Debugging</h3>
+                        <p>Explain your code or problem line-by-line to an inanimate object. The act of verbalizing forces you to think through each step logically.</p>
+                        <div class="toolkit-tip">
+                            <i class="fa-solid fa-lightbulb" style="color: var(--accent-gold);"></i>
+                            <span>When stuck on a bug, explain each line out loud. You'll often find the error before finishing the explanation.</span>
                         </div>
                     </div>
                 </div>
@@ -963,60 +915,159 @@
     <script src="app.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Concept Deconstructor Data
+            // Concept Deconstructor Data — 8 Tech Topics
             const conceptData = {
-                pointers: {
-                    title: "Pointers",
-                    category: "Computer Science",
-                    desc: "Variables that store memory addresses rather than actual data values.",
-                    icon: "fa-map-pin",
-                    core: "Instead of holding a number or a string, a pointer holds the EXACT location in the computer's memory where that data lives.",
-                    analogy: "Think of a house (data) and a piece of paper with an address written on it (pointer). The paper isn't the house, but it tells you exactly where to find it.",
-                    pitfall: "Dereferencing a null pointer. This is like trying to drive to an address that's blank—your program will crash instantly.",
-                    realworld: "Passing massive 4GB 3D objects to a function. Instead of copying all 4GB (slow), you just pass the pointer (fast)."
+                html: {
+                    title: "HTML",
+                    category: "Frontend Development",
+                    desc: "HyperText Markup Language — the standard language for structuring content on the web.",
+                    icon: "fa-code",
+                    core: "HTML uses tags (like &lt;div&gt;, &lt;p&gt;, &lt;h1&gt;) to define the structure and meaning of web content. It's the skeleton of every website — without it, there's nothing for CSS to style or JavaScript to interact with.",
+                    analogy: "Think of building a house. HTML is the blueprint and the raw frame — walls, rooms, doors. It defines WHAT exists and WHERE it goes, but not the paint color or furniture.",
+                    pitfall: "Using &lt;div&gt; for everything instead of semantic tags like &lt;header&gt;, &lt;nav&gt;, &lt;article&gt;. This hurts SEO, accessibility, and makes your code unreadable.",
+                    realworld: "Every website you've ever visited is built on HTML. Even complex apps like Gmail and YouTube start with HTML structuring the page layout."
                 },
-                oop: {
-                    title: "Polymorphism",
-                    category: "Software Design",
-                    desc: "The ability of different objects to respond to the exact same method call in their own unique way.",
-                    icon: "fa-shapes",
-                    core: "A single interface can represent different underlying forms (data types or classes).",
-                    analogy: "A TV remote has a 'Power' button. You press it to turn on a TV, a soundbar, or an AC. The button is the same (interface), but each device turns on differently (implementation).",
-                    pitfall: "Overusing inheritance to achieve polymorphism, creating deep, brittle class hierarchies instead of using flexible interfaces.",
-                    realworld: "A 'draw()' command in a graphics program. You loop through a list of shapes (Circles, Squares) and call draw(). Each shape knows how to draw itself."
+                css: {
+                    title: "CSS",
+                    category: "Frontend Development",
+                    desc: "Cascading Style Sheets — the language that controls the visual presentation of HTML elements.",
+                    icon: "fa-palette",
+                    core: "CSS applies styles (colors, fonts, spacing, layouts) to HTML elements using selectors. The 'Cascading' part means styles can inherit and override each other based on specificity rules.",
+                    analogy: "If HTML is the skeleton of a house, CSS is the interior designer. It decides the wall colors, furniture arrangement, lighting, and overall vibe without changing the structure.",
+                    pitfall: "Not understanding the Box Model. Every element is a box with content, padding, border, and margin. Ignoring this causes layout bugs that seem random.",
+                    realworld: "Responsive design — making one website look perfect on phones, tablets, and desktops. Media queries in CSS adapt the layout based on screen size."
                 },
-                recursion: {
-                    title: "Recursion",
-                    category: "Data Structures",
-                    desc: "A method where the solution to a problem depends on solutions to smaller instances of the same problem.",
-                    icon: "fa-arrow-rotate-left",
-                    core: "A function that calls itself with a smaller input until it reaches a baseline condition to stop.",
-                    analogy: "Looking up a word in a dictionary, finding a word in the definition you don't know, and looking THAT word up. You keep going until you hit a word you know (base case).",
-                    pitfall: "Forgetting the 'Base Case'. Without a stopping condition, the function calls itself forever until it causes a Stack Overflow.",
-                    realworld: "Navigating through a computer file system. A folder contains folders, which contain folders. You write one 'searchFolder' function and it calls itself for every sub-folder."
+                javascript: {
+                    title: "JavaScript",
+                    category: "Full-Stack Language",
+                    desc: "The programming language of the web — adds interactivity, logic, and dynamic behavior to websites.",
+                    icon: "fa-bolt",
+                    core: "JavaScript runs in the browser and can manipulate the DOM (Document Object Model), handle events like clicks and form submissions, make API calls, and control the flow of an entire application.",
+                    analogy: "If HTML is the skeleton and CSS is the skin, JavaScript is the brain and muscles. It makes the website respond, think, and move — like a button that actually does something when you click it.",
+                    pitfall: "Confusing == (loose equality) with === (strict equality). '5' == 5 is true, but '5' === 5 is false. Always use === to avoid weird type coercion bugs.",
+                    realworld: "Form validation, real-time search filtering, infinite scroll, shopping cart functionality — any interactive feature on a website is powered by JavaScript."
                 },
-                thermo: {
-                    title: "Entropy",
-                    category: "Physics",
-                    desc: "A measure of the disorder, randomness, or uncertainty within a closed system.",
-                    icon: "fa-temperature-arrow-up",
-                    core: "The Second Law of Thermodynamics: The total entropy of an isolated system can never decrease over time. Things naturally become chaotic.",
-                    analogy: "Dropping a glass. It shatters into a hundred disordered pieces (high entropy). The pieces will never spontaneously jump back together to form a perfect glass (low entropy).",
-                    pitfall: "Confusing entropy with 'heat'. It's not heat itself, but rather the dispersal of energy. A hot cup of coffee loses heat to the room, dispersing energy and increasing entropy.",
-                    realworld: "Data compression. In information theory, entropy represents the minimum amount of bits needed to encode a message without losing information."
+                python: {
+                    title: "Python",
+                    category: "General Purpose",
+                    desc: "A high-level, readable programming language used for web development, data science, AI, and automation.",
+                    icon: "fa-terminal",
+                    core: "Python prioritizes readability with clean syntax (no curly braces, uses indentation). It supports multiple paradigms — object-oriented, functional, and procedural — making it extremely versatile.",
+                    analogy: "Python is like English compared to other languages being Latin. It reads almost like pseudocode, so you spend less time fighting syntax and more time solving the actual problem.",
+                    pitfall: "Mutable default arguments. Writing def add(item, lst=[]) causes the SAME list to persist across calls. Always use None as default and create the list inside the function.",
+                    realworld: "Instagram's backend runs on Python (Django). Data scientists use Python with Pandas and NumPy. AI models like ChatGPT were trained using Python frameworks."
                 },
-                accounting: {
-                    title: "Double Entry",
-                    category: "Accounting",
-                    desc: "A bookkeeping system where every financial transaction has equal and opposite effects in at least two different accounts.",
-                    icon: "fa-scale-balanced",
-                    core: "The fundamental equation: Assets = Liabilities + Equity. Every action must keep this equation perfectly balanced.",
-                    analogy: "Newton's Third Law for money. For every financial action, there is an equal and opposite reaction. If you get cash (Asset up), you either borrowed it (Liability up) or earned it (Equity up).",
-                    pitfall: "Confusing Debit and Credit with 'Good' and 'Bad'. Debit just means left side, Credit means right side. Debiting cash is good, debiting an expense decreases profit.",
-                    realworld: "Auditing a company. Because every entry has a counterpart, missing money is immediately obvious because the 'scale' won't balance at the end of the month."
+                php: {
+                    title: "PHP",
+                    category: "Backend Development",
+                    desc: "A server-side scripting language designed specifically for web development and powering dynamic websites.",
+                    icon: "fa-server",
+                    core: "PHP runs on the server, processes requests, interacts with databases (MySQL), and generates HTML that gets sent to the browser. It's embedded directly inside HTML using <?php ?> tags.",
+                    analogy: "Think of a restaurant. The customer (browser) sees the menu (HTML). The waiter takes the order to the kitchen (PHP server), which prepares the food (data) and serves it back as a finished plate (rendered page).",
+                    pitfall: "Not sanitizing user input, leading to SQL injection. Never put raw user data directly into database queries — always use prepared statements with PDO or MySQLi.",
+                    realworld: "WordPress powers 43% of all websites and is built entirely with PHP. Facebook originally ran on PHP before creating their own PHP compiler (HHVM)."
+                },
+                laravel: {
+                    title: "Laravel",
+                    category: "PHP Framework",
+                    desc: "An elegant PHP framework following the MVC pattern, designed for building modern, maintainable web applications.",
+                    icon: "fa-cubes",
+                    core: "Laravel provides pre-built tools for routing, database management (Eloquent ORM), authentication, and templating (Blade). It follows MVC — Model handles data, View handles UI, Controller handles logic.",
+                    analogy: "If PHP is raw cooking ingredients, Laravel is a fully-equipped kitchen with recipes, pre-measured spices, and a sous chef. You still cook, but the framework handles the tedious prep work.",
+                    pitfall: "Over-relying on Eloquent for complex queries. While convenient, Eloquent can generate inefficient SQL with N+1 query problems. Use eager loading (with()) to load relationships in batch.",
+                    realworld: "Companies like 9GAG, Deltanet Travel, and BBC use Laravel. It's the go-to choice for rapid development of RESTful APIs and full-stack applications."
+                },
+                react: {
+                    title: "React",
+                    category: "Frontend Framework",
+                    desc: "A JavaScript library for building fast, interactive user interfaces using reusable components.",
+                    icon: "fa-atom",
+                    core: "React breaks UI into independent, reusable Components. It uses a Virtual DOM to efficiently update only the parts of the page that changed, instead of re-rendering the entire page.",
+                    analogy: "Traditional websites are like repainting an entire wall when you want to change one spot. React is like having removable tiles — you just swap the one tile that needs updating.",
+                    pitfall: "Mutating state directly instead of using setState or the setter from useState. React won't detect the change, so the UI won't re-render even though the data changed.",
+                    realworld: "Facebook, Instagram, Netflix, and Airbnb all use React for their front-end interfaces. It's the most popular frontend library in the industry."
+                },
+                nodejs: {
+                    title: "Node.js",
+                    category: "Backend Runtime",
+                    desc: "A JavaScript runtime that lets you run JavaScript on the server side, enabling full-stack JavaScript development.",
+                    icon: "fa-network-wired",
+                    core: "Node.js uses Chrome's V8 engine to execute JavaScript outside the browser. It's event-driven and non-blocking, meaning it handles thousands of concurrent connections without creating a new thread for each one.",
+                    analogy: "Traditional servers are like a bank with one teller per customer — if one takes long, others wait. Node.js is like a single smart teller who takes orders from everyone and processes them as results come in.",
+                    pitfall: "Blocking the event loop with CPU-intensive tasks like image processing or complex calculations. This freezes the entire server. Use worker threads or offload to separate services.",
+                    realworld: "LinkedIn moved from Ruby to Node.js and reduced their servers from 30 to 3. PayPal, Uber, and Netflix use Node.js for high-performance, real-time services."
                 }
             };
 
+            // YouTube & Notes Data for all 8 topics
+            const ytNotesData = {
+                html: {
+                    title: "HTML", icon: "fa-brands fa-html5", color: "#e34c26",
+                    ytTitle: "HTML Full Course for Beginners", ytChannel: "freeCodeCamp",
+                    ytUrl: "https://www.youtube.com/watch?v=kUMe1FH4CHE", ytDuration: "4 hrs 10 min",
+                    noteTitle: "CodeWithHarry Notes",
+                    noteFile: "https://www.codewithharry.com/notes/",
+                    w3Url: "https://www.w3schools.com/html/"
+                },
+                css: {
+                    title: "CSS", icon: "fa-brands fa-css3-alt", color: "#264de4",
+                    ytTitle: "CSS Full Course — Flexbox, Grid & More", ytChannel: "freeCodeCamp",
+                    ytUrl: "https://www.youtube.com/watch?v=OXGznpKZ_sA", ytDuration: "6 hrs 18 min",
+                    noteTitle: "CodeWithHarry Notes",
+                    noteFile: "https://www.codewithharry.com/notes/",
+                    w3Url: "https://www.w3schools.com/css/"
+                },
+                javascript: {
+                    title: "JavaScript", icon: "fa-brands fa-js", color: "#f7df1e",
+                    ytTitle: "JavaScript Full Course for Beginners", ytChannel: "Bro Code",
+                    ytUrl: "https://www.youtube.com/watch?v=lfmg-EJ8gm4", ytDuration: "12 hrs",
+                    noteTitle: "CodeWithHarry Notes",
+                    noteFile: "https://www.codewithharry.com/notes/",
+                    w3Url: "https://www.w3schools.com/js/"
+                },
+                python: {
+                    title: "Python", icon: "fa-brands fa-python", color: "#3776AB",
+                    ytTitle: "Python Full Course for Beginners", ytChannel: "Programming with Mosh",
+                    ytUrl: "https://www.youtube.com/watch?v=_uQrJ0TkZlc", ytDuration: "6 hrs 14 min",
+                    noteTitle: "CodeWithHarry Notes",
+                    noteFile: "https://www.codewithharry.com/notes/",
+                    w3Url: "https://www.w3schools.com/python/"
+                },
+                php: {
+                    title: "PHP", icon: "fa-brands fa-php", color: "#777BB4",
+                    ytTitle: "PHP Full Course for Beginners", ytChannel: "Traversy Media",
+                    ytUrl: "https://www.youtube.com/watch?v=BUCiSSyIGGU", ytDuration: "3 hrs 30 min",
+                    noteTitle: "CodeWithHarry Notes",
+                    noteFile: "https://www.codewithharry.com/notes/",
+                    w3Url: "https://www.w3schools.com/php/"
+                },
+                laravel: {
+                    title: "Laravel", icon: "fa-brands fa-laravel", color: "#FF2D20",
+                    ytTitle: "Laravel Full Course From Scratch", ytChannel: "Traversy Media",
+                    ytUrl: "https://www.youtube.com/watch?v=MYyJ4PuL4pY", ytDuration: "4 hrs 25 min",
+                    noteTitle: "Laravel Docs",
+                    noteFile: "https://laravel.com/docs",
+                    w3Url: "https://laravel.com/docs"
+                },
+                react: {
+                    title: "React", icon: "fa-brands fa-react", color: "#61DAFB",
+                    ytTitle: "React JS Full Course for Beginners", ytChannel: "Bro Code",
+                    ytUrl: "https://www.youtube.com/watch?v=CgkZ7MvWUAA", ytDuration: "3 hrs 26 min",
+                    noteTitle: "CodeWithHarry Notes",
+                    noteFile: "https://www.codewithharry.com/notes/",
+                    w3Url: "https://www.w3schools.com/react/"
+                },
+                nodejs: {
+                    title: "Node.js", icon: "fa-brands fa-node-js", color: "#68A063",
+                    ytTitle: "Node.js Full Course for Beginners", ytChannel: "freeCodeCamp",
+                    ytUrl: "https://www.youtube.com/watch?v=Oe421EPjeBE", ytDuration: "8 hrs",
+                    noteTitle: "CodeWithHarry Notes",
+                    noteFile: "https://www.codewithharry.com/notes/",
+                    w3Url: "https://www.w3schools.com/nodejs/"
+                }
+            };
+
+            // --- RENDER CONCEPT DECONSTRUCTOR ---
             const conceptGrid = document.getElementById('concept-grid');
             const topicBtns = document.querySelectorAll('.topic-btn');
             
@@ -1024,13 +1075,11 @@
                 const data = conceptData[key];
                 if(!data) return;
 
-                // Update Header
                 document.getElementById('concept-title').innerText = data.title;
                 document.getElementById('concept-desc').innerText = data.desc;
                 document.querySelector('.deconstructor-main .interactive-element').innerHTML = `<i class="fa-solid ${data.icon}"></i>`;
                 document.getElementById('concept-category').innerText = data.category;
 
-                // Update Grid with animation
                 conceptGrid.innerHTML = '';
                 
                 setTimeout(() => {
@@ -1067,73 +1116,135 @@
                 });
             });
 
-            // Initial render
-            renderBreakdown('pointers');
+            renderBreakdown('html');
             
-            // Search functionality (simple visual filter)
             const searchInput = document.querySelector('.topic-search');
             searchInput.addEventListener('input', (e) => {
                 const term = e.target.value.toLowerCase();
                 topicBtns.forEach(btn => {
                     const text = btn.innerText.toLowerCase();
-                    if(text.includes(term)) {
-                        btn.style.display = 'flex';
-                    } else {
-                        btn.style.display = 'none';
-                    }
+                    btn.style.display = text.includes(term) ? 'flex' : 'none';
                 });
             });
 
-            // Feature 2: Retention Decay Simulator Logic
-            const slider = document.getElementById('retention-slider');
-            const daysVal = document.getElementById('days-val');
-            const cramBar = document.getElementById('cram-bar');
-            const cramVal = document.getElementById('cram-val');
-            const masteryBar = document.getElementById('mastery-bar');
-            const masteryVal = document.getElementById('mastery-val');
+            // --- RENDER YOUTUBE & NOTES GRID ---
+            const ytGrid = document.getElementById('yt-notes-grid');
+            let ytHTML = '';
+            for (const [key, data] of Object.entries(ytNotesData)) {
+                ytHTML += `
+                    <div class="yt-note-card">
+                        <div class="yt-note-header" style="border-left: 4px solid ${data.color};">
+                            <div class="yt-note-icon" style="background: ${data.color}22; color: ${data.color};">
+                                <i class="${data.icon}"></i>
+                            </div>
+                            <div>
+                                <h3 style="color: white; margin: 0; font-size: 1.3rem;">${data.title}</h3>
+                                <span style="color: var(--text-muted); font-size: 0.85rem;">${conceptData[key].category}</span>
+                            </div>
+                        </div>
+                        <div class="yt-note-body">
+                            <a href="${data.ytUrl}" target="_blank" rel="noopener noreferrer" class="yt-link-card">
+                                <div class="yt-play-icon"><i class="fa-brands fa-youtube"></i></div>
+                                <div>
+                                    <h4 style="color: white; margin: 0 0 0.2rem; font-size: 0.95rem;">${data.ytTitle}</h4>
+                                    <span style="color: var(--text-muted); font-size: 0.8rem;"><i class="fa-solid fa-user"></i> ${data.ytChannel} &bull; <i class="fa-solid fa-clock"></i> ${data.ytDuration}</span>
+                                </div>
+                            </a>
+                            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                                <a href="${data.noteFile}" target="_blank" rel="noopener noreferrer" class="note-download-btn" style="flex: 1; justify-content: center; min-width: 120px;">
+                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                    <span>${data.noteTitle}</span>
+                                </a>
+                                <a href="${data.w3Url}" target="_blank" rel="noopener noreferrer" class="note-download-btn" style="flex: 1; justify-content: center; background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: white; min-width: 120px;">
+                                    <i class="fa-solid fa-book-open"></i>
+                                    <span>W3Schools</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            ytGrid.innerHTML = ytHTML;
 
-            slider.addEventListener('input', (e) => {
-                const days = e.target.value;
-                daysVal.innerText = days;
-                
-                // Cramming decays exponentially
-                // 1 day = 100%, 30 days = ~5%
-                const cramRet = Math.max(5, Math.round(100 * Math.exp(-0.15 * (days - 1))));
-                
-                // Mastery stays high
-                // 1 day = 100%, 30 days = ~85%
-                const masterRet = Math.max(85, Math.round(100 * Math.exp(-0.005 * (days - 1))));
+            // --- EMERGENCY CRAMMER PLANNER ---
+            const hoursSlider = document.getElementById('hours-slider');
+            const hoursVal = document.getElementById('hours-val');
+            const prepSelect = document.getElementById('prep-select');
+            const generateBtn = document.getElementById('generate-plan-btn');
+            const crammerOutput = document.getElementById('crammer-output');
 
-                cramBar.style.width = cramRet + '%';
-                cramVal.innerText = cramRet + '%';
-                
-                masteryBar.style.width = masterRet + '%';
-                masteryVal.innerText = masterRet + '%';
-            });
+            if (hoursSlider && generateBtn) {
+                hoursSlider.addEventListener('input', (e) => {
+                    hoursVal.innerText = `${e.target.value} hrs`;
+                });
 
-            // Feature 3: Neural Explorer Logic
-            const btnLinear = document.getElementById('btn-linear');
-            const btnNeural = document.getElementById('btn-neural');
-            const viewLinear = document.getElementById('view-linear');
-            const viewNeural = document.getElementById('view-neural');
+                generateBtn.addEventListener('click', () => {
+                    const hrs = parseInt(hoursSlider.value);
+                    const prep = parseInt(prepSelect.value);
+                    
+                    let sleep = hrs > 12 ? 6 : (hrs > 6 ? 3 : 0);
+                    let studyHrs = hrs - sleep;
+                    
+                    let plan = '';
+                    if (prep === 0) {
+                        plan = `
+                            <h4 style="color: #ff5252; margin-bottom: 1rem;"><i class="fa-solid fa-triangle-exclamation"></i> Emergency Mode Active</h4>
+                            <div style="display:flex; flex-direction:column; gap:0.8rem;">
+                                <div style="background: rgba(255,64,129,0.1); border-left: 4px solid var(--accent-coral); padding: 1rem; border-radius: 6px;">
+                                    <strong><i class="fa-solid fa-video"></i> Phase 1: High-Yield Crash Course (${Math.max(1, Math.floor(studyHrs*0.5))} hrs)</strong><br>
+                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Do NOT read the textbook. Watch a 1-shot YouTube summary video on 1.5x speed.</span>
+                                </div>
+                                <div style="background: rgba(142,36,170,0.1); border-left: 4px solid var(--accent-violet); padding: 1rem; border-radius: 6px;">
+                                    <strong><i class="fa-solid fa-file-contract"></i> Phase 2: Past 5 Years Papers (${Math.max(1, Math.floor(studyHrs*0.3))} hrs)</strong><br>
+                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Memorize the repeated questions. 80% of exams come from 20% of topics.</span>
+                                </div>
+                                <div style="background: rgba(0,209,178,0.1); border-left: 4px solid var(--accent-mint); padding: 1rem; border-radius: 6px;">
+                                    <strong><i class="fa-solid fa-bed"></i> Phase 3: Forced Rest (${sleep} hrs)</strong><br>
+                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Sleep is mandatory to convert short-term memory to long-term. Do not skip this.</span>
+                                </div>
+                            </div>
+                        `;
+                    } else if (prep === 30) {
+                        plan = `
+                            <h4 style="color: var(--accent-gold); margin-bottom: 1rem;"><i class="fa-solid fa-hammer"></i> Triage Mode Active</h4>
+                            <div style="display:flex; flex-direction:column; gap:0.8rem;">
+                                <div style="background: rgba(255,189,46,0.1); border-left: 4px solid var(--accent-gold); padding: 1rem; border-radius: 6px;">
+                                    <strong><i class="fa-solid fa-book-open"></i> Phase 1: Targeted Reading (${Math.max(1, Math.floor(studyHrs*0.4))} hrs)</strong><br>
+                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Only study the chapters you are weak in. Ignore what you already know.</span>
+                                </div>
+                                <div style="background: rgba(142,36,170,0.1); border-left: 4px solid var(--accent-violet); padding: 1rem; border-radius: 6px;">
+                                    <strong><i class="fa-solid fa-pen-to-square"></i> Phase 2: Practice & Recall (${Math.max(1, Math.floor(studyHrs*0.4))} hrs)</strong><br>
+                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Solve past paper questions blindly. If you get stuck, look at the solution immediately.</span>
+                                </div>
+                                <div style="background: rgba(0,209,178,0.1); border-left: 4px solid var(--accent-mint); padding: 1rem; border-radius: 6px;">
+                                    <strong><i class="fa-solid fa-bed"></i> Phase 3: Forced Rest (${sleep} hrs)</strong><br>
+                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Brain needs rest. Wake up 1 hour early for final formula revision.</span>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        plan = `
+                            <h4 style="color: var(--accent-mint); margin-bottom: 1rem;"><i class="fa-solid fa-check-double"></i> Polish Mode Active</h4>
+                            <div style="display:flex; flex-direction:column; gap:0.8rem;">
+                                <div style="background: rgba(0,209,178,0.1); border-left: 4px solid var(--accent-mint); padding: 1rem; border-radius: 6px;">
+                                    <strong><i class="fa-solid fa-bolt"></i> Phase 1: Rapid Active Recall (${Math.max(1, Math.floor(studyHrs*0.6))} hrs)</strong><br>
+                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Use flashcards and mind maps. Do not read notes line-by-line.</span>
+                                </div>
+                                <div style="background: rgba(142,36,170,0.1); border-left: 4px solid var(--accent-violet); padding: 1rem; border-radius: 6px;">
+                                    <strong><i class="fa-solid fa-person-chalkboard"></i> Phase 2: The Feynman Run (${Math.max(1, Math.floor(studyHrs*0.4))} hrs)</strong><br>
+                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Explain the hardest concepts out loud. Fix any gaps in your logic.</span>
+                                </div>
+                                <div style="background: rgba(255,189,46,0.1); border-left: 4px solid var(--accent-gold); padding: 1rem; border-radius: 6px;">
+                                    <strong><i class="fa-solid fa-bed"></i> Phase 3: Rest & Digest (${sleep} hrs)</strong><br>
+                                    <span style="color: var(--text-muted); font-size: 0.9rem;">You are well prepared. Get proper sleep to maximize focus during the exam.</span>
+                                </div>
+                            </div>
+                        `;
+                    }
 
-            btnLinear.addEventListener('click', () => {
-                btnNeural.classList.remove('active');
-                btnLinear.classList.add('active');
-                viewNeural.classList.remove('show');
-                viewLinear.style.opacity = '1';
-                viewLinear.style.transform = 'scale(1)';
-            });
-
-            btnNeural.addEventListener('click', () => {
-                btnLinear.classList.remove('active');
-                btnNeural.classList.add('active');
-                viewLinear.style.opacity = '0';
-                viewLinear.style.transform = 'scale(0.9)';
-                setTimeout(() => {
-                    viewNeural.classList.add('show');
-                }, 100);
-            });
+                    crammerOutput.innerHTML = plan;
+                });
+            }
         });
     </script>
 </body>
