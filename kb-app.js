@@ -14,6 +14,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
+    /* Site-wide study resources — keeps users on StudentSync */
+    const SITE_RESOURCES = {
+        'HTML': {
+            key: 'html', icon: 'fa-brands fa-html5', color: '#e34c26',
+            concept: 'conceptual-mastery.html#html',
+            notes: 'https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/notes/HTML_Complete_Notes.pdf',
+            video: 'conceptual-mastery.html#yt-notes',
+            hotTopics: ['Semantic Tags', 'Forms & Input', 'Accessibility', 'Meta Tags']
+        },
+        'CSS': {
+            key: 'css', icon: 'fa-brands fa-css3-alt', color: '#264de4',
+            concept: 'conceptual-mastery.html#css',
+            notes: 'https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/notes/CSS_Complete_Notes.pdf',
+            video: 'conceptual-mastery.html#yt-notes',
+            hotTopics: ['Flexbox', 'Grid', 'Box Model', 'Media Queries']
+        },
+        'JavaScript': {
+            key: 'javascript', icon: 'fa-brands fa-js', color: '#f7df1e',
+            concept: 'conceptual-mastery.html#javascript',
+            notes: 'https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/notes/JS_Chapterwise_Notes.pdf',
+            video: 'conceptual-mastery.html#yt-notes',
+            hotTopics: ['DOM Manipulation', 'Events', 'Async/Await', 'Closures']
+        },
+        'Python': {
+            key: 'python', icon: 'fa-brands fa-python', color: '#3776AB',
+            concept: 'conceptual-mastery.html#python',
+            notes: 'https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/notes/Python_Complete_Notes.pdf',
+            video: 'conceptual-mastery.html#yt-notes',
+            hotTopics: ['Lists & Dicts', 'Functions', 'OOP', 'File Handling']
+        },
+        'PHP': {
+            key: 'php', icon: 'fa-brands fa-php', color: '#777BB4',
+            concept: 'conceptual-mastery.html#php',
+            notes: 'https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/cheatsheets/Php%20Cheatsheet.pdf',
+            video: 'conceptual-mastery.html#yt-notes',
+            hotTopics: ['Forms & $_POST', 'Sessions', 'PDO', 'Include/Require']
+        },
+        'MySQL': {
+            key: 'mysql', icon: 'fa-solid fa-database', color: '#4479A1',
+            concept: 'conceptual-mastery.html#mysql',
+            notes: 'https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/YouTube/MySQL%20Handbook.pdf',
+            video: 'conceptual-mastery.html#yt-notes',
+            hotTopics: ['SELECT & JOINs', 'Normalization', 'Indexes', 'Prepared Statements']
+        },
+        'React': {
+            key: 'react', icon: 'fa-brands fa-react', color: '#61DAFB',
+            concept: 'conceptual-mastery.html#react',
+            notes: 'https://www.newline.co/fullstack-react/assets/media/sGEMe/MNzue/30-days-of-react-ebook-fullstackio.pdf',
+            video: 'conceptual-mastery.html#yt-notes',
+            hotTopics: ['Components & Props', 'useState', 'useEffect', 'Virtual DOM']
+        },
+        'Node.js': {
+            key: 'nodejs', icon: 'fa-brands fa-node-js', color: '#68A063',
+            concept: 'conceptual-mastery.html#nodejs',
+            notes: 'https://www.anuragkapur.com/assets/blog/programming/node/PDF-Guide-Node-Andrew-Mead-v3.pdf',
+            video: 'conceptual-mastery.html#yt-notes',
+            hotTopics: ['Modules', 'Express Routes', 'Event Loop', 'npm & package.json']
+        }
+    };
+
+    const KB_LINKS = {
+        quiz: 'knowledge-base.html#quiz-lab',
+        flashcards: 'knowledge-base.html#flashcard-builder',
+        feynman: 'knowledge-base.html#feynman-engine',
+        focus: 'knowledge-base.html#focus-hub',
+        quest: 'knowledge-base.html#knowledge-quest',
+        crammer: 'conceptual-mastery.html#crammer-section'
+    };
+
     /* =========================================
        Feature 1: Feynman Simplicity Engine
        ========================================= */
@@ -24,15 +93,147 @@ document.addEventListener('DOMContentLoaded', () => {
     const feynmanStatus = document.getElementById('feynman-status');
     const feynmanGrade = document.getElementById('feynman-grade');
     const feynmanJargon = document.getElementById('feynman-jargon');
+    const feynmanFeedback = document.getElementById('feynman-feedback');
+    const feynmanJargonList = document.getElementById('feynman-jargon-list');
+    const feynmanSuggestions = document.getElementById('feynman-suggestions');
+    const feynmanRewrite = document.getElementById('feynman-rewrite');
+    const feynmanMistakesList = document.getElementById('feynman-mistakes-list');
+    const feynmanMistakeCount = document.getElementById('feynman-mistake-count');
+    const feynmanSpellingCount = document.getElementById('feynman-spelling-count');
+    const feynmanGrammarCount = document.getElementById('feynman-grammar-count');
+    const feynmanCopyRewrite = document.getElementById('feynman-copy-rewrite');
+    const feynmanApplyRewrite = document.getElementById('feynman-apply-rewrite');
+    let feynmanMode = 'simple';
+    let lastSimpleRewrite = '';
+    let lastPolishRewrite = '';
 
-    const jargonList = new Set([
-        'utilize', 'facilitate', 'implement', 'paradigm', 'synergy', 'leverage',
-        'methodology', 'framework', 'juxtapose', 'mitigate', 'optimize', 'subsequently',
-        'comprehensive', 'conceptualize', 'delineate', 'elucidate', 'empirical',
-        'heuristic', 'pedagogical', 'proliferate', 'ubiquitous', 'ameliorate',
-        'ascertain', 'dichotomy', 'epistemology', 'hermeneutic', 'obfuscate',
-        'paradoxical', 'quintessential', 'ramification'
-    ]);
+    const jargonMap = {
+        'utilize': 'use', 'facilitate': 'help', 'implement': 'build', 'paradigm': 'model',
+        'synergy': 'teamwork', 'leverage': 'use', 'methodology': 'method', 'framework': 'structure',
+        'juxtapose': 'compare', 'mitigate': 'reduce', 'optimize': 'improve', 'subsequently': 'then',
+        'comprehensive': 'complete', 'conceptualize': 'imagine', 'delineate': 'outline',
+        'elucidate': 'explain', 'empirical': 'tested', 'heuristic': 'rule of thumb',
+        'pedagogical': 'teaching', 'proliferate': 'spread', 'ubiquitous': 'everywhere',
+        'ameliorate': 'improve', 'ascertain': 'find out', 'dichotomy': 'split',
+        'epistemology': 'study of knowledge', 'obfuscate': 'confuse', 'paradoxical': 'contradictory',
+        'quintessential': 'perfect example', 'ramification': 'consequence',
+        'furthermore': 'also', 'nevertheless': 'but', 'notwithstanding': 'despite',
+        'aforementioned': 'mentioned earlier', 'perpetuate': 'continue', 'substantiate': 'prove',
+        'predominantly': 'mostly', 'encompasses': 'includes', 'constitutes': 'makes up',
+        'disseminate': 'share', 'efficacy': 'effectiveness', 'exacerbate': 'worsen'
+    };
+    const jargonSet = new Set(Object.keys(jargonMap));
+
+    const spellingFixes = {
+        recieve: 'receive', occured: 'occurred', seperate: 'separate', definately: 'definitely',
+        accomodate: 'accommodate', goverment: 'government', enviroment: 'environment',
+        knowlege: 'knowledge', writting: 'writing', untill: 'until', beleive: 'believe',
+        wierd: 'weird', succesful: 'successful', neccessary: 'necessary', tommorow: 'tomorrow',
+        begining: 'beginning', arguement: 'argument', peice: 'piece', thier: 'their',
+        alot: 'a lot', allways: 'always', basicly: 'basically', occurence: 'occurrence',
+        independant: 'independent', refering: 'referring', similiar: 'similar', uderstand: 'understand'
+    };
+
+    const vocabUpgrade = {
+        good: 'effective', bad: 'inadequate', big: 'substantial', small: 'minimal',
+        use: 'employ', make: 'construct', show: 'demonstrate', help: 'facilitate',
+        get: 'obtain', need: 'require', think: 'consider', thing: 'element',
+        stuff: 'material', very: 'highly', also: 'furthermore', but: 'however',
+        so: 'therefore', because: 'since', like: 'such as', important: 'crucial',
+        easy: 'straightforward', hard: 'challenging', many: 'numerous', lot: 'considerable',
+        way: 'approach', try: 'attempt', start: 'initiate', end: 'conclude'
+    };
+
+    const detectMistakes = (text, words) => {
+        const mistakes = [];
+        const spellingErrors = [];
+
+        words.forEach(w => {
+            const clean = w.toLowerCase().replace(/[^a-z]/g, '');
+            if (clean && spellingFixes[clean]) {
+                spellingErrors.push({ word: w, fix: spellingFixes[clean], type: 'spelling' });
+                mistakes.push({ msg: `Spelling: "${w}" → "${spellingFixes[clean]}"`, type: 'spelling' });
+            }
+        });
+
+        if (/\s{2,}/.test(text)) {
+            mistakes.push({ msg: 'Extra spaces found — use single spaces between words.', type: 'grammar' });
+        }
+        if (/\b(\w+)\s+\1\b/i.test(text)) {
+            mistakes.push({ msg: 'Repeated word detected (e.g. "the the") — remove the duplicate.', type: 'grammar' });
+        }
+
+        const sentences = text.split(/(?<=[.!?])\s+/).filter(s => s.trim());
+        sentences.forEach(s => {
+            const trimmed = s.trim();
+            if (trimmed.length > 1 && /^[a-z]/.test(trimmed)) {
+                mistakes.push({ msg: `Capitalization: "${trimmed.slice(0, 30)}..." should start with a capital letter.`, type: 'grammar' });
+            }
+        });
+
+        if (text.length > 40 && !/[.!?]$/.test(text.trim())) {
+            mistakes.push({ msg: 'Missing ending punctuation — add a period, question mark, or exclamation.', type: 'grammar' });
+        }
+        if (/\bi\b/.test(text)) {
+            mistakes.push({ msg: 'Use capital "I" when referring to yourself.', type: 'grammar' });
+        }
+        if (/\b(its|it's)\b/i.test(text) && /\bits\b/i.test(text) && !/\bit is\b/i.test(text)) {
+            mistakes.push({ msg: 'Check "its" (possessive) vs "it\'s" (it is) — make sure you used the right one.', type: 'grammar' });
+        }
+
+        const spellingCount = spellingErrors.length;
+        const grammarCount = mistakes.filter(m => m.type === 'grammar').length;
+        return { mistakes, spellingCount, grammarCount, spellingErrors };
+    };
+
+    const buildSimpleRewrite = (text, foundJargon) => {
+        let rewritten = text.replace(/\s{2,}/g, ' ');
+        foundJargon.forEach(j => {
+            if (j.replacement) {
+                rewritten = rewritten.replace(new RegExp('\\b' + j.word + '\\b', 'gi'), j.replacement);
+            }
+        });
+        Object.entries(spellingFixes).forEach(([wrong, right]) => {
+            rewritten = rewritten.replace(new RegExp('\\b' + wrong + '\\b', 'gi'), right);
+        });
+        rewritten = rewritten.replace(/\bi\b/g, 'I');
+        return rewritten.trim();
+    };
+
+    const buildPolishRewrite = (text, foundJargon) => {
+        let polished = text.replace(/\s{2,}/g, ' ');
+        Object.entries(spellingFixes).forEach(([wrong, right]) => {
+            polished = polished.replace(new RegExp('\\b' + wrong + '\\b', 'gi'), right);
+        });
+        polished = polished.replace(/\bi\b/g, 'I');
+
+        Object.entries(vocabUpgrade).forEach(([simple, advanced]) => {
+            polished = polished.replace(new RegExp('\\b' + simple + '\\b', 'gi'), match => {
+                if (match[0] === match[0].toUpperCase()) {
+                    return advanced.charAt(0).toUpperCase() + advanced.slice(1);
+                }
+                return advanced;
+            });
+        });
+
+        if (polished.length > 0 && !/[.!?]$/.test(polished.trim())) {
+            polished = polished.trim() + '.';
+        }
+
+        const sentences = polished.split(/(?<=[.!?])\s+/);
+        polished = sentences.map(s => {
+            const t = s.trim();
+            if (!t) return s;
+            return t.charAt(0).toUpperCase() + t.slice(1);
+        }).join(' ');
+
+        return polished.trim();
+    };
+
+    const renderFeynmanRewrite = () => {
+        if (!feynmanRewrite) return;
+        feynmanRewrite.textContent = feynmanMode === 'polish' ? lastPolishRewrite : lastSimpleRewrite;
+    };
 
     const countSyllables = (word) => {
         word = word.toLowerCase();
@@ -45,75 +246,89 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const analyzeText = () => {
         if (!feynmanInput) return;
-        
         const text = feynmanInput.value.trim();
-        if (text.length === 0) {
-            resetFeynmanUI();
-            return;
-        }
+        if (text.length === 0) { resetFeynmanUI(); return; }
 
         const words = text.split(/\s+/).filter(w => w.length > 0);
         const wordCount = words.length;
-        
-        // Count sentences, default to 1 if no punctuation
         const sentences = Math.max(1, text.split(/[.!?]+/).filter(s => s.trim().length > 0).length);
-        
         let syllableCount = 0;
-        let jargonCount = 0;
+        let foundJargon = [];
 
         words.forEach(w => {
-            const cleanWord = w.toLowerCase().replace(/[^a-z]/g, '');
-            if (!cleanWord) return;
-            
-            const syllables = countSyllables(cleanWord);
-            syllableCount += syllables;
-            
-            // Jargon = words in the list OR any word with 4+ syllables
-            if (jargonList.has(cleanWord) || syllables >= 4) {
-                jargonCount++;
+            const clean = w.toLowerCase().replace(/[^a-z]/g, '');
+            if (!clean) return;
+            const syl = countSyllables(clean);
+            syllableCount += syl;
+            if (jargonSet.has(clean) || syl >= 4) {
+                if (!foundJargon.find(j => j.word === clean)) {
+                    foundJargon.push({ word: clean, replacement: jargonMap[clean] || null });
+                }
             }
         });
 
-        // Flesch-Kincaid Grade Level Formula
         const gradeLevel = (0.39 * (wordCount / sentences)) + (11.8 * (syllableCount / wordCount)) - 15.59;
         const clampedGrade = Math.max(0, Math.min(20, gradeLevel));
-        
-        // Simplicity Score (100 = 5th grade or lower, 0 = 20th grade or higher)
         let simplicityScore = 100 - ((clampedGrade - 5) / 15 * 100);
-        
-        // If they only typed a few words, prevent the score from instantly jumping to 100
-        if (wordCount < 4) {
-            simplicityScore = Math.max(0, Math.min(50, simplicityScore)); // Cap at 50 until a real sentence is formed
-        } else {
-            simplicityScore = Math.max(0, Math.min(100, Math.round(simplicityScore)));
-        }
+        if (wordCount < 4) simplicityScore = Math.max(0, Math.min(50, simplicityScore));
+        else simplicityScore = Math.max(0, Math.min(100, Math.round(simplicityScore)));
 
-        updateFeynmanUI(Math.round(simplicityScore), clampedGrade.toFixed(1), jargonCount);
+        updateFeynmanUI(Math.round(simplicityScore), clampedGrade.toFixed(1), foundJargon.length);
+
+        const { mistakes, spellingCount, grammarCount } = detectMistakes(text, words);
+
+        if (wordCount >= 6 && feynmanFeedback) {
+            feynmanFeedback.style.display = 'block';
+
+            if (feynmanMistakeCount) feynmanMistakeCount.textContent = mistakes.length;
+            if (feynmanSpellingCount) feynmanSpellingCount.textContent = spellingCount;
+            if (feynmanGrammarCount) feynmanGrammarCount.textContent = grammarCount;
+
+            if (feynmanMistakesList) {
+                feynmanMistakesList.innerHTML = mistakes.length === 0
+                    ? '<span style="color:var(--accent-mint); font-size:0.9rem;"><i class="fa-solid fa-check"></i> No spelling or grammar mistakes found!</span>'
+                    : mistakes.map(m => `<div class="feynman-mistake"><i class="fa-solid fa-circle-xmark"></i><span>${m.msg}</span></div>`).join('');
+            }
+
+            feynmanJargonList.innerHTML = foundJargon.length === 0
+                ? '<span style="color:var(--accent-mint); font-size:0.9rem;">No jargon found — great job!</span>'
+                : foundJargon.map(j => `<span style="background:rgba(255,64,129,0.12); border:1px solid rgba(255,64,129,0.3); color:#ff5252; padding:0.3rem 0.7rem; border-radius:50px; font-size:0.82rem; font-weight:600;">${j.word}${j.replacement ? ` → <span style="color:var(--accent-mint);">${j.replacement}</span>` : ''}</span>`).join('');
+
+            let tips = [];
+            const avgWordsPerSentence = wordCount / sentences;
+            if (mistakes.length > 0) tips.push('Fix the spelling and grammar errors listed above first.');
+            if (avgWordsPerSentence > 20) tips.push('Your sentences are long (avg ' + Math.round(avgWordsPerSentence) + ' words). Break them into shorter ones.');
+            if (foundJargon.length > 0) tips.push('Replace jargon words with simpler alternatives — or use the Polished tab for better vocabulary.');
+            if (wordCount < 20) tips.push('Your explanation is short. Add an example or analogy.');
+            if (clampedGrade > 12) tips.push('Text reads at college+ level. Aim for Grade 8 for Feynman clarity.');
+            if (mistakes.length === 0 && clampedGrade <= 8 && foundJargon.length === 0) tips.push('Excellent! Crystal-clear explanation with no errors.');
+            if (tips.length === 0) tips.push('Decent work. Try the Polished Version tab to upgrade vocabulary.');
+            feynmanSuggestions.innerHTML = tips.map(t => `<li style="margin-bottom:0.4rem;">${t}</li>`).join('');
+
+            lastSimpleRewrite = buildSimpleRewrite(text, foundJargon);
+            lastPolishRewrite = buildPolishRewrite(text, foundJargon);
+            if (lastSimpleRewrite === text.trim() && foundJargon.length === 0 && mistakes.length === 0) {
+                lastSimpleRewrite = 'Your text is already clear — no changes needed!';
+            }
+            if (lastPolishRewrite === text.trim() && mistakes.length === 0) {
+                lastPolishRewrite = 'Your text is already polished — no upgrades needed!';
+            }
+            renderFeynmanRewrite();
+        } else if (feynmanFeedback) {
+            feynmanFeedback.style.display = 'none';
+        }
     };
 
     const updateFeynmanUI = (score, grade, jargon) => {
         feynmanScoreVal.textContent = score;
         feynmanGrade.textContent = grade;
         feynmanJargon.textContent = jargon;
-        
-        // Gauge length is 283
         const dashOffset = 283 - (283 * (score / 100));
         feynmanGauge.style.strokeDashoffset = dashOffset;
-        
-        let color = 'var(--text-muted)';
-        let statusText = '';
-        
-        if (score >= 80) {
-            color = 'var(--accent-mint)';
-            statusText = 'Crystal Clear';
-        } else if (score >= 50) {
-            color = 'var(--accent-gold)';
-            statusText = 'Getting There';
-        } else {
-            color = 'var(--accent-coral)';
-            statusText = 'Too Complex';
-        }
-        
+        let color = 'var(--text-muted)', statusText = '';
+        if (score >= 80) { color = 'var(--accent-mint)'; statusText = 'Crystal Clear'; }
+        else if (score >= 50) { color = 'var(--accent-gold)'; statusText = 'Getting There'; }
+        else { color = 'var(--accent-coral)'; statusText = 'Too Complex'; }
         feynmanGauge.style.stroke = color;
         feynmanStatus.style.color = color;
         feynmanStatus.textContent = statusText;
@@ -128,6 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
         feynmanGauge.style.stroke = 'var(--text-muted)';
         feynmanStatus.style.color = 'var(--text-muted)';
         feynmanStatus.textContent = 'Start typing...';
+        if (feynmanFeedback) feynmanFeedback.style.display = 'none';
     };
 
     if (feynmanInput) {
@@ -136,234 +352,223 @@ document.addEventListener('DOMContentLoaded', () => {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(analyzeText, 300);
         });
-        
         feynmanClear?.addEventListener('click', () => {
             feynmanInput.value = '';
             resetFeynmanUI();
         });
-        
+
+        document.querySelectorAll('.feynman-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.feynman-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                feynmanMode = tab.dataset.feynmanMode || 'simple';
+                renderFeynmanRewrite();
+            });
+        });
+
+        feynmanCopyRewrite?.addEventListener('click', () => {
+            const text = feynmanMode === 'polish' ? lastPolishRewrite : lastSimpleRewrite;
+            navigator.clipboard?.writeText(text).then(() => {
+                feynmanCopyRewrite.textContent = 'Copied!';
+                setTimeout(() => { feynmanCopyRewrite.innerHTML = '<i class="fa-solid fa-copy"></i> Copy'; }, 1500);
+            });
+        });
+
+        feynmanApplyRewrite?.addEventListener('click', () => {
+            const text = feynmanMode === 'polish' ? lastPolishRewrite : lastSimpleRewrite;
+            if (text && !text.startsWith('Your text is already')) {
+                feynmanInput.value = text;
+                analyzeText();
+            }
+        });
+
         resetFeynmanUI();
     }
 
     /* =========================================
-       Feature 2: Personal Kanban Board
+       Feature 2: Knowledge Quest Arena
        ========================================= */
-    const kCols = document.querySelectorAll('.kanban-col');
-    const KANBAN_ORDER = ['todo', 'prog', 'done'];
-    let draggedItem = null;
-    let selectedKanbanCard = null;
+    const questTopicsEl = document.getElementById('quest-topics');
+    const questPipeline = document.getElementById('quest-pipeline');
+    const questBlitzQuestions = document.getElementById('quest-blitz-questions');
+    const questBlitzScore = document.getElementById('quest-blitz-score');
+    const questTopicLabel = document.getElementById('quest-topic-label');
+    const questXpFill = document.getElementById('quest-xp-fill');
+    const questXpVal = document.getElementById('quest-xp-val');
+    const questXpText = document.getElementById('quest-xp-text');
 
-    const isTouchPrimaryDevice = () => !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-    const clearKanbanSelection = () => {
-        selectedKanbanCard?.classList.remove('is-selected');
-        selectedKanbanCard = null;
-        kCols.forEach(col => col.classList.remove('can-receive'));
+    const QUEST_BLITZ = {
+        html: [
+            { q: 'Which tag gives semantic meaning to main page content?', opts: ['<div>', '<main>', '<span>'], a: 1 },
+            { q: 'What attribute makes an input field required?', opts: ['mandatory', 'required', 'must'], a: 1 },
+            { q: 'Which tag creates a hyperlink?', opts: ['<link>', '<a>', '<href>'], a: 1 }
+        ],
+        css: [
+            { q: 'Which property controls space INSIDE an element border?', opts: ['margin', 'padding', 'gap'], a: 1 },
+            { q: 'Flexbox main axis direction is set by:', opts: ['flex-flow', 'flex-direction', 'align-items'], a: 1 },
+            { q: 'Which unit is relative to root font size?', opts: ['em', 'rem', 'px'], a: 1 }
+        ],
+        javascript: [
+            { q: 'Which operator checks value AND type?', opts: ['==', '===', '='], a: 1 },
+            { q: 'const variables can be:', opts: ['reassigned', 'redeclared', 'neither'], a: 2 },
+            { q: 'DOM stands for:', opts: ['Document Object Model', 'Data Object Method', 'Dynamic Output Module'], a: 0 }
+        ],
+        python: [
+            { q: 'Python uses what for code blocks instead of braces?', opts: ['semicolons', 'indentation', 'parentheses'], a: 1 },
+            { q: 'Which is a mutable data type?', opts: ['tuple', 'string', 'list'], a: 2 },
+            { q: 'def keyword is used to:', opts: ['define a function', 'delete a file', 'declare a variable'], a: 0 }
+        ],
+        php: [
+            { q: 'PHP runs on the:', opts: ['browser', 'server', 'database'], a: 1 },
+            { q: 'Which superglobal holds form POST data?', opts: ['$_GET', '$_POST', '$_SESSION'], a: 1 },
+            { q: 'Prepared statements prevent:', opts: ['XSS', 'SQL Injection', 'CSRF'], a: 1 }
+        ],
+        mysql: [
+            { q: 'Which SQL command retrieves data?', opts: ['INSERT', 'SELECT', 'DELETE'], a: 1 },
+            { q: 'Primary key ensures:', opts: ['speed only', 'unique row identity', 'encryption'], a: 1 },
+            { q: 'JOIN combines data from:', opts: ['multiple tables', 'multiple databases only', 'CSV files'], a: 0 }
+        ],
+        react: [
+            { q: 'React UI is built from:', opts: ['templates', 'components', 'directives'], a: 1 },
+            { q: 'useState returns:', opts: ['a boolean', 'state + setter', 'a DOM node'], a: 1 },
+            { q: 'Virtual DOM helps React:', opts: ['store cookies', 'update efficiently', 'run on server only'], a: 1 }
+        ],
+        nodejs: [
+            { q: 'Node.js runs JavaScript on the:', opts: ['GPU', 'server', 'CSS engine'], a: 1 },
+            { q: 'npm is used to:', opts: ['manage packages', 'style pages', 'query databases'], a: 0 },
+            { q: 'Node is event-driven and:', opts: ['blocking', 'non-blocking', 'single-threaded only on GPU'], a: 1 }
+        ]
     };
 
-    const highlightReceiveColumns = card => {
-        kCols.forEach(col => {
-            if (col.contains(card)) col.classList.remove('can-receive');
-            else col.classList.add('can-receive');
+    let activeQuestKey = 'html';
+    let questProgress = {};
+    let blitzScore = { correct: 0, total: 0 };
+
+    const getQuestSteps = key => {
+        const res = Object.values(SITE_RESOURCES).find(r => r.key === key);
+        if (!res) return [];
+        const label = Object.keys(SITE_RESOURCES).find(k => SITE_RESOURCES[k].key === key);
+        return [
+            { id: 'learn', icon: 'fa-solid fa-layer-group', title: 'Learn', desc: 'Break down the core idea', link: res.concept, linkText: `Concept Deconstructor — ${label}`, xp: 25 },
+            { id: 'watch', icon: 'fa-brands fa-youtube', title: 'Watch', desc: 'Video tutorial + notes', link: res.video, linkText: 'Video & Notes Hub', xp: 25 },
+            { id: 'practice', icon: 'fa-solid fa-brain', title: 'Practice', desc: 'Generate recall quiz', link: KB_LINKS.quiz, linkText: 'Active Recall Quiz Lab', xp: 25 },
+            { id: 'recall', icon: 'fa-solid fa-clone', title: 'Recall', desc: 'Build 5 flashcards', link: KB_LINKS.flashcards, linkText: 'Flashcard Builder', xp: 25 }
+        ];
+    };
+
+    const getQuestXP = key => {
+        const prog = questProgress[key] || {};
+        const steps = getQuestSteps(key);
+        let xp = steps.filter(s => prog[s.id]).length * 25;
+        if (prog.blitzMaster) xp += 50;
+        return xp;
+    };
+
+    const renderQuest = () => {
+        if (!questPipeline || !questTopicsEl) return;
+        const res = Object.values(SITE_RESOURCES).find(r => r.key === activeQuestKey);
+        const label = Object.keys(SITE_RESOURCES).find(k => SITE_RESOURCES[k].key === activeQuestKey) || 'Topic';
+        if (questTopicLabel) questTopicLabel.textContent = label + ' Quest';
+        const xp = getQuestXP(activeQuestKey);
+        const maxXp = 150;
+        if (questXpFill) questXpFill.style.width = Math.min(100, (xp / maxXp) * 100) + '%';
+        if (questXpVal) questXpVal.textContent = xp + ' XP';
+        if (questXpText) questXpText.textContent = xp >= maxXp ? 'Quest Mastered!' : `${Math.round((xp / maxXp) * 100)}% complete`;
+
+        questTopicsEl.innerHTML = Object.entries(SITE_RESOURCES).map(([name, r]) =>
+            `<button type="button" class="quest-topic-btn${r.key === activeQuestKey ? ' active' : ''}" data-quest="${r.key}">
+                <i class="${r.icon}" style="color:${r.color}"></i> ${name}
+            </button>`
+        ).join('');
+
+        const prog = questProgress[activeQuestKey] || {};
+        questPipeline.innerHTML = getQuestSteps(activeQuestKey).map(step => `
+            <div class="quest-node${prog[step.id] ? ' done' : ''}" data-step="${step.id}">
+                <div class="quest-node-icon"><i class="${step.icon}"></i></div>
+                <h4>${step.title}</h4>
+                <p>${step.desc}</p>
+                <a href="${step.link}" target="_self"><i class="fa-solid fa-arrow-up-right-from-square"></i> ${step.linkText}</a>
+                <br><button type="button" class="quest-node-check${prog[step.id] ? ' is-done' : ''}" data-step-check="${step.id}">
+                    ${prog[step.id] ? '<i class="fa-solid fa-check"></i> Done' : 'Mark Done'}
+                </button>
+            </div>
+        `).join('');
+
+        renderBlitzQuiz();
+    };
+
+    const renderBlitzQuiz = () => {
+        if (!questBlitzQuestions) return;
+        const questions = QUEST_BLITZ[activeQuestKey] || [];
+        blitzScore = { correct: 0, total: questions.length };
+        const res = Object.values(SITE_RESOURCES).find(r => r.key === activeQuestKey);
+        const reviseLink = res ? res.concept : KB_LINKS.quest;
+
+        questBlitzQuestions.innerHTML = questions.map((q, qi) => `
+            <div class="quest-blitz-q" data-blitz="${qi}">
+                <h4>${qi + 1}. ${q.q}</h4>
+                <div class="quest-blitz-opts">
+                    ${q.opts.map((opt, oi) => `<button type="button" class="quest-blitz-opt" data-q="${qi}" data-opt="${oi}">${opt}</button>`).join('')}
+                </div>
+                <p class="quest-blitz-hint" style="display:none; color:var(--text-muted); font-size:0.82rem; margin-top:0.5rem;">
+                    Wrong? Revise at <a href="${reviseLink}" style="color:var(--accent-gold);">Concept Deconstructor</a>
+                </p>
+            </div>
+        `).join('');
+
+        if (questBlitzScore) questBlitzScore.textContent = `Score: 0/${questions.length}`;
+    };
+
+    if (questTopicsEl && questPipeline) {
+        questTopicsEl.addEventListener('click', e => {
+            const btn = e.target.closest('[data-quest]');
+            if (!btn) return;
+            activeQuestKey = btn.dataset.quest;
+            renderQuest();
         });
-    };
 
-    const getColumnId = colEl => colEl?.dataset.col || colEl?.id?.replace('col-', '');
+        questPipeline.addEventListener('click', e => {
+            const checkBtn = e.target.closest('[data-step-check]');
+            if (!checkBtn) return;
+            const stepId = checkBtn.dataset.stepCheck;
+            if (!questProgress[activeQuestKey]) questProgress[activeQuestKey] = {};
+            questProgress[activeQuestKey][stepId] = !questProgress[activeQuestKey][stepId];
+            renderQuest();
+        });
 
-    const getColumnById = colId => document.getElementById(`col-${colId}`);
+        questBlitzQuestions?.addEventListener('click', e => {
+            const opt = e.target.closest('.quest-blitz-opt');
+            if (!opt || opt.disabled) return;
+            const qIdx = parseInt(opt.dataset.q, 10);
+            const oIdx = parseInt(opt.dataset.opt, 10);
+            const questions = QUEST_BLITZ[activeQuestKey] || [];
+            const card = opt.closest('.quest-blitz-q');
+            const isCorrect = questions[qIdx]?.a === oIdx;
 
-    const getColumnIndex = colId => KANBAN_ORDER.indexOf(colId);
+            card.querySelectorAll('.quest-blitz-opt').forEach(b => {
+                b.disabled = true;
+                if (parseInt(b.dataset.opt, 10) === questions[qIdx].a) b.classList.add('correct');
+            });
+            if (!isCorrect) {
+                opt.classList.add('wrong');
+                card.querySelector('.quest-blitz-hint').style.display = 'block';
+            } else {
+                blitzScore.correct++;
+            }
 
-    const updateKanbanCounts = () => {
-        KANBAN_ORDER.forEach(colId => {
-            const counter = document.getElementById(`cnt-${colId}`);
-            const column = getColumnById(colId);
-            if (counter && column) {
-                counter.textContent = column.querySelectorAll('.k-card').length;
+            const answered = questBlitzQuestions.querySelectorAll('.quest-blitz-opt:disabled').length / 3;
+            if (questBlitzScore) questBlitzScore.textContent = `Score: ${blitzScore.correct}/${questions.length}`;
+
+            if (answered >= questions.length && blitzScore.correct === questions.length) {
+                if (!questProgress[activeQuestKey]) questProgress[activeQuestKey] = {};
+                questProgress[activeQuestKey].blitzMaster = true;
+                if (questXpText) questXpText.textContent = 'Blitz Master! +50 XP bonus';
+                renderQuest();
             }
         });
-    };
 
-    const insertCardBeforeAddButton = (col, card) => {
-        const btn = col.querySelector('.k-add-btn');
-        col.insertBefore(card, btn);
-    };
-
-    const updateMoveButtons = card => {
-        const col = card.closest('.kanban-col');
-        if (!col) return;
-
-        const colId = getColumnId(col);
-        const index = getColumnIndex(colId);
-        const prevBtn = card.querySelector('[data-move="prev"]');
-        const nextBtn = card.querySelector('[data-move="next"]');
-
-        if (prevBtn) prevBtn.disabled = index <= 0;
-        if (nextBtn) nextBtn.disabled = index >= KANBAN_ORDER.length - 1;
-    };
-
-    const moveCard = (card, direction) => {
-        const col = card.closest('.kanban-col');
-        if (!col) return;
-
-        const currentIndex = getColumnIndex(getColumnId(col));
-        const targetIndex = currentIndex + direction;
-        if (targetIndex < 0 || targetIndex >= KANBAN_ORDER.length) return;
-
-        const targetCol = getColumnById(KANBAN_ORDER[targetIndex]);
-        if (!targetCol) return;
-
-        insertCardBeforeAddButton(targetCol, card);
-        updateMoveButtons(card);
-        updateKanbanCounts();
-    };
-
-    const buildKanbanCard = text => {
-        const card = document.createElement('div');
-        card.className = 'k-card';
-
-        const body = document.createElement('div');
-        body.className = 'k-card-body';
-        body.textContent = text;
-
-        const actions = document.createElement('div');
-        actions.className = 'k-card-actions';
-
-        const prevBtn = document.createElement('button');
-        prevBtn.type = 'button';
-        prevBtn.className = 'k-move-btn';
-        prevBtn.dataset.move = 'prev';
-        prevBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> Back';
-        prevBtn.addEventListener('click', e => {
-            e.stopPropagation();
-            moveCard(card, -1);
-        });
-
-        const nextBtn = document.createElement('button');
-        nextBtn.type = 'button';
-        nextBtn.className = 'k-move-btn';
-        nextBtn.dataset.move = 'next';
-        nextBtn.innerHTML = 'Next <i class="fa-solid fa-arrow-right"></i>';
-        nextBtn.addEventListener('click', e => {
-            e.stopPropagation();
-            moveCard(card, 1);
-        });
-
-        actions.append(prevBtn, nextBtn);
-        card.append(body, actions);
-        attachDragEvents(card);
-        updateMoveButtons(card);
-        return card;
-    };
-
-    const upgradeLegacyCard = card => {
-        if (card.querySelector('.k-card-body')) {
-            attachDragEvents(card);
-            updateMoveButtons(card);
-            return card;
-        }
-
-        const text = card.textContent.trim();
-        const upgraded = buildKanbanCard(text);
-        card.replaceWith(upgraded);
-        return upgraded;
-    };
-
-    const attachDragEvents = card => {
-        if (card.dataset.dragReady === 'true') return;
-        card.dataset.dragReady = 'true';
-        card.setAttribute('draggable', 'true');
-
-        card.addEventListener('dragstart', e => {
-            draggedItem = card;
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/plain', card.querySelector('.k-card-body')?.textContent || '');
-            requestAnimationFrame(() => card.classList.add('dragging'));
-        });
-
-        card.addEventListener('dragend', () => {
-            card.classList.remove('dragging');
-            draggedItem = null;
-            updateKanbanCounts();
-            document.querySelectorAll('.kanban-col').forEach(col => col.classList.remove('drag-over'));
-        });
-
-        card.addEventListener('click', e => {
-            if (e.target.closest('.k-move-btn') || !isTouchPrimaryDevice()) return;
-
-            e.stopPropagation();
-            if (selectedKanbanCard === card) {
-                clearKanbanSelection();
-                return;
-            }
-
-            selectedKanbanCard?.classList.remove('is-selected');
-            selectedKanbanCard = card;
-            card.classList.add('is-selected');
-            highlightReceiveColumns(card);
-        });
-    };
-
-    document.querySelectorAll('.k-card').forEach(card => upgradeLegacyCard(card));
-
-    kCols.forEach(col => {
-        col.addEventListener('dragover', e => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-        });
-
-        col.addEventListener('dragenter', e => {
-            e.preventDefault();
-            col.classList.add('drag-over');
-        });
-
-        col.addEventListener('dragleave', e => {
-            if (!col.contains(e.relatedTarget)) col.classList.remove('drag-over');
-        });
-
-        col.addEventListener('drop', e => {
-            e.preventDefault();
-            col.classList.remove('drag-over');
-            if (!draggedItem) return;
-
-            insertCardBeforeAddButton(col, draggedItem);
-            updateMoveButtons(draggedItem);
-            updateKanbanCounts();
-        });
-
-        col.addEventListener('click', e => {
-            if (!selectedKanbanCard || !isTouchPrimaryDevice()) return;
-            if (selectedKanbanCard.closest('.kanban-col') === col) return;
-            if (e.target.closest('.k-add-btn')) return;
-
-            insertCardBeforeAddButton(col, selectedKanbanCard);
-            updateMoveButtons(selectedKanbanCard);
-            clearKanbanSelection();
-            updateKanbanCounts();
-        });
-    });
-
-    document.addEventListener('click', e => {
-        if (!selectedKanbanCard) return;
-        if (e.target.closest('.kanban-board')) return;
-        clearKanbanSelection();
-    });
-
-    const addKanbanCard = colId => {
-        const text = prompt('Enter the new syllabus topic:');
-        if (!text || !text.trim()) return;
-
-        const col = getColumnById(colId);
-        if (!col) return;
-
-        insertCardBeforeAddButton(col, buildKanbanCard(text.trim()));
-        updateKanbanCounts();
-    };
-
-    document.querySelectorAll('.k-add-btn').forEach(btn => {
-        btn.addEventListener('click', () => addKanbanCard(btn.dataset.col));
-    });
-    updateKanbanCounts();
+        renderQuest();
+    }
 
     /* =========================================
        Feature 3: Exam Sprint Planner
@@ -381,11 +586,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const plannerLoad = document.getElementById('planner-load');
     const plannerPace = document.getElementById('planner-pace');
 
-    const plannerTopics = [
-        { id: 1, name: 'Database Normalization', difficulty: 4, confidence: 1 },
-        { id: 2, name: 'Graph Algorithms', difficulty: 5, confidence: 2 },
-        { id: 3, name: 'OOP Principles', difficulty: 3, confidence: 3 }
-    ];
+    const plannerTopics = [];
 
     const addDays = (date, days) => {
         const next = new Date(date);
@@ -412,6 +613,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const getTopicWeight = topic => topic.difficulty * (4 - topic.confidence);
     const getTopicHours = topic => Math.max(1, Math.ceil(getTopicWeight(topic) * 0.7));
+
+    const buildStudyTasks = (topic, hours) => {
+        const res = SITE_RESOURCES[topic.name];
+        if (!res) return [{ label: `${topic.name} review`, hours, links: [] }];
+
+        const tasks = [];
+        const phases = [
+            { pct: 0.35, label: 'Concept Breakdown', icon: 'fa-layer-group', url: res.concept, color: res.color },
+            { pct: 0.25, label: 'Study Notes PDF', icon: 'fa-file-pdf', url: res.notes, color: '#00d1b2', external: true },
+            { pct: 0.20, label: 'Active Recall Quiz', icon: 'fa-brain', url: KB_LINKS.quiz, color: '#ff5252' },
+            { pct: 0.10, label: 'Flashcard Drill', icon: 'fa-clone', url: KB_LINKS.flashcards, color: '#8e24aa' },
+            { pct: 0.10, label: 'Explain-Back (Feynman)', icon: 'fa-chalkboard', url: KB_LINKS.feynman, color: '#00d1b2' }
+        ];
+
+        phases.forEach(phase => {
+            const mins = Math.max(15, Math.round(hours * 60 * phase.pct));
+            if (mins >= 10) {
+                tasks.push({
+                    label: phase.label,
+                    mins,
+                    topic: topic.name,
+                    hotTopics: res.hotTopics,
+                    links: [
+                        { label: phase.label, url: phase.url, icon: phase.icon, color: phase.color, external: phase.external }
+                    ]
+                });
+            }
+        });
+        return tasks;
+    };
+
+    const renderScheduleTask = task => {
+        const card = document.createElement('div');
+        card.className = 'schedule-task-card';
+        const hotHint = task.hotTopics ? `<div style="color:var(--text-muted); font-size:0.75rem; margin-top:0.25rem;">Focus: ${task.hotTopics.slice(0, 2).join(', ')}</div>` : '';
+        card.innerHTML = `<strong>${task.topic} — ${task.label}</strong> <span style="color:var(--accent-gold); font-size:0.8rem;">(${task.mins} min)</span>${hotHint}`;
+        const links = document.createElement('div');
+        links.className = 'schedule-resource-links';
+        task.links.forEach(l => {
+            const a = document.createElement('a');
+            a.href = l.url;
+            if (l.external) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+            a.style.borderColor = l.color + '44';
+            a.innerHTML = `<i class="fa-solid ${l.icon}"></i> ${l.label}`;
+            links.appendChild(a);
+        });
+        card.appendChild(links);
+        return card;
+    };
 
     const renderPlannerTopics = () => {
         if (!plannerTopicList) return;
@@ -447,9 +697,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const addPlannerTopic = () => {
         if (!plannerTopic || !plannerDifficulty || !plannerConfidence) return;
 
-        const name = plannerTopic.value.trim();
+        const name = plannerTopic.value;
         if (!name) {
-            alert('Please add a topic name first.');
+            alert('Please select a course/topic from the dropdown first.');
+            return;
+        }
+        
+        // Prevent adding the same topic multiple times
+        if (plannerTopics.some(t => t.name === name)) {
+            alert('You have already added this topic.');
             return;
         }
 
@@ -517,23 +773,29 @@ document.addEventListener('DOMContentLoaded', () => {
             dateHint.style.marginBottom = '0.7rem';
             dateHint.textContent = addDays(new Date(), index).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-            const list = document.createElement('ul');
+            const list = document.createElement('div');
             if (day.tasks.length) {
                 day.tasks.forEach(({ topic, hours }) => {
-                    const item = document.createElement('li');
-                    item.textContent = `${topic.name} - ${hours}h review + 15m recall`;
-                    list.appendChild(item);
+                    buildStudyTasks(topic, hours).forEach(task => {
+                        list.appendChild(renderScheduleTask(task));
+                    });
                 });
             } else {
-                const item = document.createElement('li');
-                item.textContent = day.load >= hoursPerDay ? 'Recovery buffer' : 'Flashcard review + past mistakes';
-                list.appendChild(item);
+                const empty = document.createElement('div');
+                empty.className = 'schedule-task-card';
+                empty.innerHTML = `<strong>Light Review Day</strong><div class="schedule-resource-links" style="margin-top:0.5rem;">
+                    <a href="${KB_LINKS.flashcards}"><i class="fa-solid fa-clone"></i> Flashcard Review</a>
+                    <a href="${KB_LINKS.quest}"><i class="fa-solid fa-bolt"></i> Knowledge Quest</a>
+                    <a href="${KB_LINKS.focus}"><i class="fa-solid fa-headphones"></i> Focus Hub</a>
+                </div>`;
+                list.appendChild(empty);
             }
 
             if (day.load > hoursPerDay) {
-                const warning = document.createElement('li');
-                warning.style.borderLeftColor = 'var(--accent-coral)';
-                warning.textContent = `Heavy day: ${day.load}h planned`;
+                const warning = document.createElement('div');
+                warning.className = 'schedule-task-card';
+                warning.style.borderColor = 'rgba(255,64,129,0.3)';
+                warning.innerHTML = `<strong style="color:var(--accent-coral);">Heavy day: ${day.load}h planned</strong><span style="display:block; color:var(--text-muted); font-size:0.8rem; margin-top:0.3rem;">Consider moving a topic or increasing daily hours.</span>`;
                 list.appendChild(warning);
             }
 
@@ -545,9 +807,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (plannerDate && plannerAdd && plannerGenerate) {
         plannerDate.value = formatDateValue(addDays(new Date(), 7));
         plannerAdd.addEventListener('click', addPlannerTopic);
-        plannerTopic?.addEventListener('keydown', e => {
-            if (e.key === 'Enter') addPlannerTopic();
-        });
+        // The topic is now a select, so we don't need the enter key event on it really
         plannerGenerate.addEventListener('click', buildPlannerSchedule);
         plannerHours?.addEventListener('input', buildPlannerSchedule);
         plannerDate.addEventListener('change', buildPlannerSchedule);
@@ -556,52 +816,132 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* =========================================
-       Feature 4: Custom Flashcard Builder
+       Feature 4: Custom Flashcard Deck Builder
        ========================================= */
     const fcBtn = document.getElementById('fc-build-btn');
+    const fcClear = document.getElementById('fc-clear-deck');
     const fcQ = document.getElementById('fc-q');
     const fcA = document.getElementById('fc-a');
     const fc3d = document.getElementById('fc-3d');
     const fcFront = document.getElementById('fc-front-text');
     const fcBack = document.getElementById('fc-back-text');
+    
+    // Deck UI
+    const fcDeckCount = document.getElementById('fc-deck-count');
+    const fcNav = document.getElementById('fc-nav');
+    const fcPrev = document.getElementById('fc-prev');
+    const fcNext = document.getElementById('fc-next');
+    const fcCardIndex = document.getElementById('fc-card-index');
 
-    const renderFlashcard = () => {
-        if (!fcQ || !fcA || !fc3d || !fcFront || !fcBack) return;
+    let flashcardDeck = [];
+    let currentCardIndex = 0;
 
-        const question = fcQ.value.trim();
-        const answer = fcA.value.trim();
-        if (!question || !answer) {
-            alert('Please enter both a question and an answer.');
-            return;
+    const updateDeckUI = () => {
+        fcDeckCount.textContent = `${flashcardDeck.length} / 5 cards`;
+        
+        if (flashcardDeck.length > 0) {
+            fcNav.style.display = 'flex';
+            fcCardIndex.textContent = `Card ${currentCardIndex + 1} of ${flashcardDeck.length}`;
+            
+            // Render current card
+            const card = flashcardDeck[currentCardIndex];
+            
+            const frontWrap = document.createElement('div');
+            const title = document.createElement('h3');
+            title.textContent = card.q;
+            const hint = document.createElement('p');
+            hint.textContent = 'Click to flip';
+            hint.className = 'fc-hint';
+            frontWrap.append(title, hint);
+            
+            const backText = document.createElement('p');
+            backText.textContent = card.a;
+            
+            fcFront.replaceChildren(frontWrap);
+            fcBack.replaceChildren(backText);
+            
+            // Always show front when navigating
+            fc3d.classList.remove('is-flipped');
+            
+            // Button states
+            fcPrev.style.opacity = currentCardIndex === 0 ? '0.3' : '1';
+            fcPrev.style.pointerEvents = currentCardIndex === 0 ? 'none' : 'auto';
+            fcNext.style.opacity = currentCardIndex === flashcardDeck.length - 1 ? '0.3' : '1';
+            fcNext.style.pointerEvents = currentCardIndex === flashcardDeck.length - 1 ? 'none' : 'auto';
+            
+        } else {
+            fcNav.style.display = 'none';
+            // Reset to empty state
+            fcFront.innerHTML = `<div style="color: var(--text-muted);"><i class="fa-solid fa-wand-magic-sparkles" style="font-size: 2rem; margin-bottom: 15px; color: var(--accent-violet);"></i><br>Your question will appear here.<br>Click to flip.</div>`;
+            fcBack.textContent = 'Your answer will appear here.';
+            fc3d.classList.remove('is-flipped');
         }
-
-        const frontWrap = document.createElement('div');
-        const title = document.createElement('h3');
-        title.textContent = question;
-        const hint = document.createElement('p');
-        hint.textContent = 'Click to flip';
-        hint.className = 'fc-hint';
-        frontWrap.append(title, hint);
-
-        const backText = document.createElement('p');
-        backText.textContent = answer;
-
-        fcFront.replaceChildren(frontWrap);
-        fcBack.replaceChildren(backText);
-        fc3d.classList.remove('is-flipped');
-        fc3d.classList.add('pop');
-        setTimeout(() => fc3d.classList.remove('pop'), 220);
     };
 
     if (fcBtn && fc3d) {
-        fcBtn.addEventListener('click', renderFlashcard);
-        fc3d.addEventListener('click', () => fc3d.classList.toggle('is-flipped'));
+        fcBtn.addEventListener('click', () => {
+            if (flashcardDeck.length >= 5) {
+                alert('Maximum deck size is 5 cards. Please clear the deck to start over.');
+                return;
+            }
+            
+            const question = fcQ.value.trim();
+            const answer = fcA.value.trim();
+            
+            if (!question || !answer) {
+                alert('Please enter both a question and an answer.');
+                return;
+            }
+            
+            flashcardDeck.push({ q: question, a: answer });
+            currentCardIndex = flashcardDeck.length - 1; // Jump to new card
+            
+            fcQ.value = '';
+            fcA.value = '';
+            
+            updateDeckUI();
+            
+            // Pop animation
+            fc3d.classList.add('pop');
+            setTimeout(() => fc3d.classList.remove('pop'), 220);
+        });
+
+        fcClear?.addEventListener('click', () => {
+            if(confirm('Are you sure you want to clear your current flashcard deck?')) {
+                flashcardDeck = [];
+                currentCardIndex = 0;
+                updateDeckUI();
+            }
+        });
+
+        fcPrev?.addEventListener('click', () => {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                updateDeckUI();
+            }
+        });
+        
+        fcNext?.addEventListener('click', () => {
+            if (currentCardIndex < flashcardDeck.length - 1) {
+                currentCardIndex++;
+                updateDeckUI();
+            }
+        });
+
+        fc3d.addEventListener('click', () => {
+            if (flashcardDeck.length > 0) {
+                fc3d.classList.toggle('is-flipped');
+            }
+        });
+        
         fc3d.addEventListener('keydown', e => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            if ((e.key === 'Enter' || e.key === ' ') && flashcardDeck.length > 0) {
                 e.preventDefault();
                 fc3d.classList.toggle('is-flipped');
             }
         });
+        
+        updateDeckUI();
     }
 
     /* =========================================
