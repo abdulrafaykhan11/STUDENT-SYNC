@@ -14,6 +14,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
+    const escapeHtml = value => String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+    const scrollToSection = (sectionId, highlight = true) => {
+        if (!sectionId) return false;
+        const target = document.getElementById(sectionId);
+        if (!target) return false;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (highlight) {
+            const highlightEl = target.querySelector('.glass-box') || target;
+            highlightEl.classList.add('section-highlight');
+            setTimeout(() => highlightEl.classList.remove('section-highlight'), 1800);
+        }
+        return true;
+    };
+
+    const bindResourceLink = (anchor, url) => {
+        if (!anchor || !url) return;
+        const resolved = new URL(url, window.location.href);
+        const isSamePage = resolved.pathname === window.location.pathname;
+        const sectionId = resolved.hash ? resolved.hash.slice(1) : '';
+
+        if (isSamePage && sectionId) {
+            anchor.addEventListener('click', event => {
+                event.preventDefault();
+                scrollToSection(sectionId);
+            });
+            return;
+        }
+
+        if (!isSamePage && sectionId && !anchor.target) {
+            anchor.addEventListener('click', event => {
+                event.preventDefault();
+                window.location.href = `${resolved.pathname}${resolved.search}${resolved.hash}`;
+            });
+        }
+    };
+
     /* Site-wide study resources — keeps users on StudentSync */
     const SITE_RESOURCES = {
         'HTML': {
@@ -75,11 +117,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const KB_LINKS = {
-        quiz: 'knowledge-base.html#quiz-lab',
-        flashcards: 'knowledge-base.html#flashcard-builder',
-        feynman: 'knowledge-base.html#feynman-engine',
-        focus: 'knowledge-base.html#focus-hub',
-        quest: 'knowledge-base.html#knowledge-quest',
+        quiz: '#quiz-lab',
+        flashcards: '#flashcard-builder',
+        feynman: '#concept-connections',
+        focus: '#focus-hub',
+        quest: '#knowledge-quest',
         crammer: 'conceptual-mastery.html#crammer-section'
     };
 
@@ -103,9 +145,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const feynmanGrammarCount = document.getElementById('feynman-grammar-count');
     const feynmanCopyRewrite = document.getElementById('feynman-copy-rewrite');
     const feynmanApplyRewrite = document.getElementById('feynman-apply-rewrite');
+    const feynmanAnalyzeBtn = document.getElementById('feynman-analyze-btn');
+    const feynmanOriginalPreview = document.getElementById('feynman-original-preview');
     let feynmanMode = 'simple';
     let lastSimpleRewrite = '';
     let lastPolishRewrite = '';
+    let lastSimpleJargon = [];
+    let lastPolishJargon = [];
 
     const jargonMap = {
         'utilize': 'use', 'facilitate': 'help', 'implement': 'build', 'paradigm': 'model',
@@ -187,52 +233,103 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const buildSimpleRewrite = (text, foundJargon) => {
-        let rewritten = text.replace(/\s{2,}/g, ' ');
+        let rewritten = text.replace(/\s{2,}/g, ' ').trim();
+
         foundJargon.forEach(j => {
             if (j.replacement) {
                 rewritten = rewritten.replace(new RegExp('\\b' + j.word + '\\b', 'gi'), j.replacement);
             }
         });
+
         Object.entries(spellingFixes).forEach(([wrong, right]) => {
             rewritten = rewritten.replace(new RegExp('\\b' + wrong + '\\b', 'gi'), right);
         });
-        rewritten = rewritten.replace(/\bi\b/g, 'I');
-        return rewritten.trim();
+
+        rewritten = rewritten
+            .replace(/\bi\b/g, 'I')
+            .replace(/\s+/g, ' ')
+            .replace(/\b(furthermore|nevertheless|predominantly|subsequently|comprehensive)\b/gi, match => {
+                const low = match.toLowerCase();
+                if (low === 'furthermore') return 'also';
+                if (low === 'nevertheless') return 'but';
+                if (low === 'predominantly') return 'mostly';
+                if (low === 'subsequently') return 'then';
+                return 'complete';
+            });
+
+        if (rewritten.length > 0 && !/[.!?]$/.test(rewritten.trim())) {
+            rewritten = rewritten.trim() + '.';
+        }
+
+        const sentences = rewritten.split(/(?<=[.!?])\s+/).filter(Boolean);
+        return sentences.map(s => {
+            const t = s.trim();
+            return t.charAt(0).toUpperCase() + t.slice(1);
+        }).join(' ').trim();
     };
 
     const buildPolishRewrite = (text, foundJargon) => {
-        let polished = text.replace(/\s{2,}/g, ' ');
-        Object.entries(spellingFixes).forEach(([wrong, right]) => {
-            polished = polished.replace(new RegExp('\\b' + wrong + '\\b', 'gi'), right);
-        });
-        polished = polished.replace(/\bi\b/g, 'I');
-
-        Object.entries(vocabUpgrade).forEach(([simple, advanced]) => {
-            polished = polished.replace(new RegExp('\\b' + simple + '\\b', 'gi'), match => {
-                if (match[0] === match[0].toUpperCase()) {
-                    return advanced.charAt(0).toUpperCase() + advanced.slice(1);
-                }
-                return advanced;
+        let polished = buildSimpleRewrite(text, foundJargon);
+        polished = polished
+            .replace(/\b(use|build|help|show|make|get|need|think|start|end)\b/gi, match => {
+                const low = match.toLowerCase();
+                if (low === 'use') return 'apply';
+                if (low === 'build') return 'create';
+                if (low === 'help') return 'support';
+                if (low === 'show') return 'demonstrate';
+                if (low === 'make') return 'produce';
+                if (low === 'get') return 'obtain';
+                if (low === 'need') return 'require';
+                if (low === 'think') return 'consider';
+                if (low === 'start') return 'begin';
+                return 'finish';
+            })
+            .replace(/\b(bad|small|big|very|lot|stuff)\b/gi, match => {
+                const low = match.toLowerCase();
+                if (low === 'bad') return 'poor';
+                if (low === 'small') return 'minimal';
+                if (low === 'big') return 'substantial';
+                if (low === 'very') return 'highly';
+                if (low === 'lot') return 'many';
+                return 'material';
             });
-        });
 
         if (polished.length > 0 && !/[.!?]$/.test(polished.trim())) {
             polished = polished.trim() + '.';
         }
-
-        const sentences = polished.split(/(?<=[.!?])\s+/);
-        polished = sentences.map(s => {
-            const t = s.trim();
-            if (!t) return s;
-            return t.charAt(0).toUpperCase() + t.slice(1);
-        }).join(' ');
 
         return polished.trim();
     };
 
     const renderFeynmanRewrite = () => {
         if (!feynmanRewrite) return;
-        feynmanRewrite.textContent = feynmanMode === 'polish' ? lastPolishRewrite : lastSimpleRewrite;
+        const text = feynmanMode === 'polish' ? lastPolishRewrite : lastSimpleRewrite;
+        const terms = feynmanMode === 'polish' ? lastPolishJargon : lastSimpleJargon;
+        if (!text) {
+            feynmanRewrite.innerHTML = '<span style="color:var(--text-muted);">Write a short explanation and the rewritten paragraph will appear here.</span>';
+            return;
+        }
+
+        let html = escapeHtml(text);
+        terms.slice().sort((a, b) => b.word.length - a.word.length).forEach(term => {
+            const pattern = new RegExp('\\b' + term.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi');
+            const replacement = term.replacement || term.word;
+            html = html.replace(pattern, `<span class="feynman-highlight">${escapeHtml(replacement)}</span>`);
+        });
+
+        feynmanRewrite.innerHTML = html;
+    };
+
+    const highlightJargonInText = (text, foundJargon) => {
+        if (!text) return '<span style="color:var(--text-muted);">Your paragraph preview will appear here.</span>';
+        let html = escapeHtml(text);
+        foundJargon.slice().sort((a, b) => b.word.length - a.word.length).forEach(term => {
+            const pattern = new RegExp('\\b' + term.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi');
+            html = html.replace(pattern, match =>
+                `<mark class="feynman-jargon-mark" title="${escapeHtml(term.replacement ? `Try: ${term.replacement}` : 'Complex word')}">${match}</mark>`
+            );
+        });
+        return html;
     };
 
     const countSyllables = (word) => {
@@ -277,7 +374,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const { mistakes, spellingCount, grammarCount } = detectMistakes(text, words);
 
-        if (wordCount >= 6 && feynmanFeedback) {
+        if (feynmanOriginalPreview) {
+            feynmanOriginalPreview.innerHTML = highlightJargonInText(text, foundJargon);
+        }
+
+        if (wordCount >= 3 && feynmanFeedback) {
             feynmanFeedback.style.display = 'block';
 
             if (feynmanMistakeCount) feynmanMistakeCount.textContent = mistakes.length;
@@ -307,6 +408,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             lastSimpleRewrite = buildSimpleRewrite(text, foundJargon);
             lastPolishRewrite = buildPolishRewrite(text, foundJargon);
+            lastSimpleJargon = foundJargon;
+            lastPolishJargon = foundJargon;
             if (lastSimpleRewrite === text.trim() && foundJargon.length === 0 && mistakes.length === 0) {
                 lastSimpleRewrite = 'Your text is already clear — no changes needed!';
             }
@@ -344,6 +447,9 @@ document.addEventListener('DOMContentLoaded', () => {
         feynmanStatus.style.color = 'var(--text-muted)';
         feynmanStatus.textContent = 'Start typing...';
         if (feynmanFeedback) feynmanFeedback.style.display = 'none';
+        if (feynmanOriginalPreview) {
+            feynmanOriginalPreview.innerHTML = '<span style="color:var(--text-muted);">Your paragraph preview will appear here.</span>';
+        }
     };
 
     if (feynmanInput) {
@@ -352,6 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(analyzeText, 300);
         });
+        feynmanAnalyzeBtn?.addEventListener('click', analyzeText);
         feynmanClear?.addEventListener('click', () => {
             feynmanInput.value = '';
             resetFeynmanUI();
@@ -384,6 +491,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
         resetFeynmanUI();
     }
+
+    /* =========================================
+       Feature 1: Concept Connections Map
+       ========================================= */
+    const conceptMapData = {
+        html: { title: 'HTML', icon: 'fa-brands fa-html5', description: 'The structure beneath every web experience. Start here to give content meaning and order.', unlocks: ['Accessible page structure', 'Forms and semantic layouts', 'A solid CSS foundation'], link: 'conceptual-mastery.html' },
+        css: { title: 'CSS', icon: 'fa-brands fa-css3-alt', description: 'CSS turns structure into a polished experience—layouts, colours, responsive design, and motion.', unlocks: ['Responsive layouts', 'Modern visual design', 'Animation and interaction polish'], link: 'conceptual-mastery.html' },
+        javascript: { title: 'JavaScript', icon: 'fa-brands fa-js', description: 'The language that makes web pages respond, calculate, and come alive.', unlocks: ['Interactive interfaces', 'React components', 'Server-side logic with Node.js'], link: 'conceptual-mastery.html' },
+        react: { title: 'React', icon: 'fa-brands fa-react', description: 'Build fast, reusable interfaces by combining JavaScript knowledge into focused components.', unlocks: ['Component-based UI', 'State and event handling', 'Modern front-end projects'], link: 'conceptual-mastery.html' },
+        node: { title: 'Node.js', icon: 'fa-brands fa-node-js', description: 'Use JavaScript beyond the browser to create APIs, tools, and full-stack applications.', unlocks: ['Backend APIs', 'Package ecosystem', 'Full-stack JavaScript'], link: 'conceptual-mastery.html' },
+        php: { title: 'PHP', icon: 'fa-brands fa-php', description: 'A practical server-side language for processing forms, sessions, and dynamic websites.', unlocks: ['Server-side rendering', 'Form processing', 'Database-driven pages'], link: 'conceptual-mastery.html' },
+        mysql: { title: 'MySQL', icon: 'fa-solid fa-database', description: 'Store, organise, and query the information that powers real applications.', unlocks: ['Relational database design', 'SQL queries', 'PHP and Node.js data layers'], link: 'conceptual-mastery.html' }
+    };
+    const conceptNodes = document.querySelectorAll('.concept-node[data-concept]');
+    const conceptDetailIcon = document.getElementById('concept-detail-icon');
+    const conceptDetailTitle = document.getElementById('concept-detail-title');
+    const conceptDetailDescription = document.getElementById('concept-detail-description');
+    const conceptDetailList = document.getElementById('concept-detail-list');
+    const conceptDetailLink = document.getElementById('concept-detail-link');
+
+    const selectConceptNode = key => {
+        const concept = conceptMapData[key];
+        if (!concept || !conceptDetailTitle) return;
+        conceptNodes.forEach(node => node.classList.toggle('active', node.dataset.concept === key));
+        conceptDetailIcon.innerHTML = `<i class="${concept.icon}"></i>`;
+        conceptDetailTitle.textContent = concept.title;
+        conceptDetailDescription.textContent = concept.description;
+        conceptDetailList.replaceChildren(...concept.unlocks.map(item => {
+            const listItem = document.createElement('li');
+            listItem.textContent = item;
+            return listItem;
+        }));
+        conceptDetailLink.href = concept.link;
+        conceptDetailLink.innerHTML = `<i class="fa-solid fa-compass"></i> Explore ${concept.title}`;
+    };
+    conceptNodes.forEach(node => node.addEventListener('click', () => selectConceptNode(node.dataset.concept)));
+
+    const initialKbHash = window.location.hash.slice(1);
+    if (initialKbHash) {
+        setTimeout(() => scrollToSection(initialKbHash), 300);
+    }
+    window.addEventListener('hashchange', () => {
+        const sectionId = window.location.hash.slice(1);
+        if (sectionId) scrollToSection(sectionId);
+    });
 
     /* =========================================
        Feature 2: Knowledge Quest Arena
@@ -487,12 +639,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="quest-node-icon"><i class="${step.icon}"></i></div>
                 <h4>${step.title}</h4>
                 <p>${step.desc}</p>
-                <a href="${step.link}" target="_self"><i class="fa-solid fa-arrow-up-right-from-square"></i> ${step.linkText}</a>
+                <a href="${step.link}"><i class="fa-solid fa-arrow-up-right-from-square"></i> ${step.linkText}</a>
                 <br><button type="button" class="quest-node-check${prog[step.id] ? ' is-done' : ''}" data-step-check="${step.id}">
                     ${prog[step.id] ? '<i class="fa-solid fa-check"></i> Done' : 'Mark Done'}
                 </button>
             </div>
         `).join('');
+
+        questPipeline.querySelectorAll('a[href]').forEach(link => bindResourceLink(link, link.getAttribute('href')));
 
         renderBlitzQuiz();
     };
@@ -506,15 +660,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         questBlitzQuestions.innerHTML = questions.map((q, qi) => `
             <div class="quest-blitz-q" data-blitz="${qi}">
-                <h4>${qi + 1}. ${q.q}</h4>
+                <h4>${qi + 1}. ${escapeHtml(q.q)}</h4>
                 <div class="quest-blitz-opts">
-                    ${q.opts.map((opt, oi) => `<button type="button" class="quest-blitz-opt" data-q="${qi}" data-opt="${oi}">${opt}</button>`).join('')}
+                    ${q.opts.map((opt, oi) => `<button type="button" class="quest-blitz-opt" data-q="${qi}" data-opt="${oi}"><span class="quest-opt-letter">${String.fromCharCode(65 + oi)}</span><span class="quest-opt-text">${escapeHtml(opt)}</span></button>`).join('')}
                 </div>
                 <p class="quest-blitz-hint" style="display:none; color:var(--text-muted); font-size:0.82rem; margin-top:0.5rem;">
-                    Wrong? Revise at <a href="${reviseLink}" style="color:var(--accent-gold);">Concept Deconstructor</a>
+                    Wrong? Revise at <a href="${reviseLink}">Concept Deconstructor</a>
                 </p>
             </div>
         `).join('');
+
+        questBlitzQuestions.querySelectorAll('a[href]').forEach(link => bindResourceLink(link, link.getAttribute('href')));
 
         if (questBlitzScore) questBlitzScore.textContent = `Score: 0/${questions.length}`;
     };
@@ -548,15 +704,15 @@ document.addEventListener('DOMContentLoaded', () => {
             card.querySelectorAll('.quest-blitz-opt').forEach(b => {
                 b.disabled = true;
                 if (parseInt(b.dataset.opt, 10) === questions[qIdx].a) b.classList.add('correct');
+                if (parseInt(b.dataset.opt, 10) === oIdx && !isCorrect) b.classList.add('wrong');
             });
             if (!isCorrect) {
-                opt.classList.add('wrong');
                 card.querySelector('.quest-blitz-hint').style.display = 'block';
             } else {
                 blitzScore.correct++;
             }
 
-            const answered = questBlitzQuestions.querySelectorAll('.quest-blitz-opt:disabled').length / 3;
+            const answered = questBlitzQuestions.querySelectorAll('.quest-blitz-opt:disabled').length / Math.max(1, questions.length);
             if (questBlitzScore) questBlitzScore.textContent = `Score: ${blitzScore.correct}/${questions.length}`;
 
             if (answered >= questions.length && blitzScore.correct === questions.length) {
@@ -616,7 +772,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const buildStudyTasks = (topic, hours) => {
         const res = SITE_RESOURCES[topic.name];
-        if (!res) return [{ label: `${topic.name} review`, hours, links: [] }];
+        if (!res) return [{
+            label: `${topic.name} review`,
+            mins: Math.round(hours * 60),
+            topic: topic.name,
+            links: []
+        }];
 
         const tasks = [];
         const phases = [
@@ -624,7 +785,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { pct: 0.25, label: 'Study Notes PDF', icon: 'fa-file-pdf', url: res.notes, color: '#00d1b2', external: true },
             { pct: 0.20, label: 'Active Recall Quiz', icon: 'fa-brain', url: KB_LINKS.quiz, color: '#ff5252' },
             { pct: 0.10, label: 'Flashcard Drill', icon: 'fa-clone', url: KB_LINKS.flashcards, color: '#8e24aa' },
-            { pct: 0.10, label: 'Explain-Back (Feynman)', icon: 'fa-chalkboard', url: KB_LINKS.feynman, color: '#00d1b2' }
+            { pct: 0.10, label: 'Concept Connections Map', icon: 'fa-diagram-project', url: KB_LINKS.feynman, color: '#00d1b2' }
         ];
 
         phases.forEach(phase => {
@@ -656,7 +817,8 @@ document.addEventListener('DOMContentLoaded', () => {
             a.href = l.url;
             if (l.external) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
             a.style.borderColor = l.color + '44';
-            a.innerHTML = `<i class="fa-solid ${l.icon}"></i> ${l.label}`;
+            a.innerHTML = `<i class="fa-solid ${l.icon}"></i> ${escapeHtml(l.label)}`;
+            bindResourceLink(a, l.url);
             links.appendChild(a);
         });
         card.appendChild(links);
@@ -747,14 +909,17 @@ document.addEventListener('DOMContentLoaded', () => {
             tasks: []
         }));
 
+        // Spread individual study phases across the lightest day. Assigning a full
+        // topic to one day creates a very tall first card while later days look empty.
         plannerTopics
             .slice()
             .sort((a, b) => getTopicWeight(b) - getTopicWeight(a))
-            .forEach(topic => {
+            .flatMap(topic => buildStudyTasks(topic, getTopicHours(topic)))
+            .sort((a, b) => b.mins - a.mins)
+            .forEach(task => {
                 const targetDay = days.reduce((best, day) => day.load < best.load ? day : best, days[0]);
-                const hours = getTopicHours(topic);
-                targetDay.tasks.push({ topic, hours });
-                targetDay.load += hours;
+                targetDay.tasks.push(task);
+                targetDay.load += task.mins;
             });
 
         plannerDays.textContent = String(daysLeft);
@@ -775,27 +940,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const list = document.createElement('div');
             if (day.tasks.length) {
-                day.tasks.forEach(({ topic, hours }) => {
-                    buildStudyTasks(topic, hours).forEach(task => {
-                        list.appendChild(renderScheduleTask(task));
-                    });
-                });
+                day.tasks.forEach(task => list.appendChild(renderScheduleTask(task)));
             } else {
                 const empty = document.createElement('div');
-                empty.className = 'schedule-task-card';
+                empty.className = 'schedule-task-card schedule-light-day';
                 empty.innerHTML = `<strong>Light Review Day</strong><div class="schedule-resource-links" style="margin-top:0.5rem;">
                     <a href="${KB_LINKS.flashcards}"><i class="fa-solid fa-clone"></i> Flashcard Review</a>
                     <a href="${KB_LINKS.quest}"><i class="fa-solid fa-bolt"></i> Knowledge Quest</a>
                     <a href="${KB_LINKS.focus}"><i class="fa-solid fa-headphones"></i> Focus Hub</a>
                 </div>`;
+                empty.querySelectorAll('a[href]').forEach(link => bindResourceLink(link, link.getAttribute('href')));
                 list.appendChild(empty);
             }
 
-            if (day.load > hoursPerDay) {
+            if (day.load > hoursPerDay * 60) {
                 const warning = document.createElement('div');
                 warning.className = 'schedule-task-card';
                 warning.style.borderColor = 'rgba(255,64,129,0.3)';
-                warning.innerHTML = `<strong style="color:var(--accent-coral);">Heavy day: ${day.load}h planned</strong><span style="display:block; color:var(--text-muted); font-size:0.8rem; margin-top:0.3rem;">Consider moving a topic or increasing daily hours.</span>`;
+                warning.innerHTML = `<strong style="color:var(--accent-coral);">Heavy day: ${Math.round(day.load / 60 * 10) / 10}h planned</strong><span style="display:block; color:var(--text-muted); font-size:0.8rem; margin-top:0.3rem;">Consider moving a topic or increasing daily hours.</span>`;
                 list.appendChild(warning);
             }
 
@@ -807,7 +969,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (plannerDate && plannerAdd && plannerGenerate) {
         plannerDate.value = formatDateValue(addDays(new Date(), 7));
         plannerAdd.addEventListener('click', addPlannerTopic);
-        // The topic is now a select, so we don't need the enter key event on it really
         plannerGenerate.addEventListener('click', buildPlannerSchedule);
         plannerHours?.addEventListener('input', buildPlannerSchedule);
         plannerDate.addEventListener('change', buildPlannerSchedule);
@@ -993,24 +1154,29 @@ document.addEventListener('DOMContentLoaded', () => {
             .filter(sentence => sentence.length > 35);
         const keywords = extractKeywords(text);
 
-        return sentences
-            .map(sentence => {
-                const answer = keywords.find(keyword => sentence.toLowerCase().includes(keyword));
-                if (!answer) return null;
+        const candidates = [];
 
-                const distractors = shuffle(keywords.filter(keyword => keyword !== answer && !sentence.toLowerCase().includes(keyword))).slice(0, 3);
-                if (distractors.length < 3) return null;
+        // One paragraph can have only a few sentences. Build a separate question
+        // for each meaningful term so the selected 3, 5, or 8 count is respected.
+        sentences.forEach(sentence => {
+            const sentenceTerms = keywords
+                .filter(keyword => new RegExp(`\\b${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(sentence))
+                .slice(0, 4);
 
-                const blankRegex = new RegExp(answer, 'i');
-                return {
-                    prompt: sentence.replace(blankRegex, '________'),
+            sentenceTerms.forEach(answer => {
+                const distractors = shuffle(keywords.filter(keyword => keyword !== answer)).slice(0, 3);
+                if (distractors.length < 3) return;
+                const termPattern = new RegExp(`\\b${answer.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+                candidates.push({
+                    prompt: `Which key term completes this idea: “${sentence.replace(termPattern, '________')}”`,
                     answer,
                     options: shuffle([answer, ...distractors]),
                     explanation: sentence
-                };
-            })
-            .filter(Boolean)
-            .slice(0, limit);
+                });
+            });
+        });
+
+        return shuffle(candidates).slice(0, limit);
     };
 
     const updateQuizScore = () => {

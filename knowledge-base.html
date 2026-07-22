@@ -79,6 +79,13 @@
             background: var(--glass-bg-hover);
             transform: translateY(-5px);
         }
+        .glass-box.no-lift:hover {
+            transform: none;
+        }
+
+        .kb-section[id] {
+            scroll-margin-top: 110px;
+        }
 
         /* Hero */
         .hero-section {
@@ -186,15 +193,27 @@
         }
 
         /* 2. Knowledge Quest Arena */
+        #knowledge-quest .glass-box {
+            padding: 1.5rem;
+        }
         .quest-layout {
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: minmax(220px, 280px) 1fr;
             gap: 1.5rem;
             align-items: start;
+        }
+        .quest-sidebar {
+            background: rgba(0,0,0,0.22);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 1rem;
         }
         .quest-topics {
             display: grid;
             gap: 0.55rem;
+            max-height: 420px;
+            overflow-y: auto;
+            padding-right: 0.25rem;
         }
         .quest-topic-btn {
             display: flex;
@@ -210,6 +229,7 @@
             cursor: pointer;
             transition: var(--transition);
             text-align: left;
+            width: 100%;
         }
         .quest-topic-btn:hover { border-color: rgba(0,209,178,0.35); background: rgba(0,209,178,0.06); }
         .quest-topic-btn.active {
@@ -217,8 +237,8 @@
             background: rgba(0,209,178,0.12);
             box-shadow: 0 0 20px rgba(0,209,178,0.15);
         }
-        .quest-topic-btn i { font-size: 1.2rem; width: 1.4rem; text-align: center; }
-        .quest-main { display: grid; gap: 1.2rem; }
+        .quest-topic-btn i { font-size: 1.2rem; width: 1.4rem; text-align: center; flex-shrink: 0; }
+        .quest-main { display: grid; gap: 1.2rem; min-width: 0; }
         .quest-xp-bar {
             background: rgba(0,0,0,0.25);
             border: 1px solid rgba(255,255,255,0.08);
@@ -233,7 +253,7 @@
         .quest-xp-track {
             flex: 1;
             min-width: 140px;
-            height: 8px;
+            height: 10px;
             background: rgba(255,255,255,0.08);
             border-radius: 50px;
             overflow: hidden;
@@ -247,7 +267,7 @@
         }
         .quest-pipeline {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 0.8rem;
         }
         .quest-node {
@@ -258,6 +278,10 @@
             text-align: center;
             transition: var(--transition);
             position: relative;
+            min-height: 190px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .quest-node.done { border-color: rgba(0,209,178,0.4); background: rgba(0,209,178,0.08); }
         .quest-node-icon {
@@ -271,7 +295,7 @@
         }
         .quest-node.done .quest-node-icon { background: rgba(0,209,178,0.15); color: var(--accent-mint); border-color: rgba(0,209,178,0.35); }
         .quest-node h4 { font-size: 0.88rem; margin-bottom: 0.35rem; color: white; }
-        .quest-node p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.6rem; line-height: 1.4; }
+        .quest-node p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.6rem; line-height: 1.4; flex: 1; }
         .quest-node a {
             display: inline-flex;
             align-items: center;
@@ -280,14 +304,15 @@
             color: var(--accent-gold);
             text-decoration: none;
             font-weight: 600;
+            margin-bottom: 0.45rem;
         }
         .quest-node a:hover { text-decoration: underline; }
         .quest-node-check {
-            margin-top: 0.5rem;
+            margin-top: auto;
             background: transparent;
             border: 1px solid rgba(255,255,255,0.15);
             color: var(--text-muted);
-            padding: 0.3rem 0.7rem;
+            padding: 0.35rem 0.75rem;
             border-radius: 50px;
             font-size: 0.72rem;
             cursor: pointer;
@@ -301,32 +326,64 @@
             border-radius: 16px;
             padding: 1.25rem;
         }
-        .quest-blitz h3 { margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
+        .quest-blitz h3 { margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; color: white; }
         .quest-blitz-q {
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 10px;
-            padding: 0.9rem;
-            margin-bottom: 0.7rem;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.85rem;
         }
-        .quest-blitz-q h4 { font-size: 0.92rem; margin-bottom: 0.6rem; color: white; line-height: 1.4; }
-        .quest-blitz-opts { display: grid; gap: 0.45rem; }
+        .quest-blitz-q h4 { font-size: 0.95rem; margin-bottom: 0.75rem; color: white; line-height: 1.45; }
+        .quest-blitz-opts { display: grid; gap: 0.55rem; }
         .quest-blitz-opt {
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
             color: white;
-            border-radius: 8px;
-            padding: 0.55rem 0.7rem;
+            border-radius: 10px;
+            padding: 0.7rem 0.85rem;
             text-align: left;
             cursor: pointer;
             font-family: inherit;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            width: 100%;
         }
-        .quest-blitz-opt:hover { border-color: var(--accent-violet); }
-        .quest-blitz-opt.correct { border-color: var(--accent-mint); background: rgba(0,209,178,0.12); }
-        .quest-blitz-opt.wrong { border-color: var(--accent-coral); background: rgba(255,64,129,0.12); }
-        .quest-blitz-score { color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem; }
+        .quest-blitz-opt:hover:not(:disabled) { border-color: var(--accent-violet); background: rgba(142,36,170,0.08); }
+        .quest-blitz-opt:disabled { cursor: default; opacity: 0.95; }
+        .quest-blitz-opt.correct { border-color: var(--accent-mint); background: rgba(0,209,178,0.14); }
+        .quest-blitz-opt.wrong { border-color: var(--accent-coral); background: rgba(255,64,129,0.14); }
+        .quest-opt-letter {
+            width: 1.6rem;
+            height: 1.6rem;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            color: var(--accent-gold);
+        }
+        .quest-opt-text {
+            flex: 1;
+            overflow-wrap: anywhere;
+            font-family: 'Courier New', monospace;
+            font-size: 0.86rem;
+        }
+        .quest-blitz-score {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-top: 0.65rem;
+            font-weight: 600;
+        }
+        .quest-blitz-hint a { color: var(--accent-gold); text-decoration: none; font-weight: 600; }
+        .quest-blitz-hint a:hover { text-decoration: underline; }
 
         /* Feynman extras */
         .feynman-tabs {
@@ -367,6 +424,45 @@
             margin-top: 0.8rem;
             flex-wrap: wrap;
         }
+        .feynman-highlight {
+            background: rgba(0, 209, 178, 0.16);
+            color: var(--accent-mint);
+            padding: 0.1rem 0.35rem;
+            border-radius: 999px;
+            font-weight: 700;
+        }
+        .feynman-jargon-mark {
+            background: rgba(255, 64, 129, 0.18);
+            color: #ff8fab;
+            padding: 0.08rem 0.35rem;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+        .feynman-original-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1rem 1.1rem;
+            color: var(--text-white);
+            line-height: 1.7;
+            font-size: 0.98rem;
+            min-height: 72px;
+            overflow-wrap: anywhere;
+        }
+        .feynman-analyze-btn {
+            margin-top: 0.85rem;
+            width: 100%;
+            border: 0;
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            background: linear-gradient(135deg, var(--accent-mint), #00a896);
+            color: #041612;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .feynman-analyze-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,209,178,0.25); }
         .feynman-action-btn {
             border: 1px solid rgba(0,209,178,0.35);
             background: rgba(0,209,178,0.1);
@@ -380,6 +476,101 @@
             transition: 0.2s;
         }
         .feynman-action-btn:hover { background: var(--accent-mint); color: #000; }
+
+        /* Concept Connections Map */
+        .concept-map-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(250px, 0.65fr);
+            gap: 1.25rem;
+            align-items: stretch;
+        }
+        .concept-map-board {
+            min-height: 470px;
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            border: 1px solid rgba(0, 209, 178, 0.18);
+            border-radius: 18px;
+            background:
+                radial-gradient(circle at 50% 48%, rgba(142, 36, 170, 0.16), transparent 26%),
+                radial-gradient(circle at 14% 20%, rgba(0, 209, 178, 0.11), transparent 22%),
+                rgba(4, 12, 21, 0.58);
+        }
+        .concept-map-board::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+            background-size: 26px 26px;
+            mask-image: linear-gradient(to bottom, black, transparent);
+            pointer-events: none;
+        }
+        .concept-map-intro {
+            position: absolute;
+            z-index: 2;
+            top: 1rem;
+            left: 1rem;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            margin: 0;
+        }
+        .concept-map-lines { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .concept-map-lines line { stroke: rgba(0, 209, 178, 0.32); stroke-width: 1.5; stroke-dasharray: 5 7; animation: mapFlow 4s linear infinite; }
+        .concept-map-lines line:nth-child(2n) { stroke: rgba(255, 189, 46, 0.32); animation-direction: reverse; }
+        .concept-node {
+            position: absolute;
+            z-index: 2;
+            width: 96px;
+            min-height: 96px;
+            padding: 0.65rem 0.45rem;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.16);
+            background: rgba(17, 28, 42, 0.88);
+            color: var(--text-white);
+            font: 700 0.73rem/1.15 inherit;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            text-align: center;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+            animation: mapFloat 4s ease-in-out infinite;
+        }
+        .concept-node i { color: var(--accent-mint); font-size: 1.15rem; }
+        .concept-node:hover,
+        .concept-node.active { transform: translateY(-6px) scale(1.07); border-color: var(--accent-gold); background: rgba(33, 25, 44, 0.96); box-shadow: 0 0 0 4px rgba(255, 189, 46, 0.1), 0 12px 26px rgba(0,0,0,0.35); }
+        .concept-node.active i { color: var(--accent-gold); }
+        .concept-node:nth-of-type(4n) { animation-delay: -1.5s; }
+        .concept-node:nth-of-type(3n) { animation-delay: -2.5s; }
+        .concept-node-html { top: 15%; left: 10%; }
+        .concept-node-css { top: 60%; left: 8%; }
+        .concept-node-js { top: 35%; left: 35%; width: 116px; min-height: 116px; border-color: rgba(255, 189, 46, 0.55); box-shadow: 0 0 28px rgba(142, 36, 170, 0.28); }
+        .concept-node-react { top: 13%; right: 13%; }
+        .concept-node-node { top: 62%; right: 10%; }
+        .concept-node-php { bottom: 8%; left: 36%; }
+        .concept-node-mysql { bottom: 10%; right: 31%; }
+        .concept-detail {
+            padding: 1.3rem;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(160deg, rgba(142,36,170,0.13), rgba(0,209,178,0.06));
+            display: flex;
+            flex-direction: column;
+        }
+        .concept-detail-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 14px; color: var(--accent-gold); background: rgba(255,189,46,0.1); border: 1px solid rgba(255,189,46,0.24); font-size: 1.25rem; }
+        .concept-detail h3 { color: var(--text-white); font-size: 1.35rem; margin: 1rem 0 0.5rem; }
+        .concept-detail p { color: var(--text-muted); line-height: 1.65; font-size: 0.92rem; }
+        .concept-detail-label { color: var(--accent-mint); text-transform: uppercase; letter-spacing: 1.4px; font-size: 0.7rem; font-weight: 700; margin-top: 1.25rem; }
+        .concept-detail-list { display: grid; gap: 0.55rem; list-style: none; padding: 0; margin: 0.65rem 0 1.3rem; }
+        .concept-detail-list li { color: var(--text-white); font-size: 0.85rem; display: flex; gap: 0.5rem; align-items: flex-start; }
+        .concept-detail-list li::before { content: '✦'; color: var(--accent-gold); }
+        .concept-detail-link { margin-top: auto; display: inline-flex; justify-content: center; align-items: center; gap: 0.45rem; padding: 0.75rem 1rem; border-radius: 10px; color: #101014; background: var(--accent-gold); font-weight: 800; text-decoration: none; transition: var(--transition); }
+        .concept-detail-link:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,189,46,0.25); }
+        @keyframes mapFloat { 50% { transform: translateY(-5px); } }
+        @keyframes mapFlow { to { stroke-dashoffset: -48; } }
+        #feynman-engine { display: none; }
 
         /* Flashcard deck strip */
         .fc-deck-strip {
@@ -451,10 +642,13 @@
         .schedule-resource-links a:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
 
         /* 3. Exam Sprint Planner */
+        #exam-planner .glass-box {
+            padding: 1.5rem;
+        }
         .planner-layout {
             display: grid;
-            grid-template-columns: 340px 1fr;
-            gap: 32px;
+            grid-template-columns: minmax(280px, 340px) 1fr;
+            gap: 1.5rem;
             align-items: start;
         }
         .planner-panel,
@@ -463,6 +657,10 @@
             border: 1px solid rgba(255,255,255,0.08);
             border-radius: 16px;
             padding: 1.25rem;
+            min-width: 0;
+        }
+        .planner-output {
+            overflow: hidden;
         }
         .planner-field {
             display: block;
@@ -553,19 +751,20 @@
         .planner-metric span { color: var(--text-muted); font-size: 0.8rem; }
         .schedule-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1rem;
         }
         .schedule-day {
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 1rem;
-            min-height: 150px;
+            min-height: 180px;
         }
         .schedule-day h4 {
             color: var(--accent-gold);
-            margin-bottom: 0.7rem;
+            margin-bottom: 0.35rem;
+            font-size: 1rem;
         }
         .schedule-day ul {
             list-style: none;
@@ -579,7 +778,123 @@
             border-left: 2px solid rgba(255,189,46,0.45);
             overflow-wrap: anywhere;
         }
-        .schedule-empty { color: var(--text-muted); }
+        .schedule-empty {
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 2rem 1rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px dashed rgba(255,255,255,0.12);
+            border-radius: 12px;
+        }
+        .schedule-task-card {
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+        .schedule-task-card:hover {
+            border-color: rgba(255,189,46,0.25);
+            background: rgba(255,255,255,0.05);
+        }
+        .schedule-light-day {
+            background: rgba(0,209,178,0.05);
+            border-color: rgba(0,209,178,0.15);
+        }
+
+        /* Planner polish + shared responsive controls */
+        #exam-planner .glass-box {
+            background:
+                linear-gradient(145deg, rgba(255, 189, 46, 0.06), transparent 38%),
+                var(--glass-bg);
+            border-color: rgba(255, 189, 46, 0.2);
+            box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24), 0 0 42px rgba(255, 189, 46, 0.05);
+        }
+        .planner-panel,
+        .planner-output {
+            background: rgba(8, 12, 20, 0.5);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .planner-panel { border-top: 2px solid rgba(255, 189, 46, 0.62); }
+        .planner-output { border-top: 2px solid rgba(0, 209, 178, 0.5); }
+        .planner-panel h3 {
+            color: var(--text-white);
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .planner-panel h3::before {
+            content: '';
+            width: 0.45rem;
+            height: 0.45rem;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            box-shadow: 0 0 12px rgba(255, 189, 46, 0.65);
+        }
+        .planner-input,
+        .planner-select {
+            min-height: 46px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+        .planner-input:hover,
+        .planner-select:hover { background: rgba(255, 255, 255, 0.075); }
+        .planner-input:focus,
+        .planner-select:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(255, 189, 46, 0.12);
+        }
+        .planner-btn {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+        }
+        .planner-btn:not(.primary):hover { border-color: var(--accent-mint); color: var(--accent-mint); }
+        .planner-btn.primary {
+            background: linear-gradient(135deg, var(--accent-gold), #ff9f1c);
+            box-shadow: 0 8px 18px rgba(255, 189, 46, 0.2);
+        }
+        .planner-btn.primary:hover { box-shadow: 0 12px 26px rgba(255, 189, 46, 0.32); }
+        .planner-metric { position: relative; overflow: hidden; }
+        .planner-metric::after {
+            content: '';
+            position: absolute;
+            right: -15%; bottom: -70%;
+            width: 75px; height: 75px;
+            border-radius: 50%;
+            background: rgba(0, 209, 178, 0.08);
+        }
+        .planner-metric strong { color: var(--accent-mint); }
+        .schedule-day { background: rgba(255, 255, 255, 0.035); }
+
+        /* Theme-matched, accessible scrollbar for the Knowledge Quest subjects */
+        .quest-topics {
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-mint) rgba(255, 255, 255, 0.06);
+            scrollbar-gutter: stable;
+        }
+        .quest-topics::-webkit-scrollbar { width: 8px; }
+        .quest-topics::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 999px;
+            margin: 3px 0;
+        }
+        .quest-topics::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--accent-mint), var(--accent-violet));
+            border: 2px solid rgba(9, 15, 25, 0.78);
+            border-radius: 999px;
+        }
+        .quest-topics::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
+        .section-highlight {
+            animation: sectionPulse 1.4s ease;
+            border-color: rgba(255, 189, 46, 0.45) !important;
+            box-shadow: 0 0 0 2px rgba(255, 189, 46, 0.18), 0 0 30px rgba(255, 189, 46, 0.08);
+        }
+        @keyframes sectionPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+            100% { transform: scale(1); }
+        }
 
         /* 4. Custom Flashcard Builder */
         .fc-builder-layout {
@@ -814,6 +1129,7 @@
             font-weight: 800;
             font-family: 'Courier New', monospace;
             background: var(--kb-gradient);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
@@ -906,18 +1222,62 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @media (max-width: 768px) {
+            :root { --spacing-section: 68px; }
+            .kb-header { margin-bottom: 2rem; }
+            .kb-subtitle { font-size: 1rem; line-height: 1.65; }
+            .glass-box,
+            #knowledge-quest .glass-box,
+            #exam-planner .glass-box { padding: 1rem; }
+            .quest-sidebar,
+            .quest-blitz,
+            .planner-panel,
+            .planner-output { padding: 1rem; border-radius: 14px; }
+            .quest-topics {
+                display: flex;
+                gap: 0.55rem;
+                max-height: none;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding: 0.15rem 0 0.55rem;
+                scroll-snap-type: x proximity;
+            }
+            .quest-topic-btn {
+                flex: 0 0 auto;
+                width: auto;
+                min-width: max-content;
+                scroll-snap-align: start;
+            }
+            .quest-topics::-webkit-scrollbar { height: 6px; width: auto; }
+            .quest-xp-bar { padding: 0.9rem; align-items: stretch; }
+            .quest-xp-track { flex-basis: 100%; order: 3; }
+            .topic-builder { grid-template-columns: 1fr 1fr; }
+            .topic-builder > :first-child { grid-column: 1 / -1; }
+            .planner-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .planner-metric { padding: 0.8rem 0.65rem; }
+            .planner-metric strong { font-size: 1.2rem; }
+            .schedule-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+            .concept-map-layout { grid-template-columns: 1fr; }
+            .concept-map-board { min-height: 440px; }
+        }
+
         @media (max-width: 1024px) {
             .gpa-grid, .fc-builder-layout, .planner-layout { grid-template-columns: 1fr; }
             .focus-layout { grid-template-columns: 1fr; }
             .quest-layout { grid-template-columns: 1fr; }
-            .quest-pipeline { grid-template-columns: 1fr 1fr; }
-            .topic-builder, .planner-metrics { grid-template-columns: 1fr; }
+            .quest-pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .quest-topics { max-height: none; }
+            .quest-sidebar { padding: 0.9rem; }
+            .quest-topics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .quest-topic-btn { min-height: 58px; }
             .kb-title { font-size: 2.5rem; }
             .hero-section { padding: 150px 0 60px; min-height: auto; }
+            .container { padding: 0 1.2rem; }
         }
 
         @media (max-width: 576px) {
             .kb-section { padding: 60px 0; }
+            .kb-title { font-size: clamp(1.85rem, 9vw, 2.25rem) !important; }
             .hero-section { padding: 120px 0 40px; }
             .glass-box { padding: 1.25rem; }
             .gpa-course-row { grid-template-columns: 1fr; }
@@ -937,6 +1297,63 @@
             #feynman-stats-row { grid-template-columns: 1fr; }
             #sr-stats { grid-template-columns: 1fr 1fr; }
             .quest-pipeline { grid-template-columns: 1fr; }
+            .quest-node { min-height: auto; }
+            .quest-xp-bar { gap: 0.7rem; }
+            .quest-xp-bar > div:first-child { width: 100%; }
+            .quest-xp-track { min-width: 0; }
+            .quest-blitz { padding: 1rem; }
+            .quest-blitz h3 { font-size: 1rem; align-items: flex-start; }
+            .quest-blitz-q { padding: 0.85rem; }
+            .quest-blitz-opt { align-items: flex-start; padding: 0.7rem; }
+            .quest-opt-text { font-size: 0.8rem; }
+            .planner-metrics { grid-template-columns: 1fr; }
+            .topic-builder { grid-template-columns: 1fr; }
+            .topic-builder > :first-child { grid-column: auto; }
+            .schedule-grid { grid-template-columns: 1fr; }
+            .concept-map-board { min-height: auto; padding: 4.25rem 0.8rem 0.8rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; }
+            .concept-map-lines { display: none; }
+            .concept-node { position: relative; inset: auto; width: 100%; min-height: 88px; border-radius: 16px; animation: none; }
+            .concept-node-js { width: 100%; min-height: 88px; }
+            .concept-map-intro { right: 0.8rem; font-size: 0.72rem; }
+            .planner-actions, .quiz-toolbar { flex-direction: column; align-items: stretch; }
+            .planner-btn, .btn-quiz, .feynman-analyze-btn { width: 100%; justify-content: center; }
+            .nav-container { flex-wrap: wrap; }
+            .nav-links { width: 100%; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+        }
+
+        /* Knowledge Quest: explicit device-first layout overrides */
+        @media (max-width: 900px) {
+            #knowledge-quest .quest-layout { grid-template-columns: 1fr; gap: 1rem; }
+            #knowledge-quest .quest-sidebar { width: 100%; }
+            #knowledge-quest .quest-topics {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                max-height: none;
+                overflow: visible;
+                padding-right: 0;
+            }
+            #knowledge-quest .quest-topic-btn { min-width: 0; min-height: 58px; }
+            #knowledge-quest .quest-pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 600px) {
+            #knowledge-quest { padding-left: 0; padding-right: 0; }
+            #knowledge-quest .glass-box { border-radius: 0; padding: 0.85rem; }
+            #knowledge-quest .quest-sidebar,
+            #knowledge-quest .quest-blitz,
+            #knowledge-quest .quest-xp-bar { border-radius: 12px; padding: 0.85rem; }
+            #knowledge-quest .quest-topics { grid-template-columns: 1fr; gap: 0.45rem; }
+            #knowledge-quest .quest-topic-btn { padding: 0.7rem 0.75rem; }
+            #knowledge-quest .quest-xp-bar {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                align-items: center;
+            }
+            #knowledge-quest .quest-xp-track { grid-column: 1 / -1; min-width: 0; width: 100%; }
+            #knowledge-quest .quest-pipeline { grid-template-columns: 1fr; gap: 0.65rem; }
+            #knowledge-quest .quest-node { min-height: 0; padding: 0.9rem; }
+            #knowledge-quest .quest-blitz-q { padding: 0.85rem; }
+            #knowledge-quest .quest-blitz-opt { font-size: 0.82rem; }
         }
     </style>
 </head>
@@ -997,7 +1414,8 @@
                         <span>The Focus Editor</span>
                         <button id="feynman-clear" style="background: rgba(255, 64, 129, 0.1); border: 1px solid rgba(255, 64, 129, 0.3); color: var(--accent-coral); padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: 0.2s;"><i class="fa-solid fa-trash-can"></i> Clear</button>
                     </h3>
-                    <textarea id="feynman-input" class="fc-textarea" style="flex: 1; height: 100%; min-height: 300px; margin-bottom: 0; font-size: 1.1rem; line-height: 1.6;" placeholder="Explain your concept here... Try to use simple, everyday words and avoid dense academic jargon. For example, instead of 'utilize', just say 'use'."></textarea>
+                    <textarea id="feynman-input" class="fc-textarea" style="flex: 1; height: 100%; min-height: 260px; margin-bottom: 0; font-size: 1.1rem; line-height: 1.6;" placeholder="Explain your concept here... Try to use simple, everyday words and avoid dense academic jargon. For example, instead of 'utilize', just say 'use'."></textarea>
+                    <button type="button" id="feynman-analyze-btn" class="feynman-analyze-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Analyze My Paragraph</button>
                 </div>
                 
                 <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 25px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; justify-content: center;">
@@ -1054,6 +1472,8 @@
                     <div>
                         <h4 style="color: #ff5252; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.8rem;"><i class="fa-solid fa-spell-check"></i> Mistakes & Errors</h4>
                         <div id="feynman-mistakes-list"></div>
+                        <h4 style="color: var(--accent-coral); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin: 1rem 0 0.8rem;"><i class="fa-solid fa-highlighter"></i> Your Text (Jargon Highlighted)</h4>
+                        <div id="feynman-original-preview" class="feynman-original-box"><span style="color:var(--text-muted);">Your paragraph preview will appear here.</span></div>
                     </div>
                     <div>
                         <h4 style="color: var(--accent-coral); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.8rem;"><i class="fa-solid fa-triangle-exclamation"></i> Jargon & Complex Words</h4>
@@ -1077,6 +1497,39 @@
             </div>
         </section>
 
+        <section class="kb-section container" id="concept-connections">
+            <div class="kb-header">
+                <span class="kb-kicker" style="color:var(--accent-mint); border-color:rgba(0,209,178,0.3); background:rgba(0,209,178,0.1);">Visual Learning Lab</span>
+                <h2 class="kb-title" style="font-size:2.5rem;">Concept Connections Map</h2>
+                <p class="kb-subtitle">Explore how web-development concepts connect. Select a node to discover what it unlocks, what to learn first, and where to practise.</p>
+            </div>
+            <div class="glass-box concept-map-layout no-lift">
+                <div class="concept-map-board">
+                    <p class="concept-map-intro"><i class="fa-solid fa-wand-magic-sparkles"></i> Tap any concept to follow its learning path</p>
+                    <svg class="concept-map-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                        <line x1="18" y1="24" x2="43" y2="43"></line><line x1="18" y1="68" x2="43" y2="48"></line>
+                        <line x1="52" y1="43" x2="78" y2="23"></line><line x1="52" y1="51" x2="78" y2="67"></line>
+                        <line x1="48" y1="56" x2="46" y2="85"></line><line x1="55" y1="54" x2="65" y2="85"></line>
+                    </svg>
+                    <button type="button" class="concept-node concept-node-html" data-concept="html"><i class="fa-brands fa-html5"></i>HTML</button>
+                    <button type="button" class="concept-node concept-node-css" data-concept="css"><i class="fa-brands fa-css3-alt"></i>CSS</button>
+                    <button type="button" class="concept-node concept-node-js active" data-concept="javascript"><i class="fa-brands fa-js"></i>JavaScript</button>
+                    <button type="button" class="concept-node concept-node-react" data-concept="react"><i class="fa-brands fa-react"></i>React</button>
+                    <button type="button" class="concept-node concept-node-node" data-concept="node"><i class="fa-brands fa-node-js"></i>Node.js</button>
+                    <button type="button" class="concept-node concept-node-php" data-concept="php"><i class="fa-brands fa-php"></i>PHP</button>
+                    <button type="button" class="concept-node concept-node-mysql" data-concept="mysql"><i class="fa-solid fa-database"></i>MySQL</button>
+                </div>
+                <aside class="concept-detail" aria-live="polite">
+                    <div class="concept-detail-icon" id="concept-detail-icon"><i class="fa-brands fa-js"></i></div>
+                    <h3 id="concept-detail-title">JavaScript</h3>
+                    <p id="concept-detail-description">The language that makes web pages respond, calculate, and come alive.</p>
+                    <span class="concept-detail-label">This unlocks</span>
+                    <ul class="concept-detail-list" id="concept-detail-list"><li>Interactive interfaces</li><li>React components</li><li>Server-side logic with Node.js</li></ul>
+                    <a class="concept-detail-link" id="concept-detail-link" href="conceptual-mastery.html"><i class="fa-solid fa-compass"></i> Explore JavaScript</a>
+                </aside>
+            </div>
+        </section>
+
         <section class="kb-section container" id="knowledge-quest">
             <div class="kb-header">
                 <span class="kb-kicker" style="color: #ff9800; border-color: rgba(255, 152, 0, 0.3); background: rgba(255, 152, 0, 0.1);">Interactive Learning</span>
@@ -1084,8 +1537,8 @@
                 <p class="kb-subtitle">Pick a topic, follow the quest pipeline, and test yourself — every step links to resources right here on StudentSync. No leaving the site to hunt for study material.</p>
             </div>
 
-            <div class="glass-box quest-layout">
-                <div>
+            <div class="glass-box quest-layout no-lift">
+                <div class="quest-sidebar">
                     <h4 style="color:white; margin-bottom:0.8rem;"><i class="fa-solid fa-map" style="color:var(--accent-gold);"></i> Choose Your Quest</h4>
                     <div class="quest-topics" id="quest-topics"></div>
                 </div>
@@ -1116,7 +1569,7 @@
                 <p class="kb-subtitle">Turn your topics, difficulty, and available days into a revision plan with direct links to Concept Deconstructor, notes, quizzes, and flashcards — all on StudentSync.</p>
             </div>
 
-            <div class="glass-box planner-layout">
+            <div class="glass-box planner-layout no-lift">
                 <div class="planner-panel">
                     <label class="planner-field">
                         <span>Exam Date</span>

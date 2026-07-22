@@ -651,7 +651,7 @@
         </section>
 
         <!-- The Main Interactive Feature: Concept Deconstructor -->
-        <section class="command-center-section" style="padding-top: 40px; padding-bottom: 40px;">
+        <section class="command-center-section" id="concept-deconstructor" style="padding-top: 40px; padding-bottom: 40px; scroll-margin-top: 110px;">
             <div class="container">
                 <div class="section-header animate-on-scroll">
                     <span class="section-kicker" style="color: var(--accent-coral);">Core Utility</span>
@@ -723,7 +723,7 @@
         </section>
 
         <!-- YOUTUBE VIDEOS & NOTES SECTION -->
-        <section class="features" style="padding-top: 40px; padding-bottom: 60px; position: relative;">
+        <section class="features" id="yt-notes" style="padding-top: 40px; padding-bottom: 60px; position: relative; scroll-margin-top: 110px;">
             <div class="container">
                 <div class="section-header animate-on-scroll">
                     <span class="section-kicker" style="color: var(--accent-mint);"><i class="fa-solid fa-play-circle"></i> Video Tutorials & Study Notes</span>
@@ -738,7 +738,7 @@
         </section>
 
         <!-- LAST-MINUTE CRAMMER PLANNER SECTION -->
-        <section class="features" id="crammer-section" style="padding-top: 40px; padding-bottom: 60px; position: relative;">
+        <section class="features" id="crammer-section" style="padding-top: 40px; padding-bottom: 60px; position: relative; scroll-margin-top: 110px;">
             <div class="container">
                 <div class="section-header">
                     <span class="section-kicker" style="color: #ff5252;"><i class="fa-solid fa-fire"></i> Emergency Triage</span>
@@ -1165,7 +1165,41 @@
                 });
             });
 
+            const activateConcept = key => {
+                const btn = document.querySelector(`.topic-btn[data-concept="${key}"]`);
+                if (btn) btn.click();
+            };
+
+            const handleDeepLink = () => {
+                const hash = window.location.hash.slice(1);
+                if (!hash) return;
+
+                if (hash === 'yt-notes' || hash === 'yt-notes-grid') {
+                    document.getElementById('yt-notes')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    return;
+                }
+
+                if (hash === 'crammer-section') {
+                    document.getElementById('crammer-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    return;
+                }
+
+                if (hash === 'concept-deconstructor') {
+                    document.getElementById('concept-deconstructor')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    return;
+                }
+
+                if (conceptData[hash]) {
+                    activateConcept(hash);
+                    setTimeout(() => {
+                        document.getElementById('concept-deconstructor')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 80);
+                }
+            };
+
             renderBreakdown('html');
+            handleDeepLink();
+            window.addEventListener('hashchange', handleDeepLink);
             
             const searchInput = document.querySelector('.topic-search');
             searchInput.addEventListener('input', (e) => {

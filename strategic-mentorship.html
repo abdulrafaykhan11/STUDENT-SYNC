@@ -405,6 +405,43 @@
             color: var(--accent-mint);
         }
 
+        .legacy-mentorship { display: none; }
+        #mentorship-tools { display:none; }
+        #decision-simulator, #readiness-radar, #accountability-sprint { display:none; }
+        #evidence-studio, #interview-arena { display:none; }
+        .directory-controls,.vault-search,.resource-grid{display:grid;gap:.8rem}.directory-controls{grid-template-columns:repeat(3,1fr);margin-bottom:1rem}.mentor-directory-grid,.resource-grid{grid-template-columns:repeat(3,minmax(0,1fr));display:grid;gap:1rem}.directory-card,.resource-card,.vault-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:1.2rem}.directory-card{transition:transform .25s,border-color .25s}.directory-card:hover{transform:translateY(-4px);border-color:rgba(255,189,46,.45)}.directory-card[hidden]{display:none}.directory-card h3,.resource-card h3{color:white;font-size:1.05rem}.directory-card p,.resource-card p,.vault-item p{color:var(--text-muted);font-size:.86rem;line-height:1.55}.mentor-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin:.75rem 0}.mentor-tags span,.roadmap-mentor{font-size:.72rem;color:var(--accent-mint);border:1px solid rgba(0,209,178,.25);padding:.25rem .45rem;border-radius:50px}.directory-actions{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem}.directory-actions a,.resource-card a{color:var(--accent-gold);font-size:.82rem;font-weight:700;text-decoration:none}.directory-actions button{background:none;border:0;padding:0;color:var(--accent-mint);font:inherit;font-size:.82rem;font-weight:700;cursor:pointer}.career-accordion{display:grid;gap:.75rem;max-width:880px;margin:auto}.career-accordion details{border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.035);padding:1rem}.career-accordion details[open]{border-color:rgba(255,189,46,.38);background:rgba(255,189,46,.045)}.career-accordion summary{cursor:pointer;color:white;font-weight:700}.career-accordion p{color:var(--text-muted);line-height:1.6;margin:.75rem 0}.roadmap-mentor{display:inline-block;margin:.15rem .25rem .15rem 0}.path-quiz{max-width:760px;margin:auto}.quiz-progress{color:var(--accent-mint);font-size:.82rem;font-weight:700}.quiz-question{color:white;font-size:1.35rem;margin:.5rem 0}.quiz-choices{display:grid;gap:.55rem;margin-top:.8rem}.quiz-choices button{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);color:white;border-radius:9px;padding:.8rem 1rem;text-align:left;cursor:pointer;font:inherit}.quiz-choices button:hover{border-color:var(--accent-gold);background:rgba(255,189,46,.08)}.quiz-result{display:none;margin-top:1rem;padding:1rem;border-left:3px solid var(--accent-mint);background:rgba(0,209,178,.06);color:var(--text-muted)}.quiz-result.active{display:block}.vault-search input{width:100%}.vault-item{display:none}.vault-item.active{display:block}.vault-empty{display:none;color:var(--text-muted);text-align:center}.inquiry-modal{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.72);display:none;place-items:center;padding:1rem}.inquiry-modal.active{display:grid}.inquiry-box{width:min(520px,100%);background:#111923;border:1px solid rgba(255,189,46,.35);border-radius:18px;padding:1.25rem}.inquiry-box h3{color:white}.inquiry-box .m-input{margin-top:.7rem}.modal-top{display:flex;align-items:center;justify-content:space-between;gap:1rem}.modal-close{background:none;border:0;color:white;font-size:1.25rem;cursor:pointer}.modal-note{font-size:.8rem;color:var(--text-muted);margin-top:.75rem}
+        .mentor-experience { display:grid; grid-template-columns: 0.85fr 1.15fr; gap:1.4rem; align-items:stretch; }
+        .mentor-experience.reverse { grid-template-columns:1.15fr 0.85fr; }
+        .mentor-visual, .mentor-workspace { border-radius:18px; padding:1.4rem; border:1px solid rgba(255,255,255,0.1); min-width:0; }
+        .mentor-visual { background:radial-gradient(circle at 25% 20%,rgba(255,189,46,0.18),transparent 35%),rgba(7,13,23,0.6); display:flex; flex-direction:column; justify-content:center; }
+        .mentor-visual.violet { background:radial-gradient(circle at 70% 20%,rgba(142,36,170,0.28),transparent 36%),rgba(7,13,23,0.6); }
+        .mentor-visual.mint { background:radial-gradient(circle at 22% 80%,rgba(0,209,178,0.2),transparent 35%),rgba(7,13,23,0.6); }
+        .mentor-visual .big-icon { font-size:3.5rem; color:var(--accent-gold); margin-bottom:1rem; }
+        .mentor-visual.violet .big-icon { color:#c77dff; }.mentor-visual.mint .big-icon { color:var(--accent-mint); }
+        .mentor-visual h3 { color:white; font-size:1.6rem; margin-bottom:0.7rem; }.mentor-visual p { color:var(--text-muted); line-height:1.7; }
+        .mentor-workspace { background:rgba(255,255,255,0.035); }
+        .mentor-workspace label { color:var(--text-muted); font-size:0.82rem; font-weight:700; display:block; margin:0.8rem 0 0.35rem; }
+        .mentor-workspace .m-select, .mentor-workspace .m-input { padding:0.8rem; font-size:0.92rem; }
+        .mentor-workspace textarea { min-height:98px; resize:vertical; }
+        .mentor-output { display:none; margin-top:1rem; padding:1rem; border-radius:12px; border:1px solid rgba(255,189,46,0.24); background:rgba(255,189,46,0.06); color:var(--text-muted); line-height:1.6; font-size:0.9rem; }
+        .mentor-output.active { display:block; animation:slideUp 0.35s ease; }.mentor-output strong { color:white; }.mentor-output a { color:var(--accent-mint); font-weight:700; }
+        .mentor-tools-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+        .mentor-tool-card { background: rgba(8,13,23,0.52); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 1.25rem; min-width: 0; }
+        .mentor-tool-icon { width: 48px; height: 48px; display:grid; place-items:center; border-radius:14px; background:rgba(255,189,46,0.12); color:var(--accent-gold); font-size:1.2rem; margin-bottom:1rem; }
+        .mentor-tool-card h3 { color:white; margin-bottom:0.45rem; font-size:1.2rem; }
+        .mentor-tool-card > p { color:var(--text-muted); font-size:0.9rem; line-height:1.55; min-height:4.2em; }
+        .mentor-tool-card .m-select, .mentor-tool-card .m-input { padding:0.75rem; font-size:0.9rem; margin-top:0.7rem; }
+        .mentor-tool-card textarea.m-input { min-height:96px; resize:vertical; }
+        .mentor-tool-result { display:none; margin-top:1rem; padding:0.85rem; border-radius:12px; border:1px solid rgba(0,209,178,0.22); background:rgba(0,209,178,0.06); color:var(--text-muted); font-size:0.87rem; line-height:1.55; }
+        .mentor-tool-result.active { display:block; animation:slideUp 0.35s ease; }
+        .mentor-score { color:var(--accent-mint); font-size:2rem; font-weight:800; line-height:1; margin-bottom:0.3rem; }
+        .checkin-moods { display:flex; gap:0.45rem; margin:0.85rem 0; }
+        .checkin-moods button { flex:1; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04); color:white; border-radius:9px; padding:0.55rem; cursor:pointer; font-size:1rem; }
+        .checkin-moods button.active { border-color:var(--accent-gold); background:rgba(255,189,46,0.13); }
+        .roadmap-resources { display:flex; flex-wrap:wrap; gap:0.45rem; margin-top:0.85rem; }
+        .roadmap-resources a { color:var(--accent-mint); border:1px solid rgba(0,209,178,0.25); background:rgba(0,209,178,0.06); text-decoration:none; border-radius:50px; padding:0.35rem 0.65rem; font-size:0.75rem; font-weight:700; }
+        .roadmap-resources a:hover { color:#061b17; background:var(--accent-mint); }
+
         @media (max-width: 992px) {
             .match-grid, .booking-layout, .roaster-layout { grid-template-columns: 1fr; }
             .roadmap-header { flex-direction: column; align-items: stretch; }
@@ -417,6 +454,9 @@
             .hero-section { padding: 150px 0 60px; min-height: auto; }
             .kb-section { padding: 70px 0; }
             .time-slots { grid-template-columns: repeat(2, 1fr); }
+            .mentor-tools-grid { grid-template-columns: 1fr; max-width:650px; margin:0 auto; }
+            .mentor-experience, .mentor-experience.reverse { grid-template-columns:1fr; }
+            .mentor-directory-grid,.resource-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
         }
 
         @media (max-width: 576px) {
@@ -430,6 +470,10 @@
             .time-slots { grid-template-columns: 1fr; }
             .ama-input-group .m-input { width: 100%; }
             .ama-meta { flex-direction: column; gap: 0.35rem; align-items: flex-start; }
+            .mentor-tool-card { padding:1rem; }
+            .mentor-tool-card > p { min-height:0; }
+            .mentor-visual, .mentor-workspace { padding:1rem; }.mentor-visual h3 { font-size:1.35rem; }
+            .directory-controls,.mentor-directory-grid,.resource-grid{grid-template-columns:1fr}
         }
     </style>
 </head>
@@ -472,12 +516,12 @@
             <span class="section-badge animate-on-scroll"><i class="fa-solid fa-gem"></i> Premium Access</span>
             <h1 class="hero-title animate-on-scroll" style="transition-delay: 0.1s;">Strategic <span class="text-gradient">Mentorship.</span></h1>
             <p class="section-desc">
-                Connect with alumni, book guidance sessions, generate career roadmaps, and polish your resume with practical student-first tools.
+                Match your mentoring style, prepare purposeful sessions, track weekly growth, and follow a roadmap linked directly to your StudentSync learning tools.
             </p>
         </section>
 
         <!-- 1. AI Mentor Matcher -->
-        <section class="kb-section container">
+        <section class="kb-section container legacy-mentorship">
             <div class="section-header">
                 <span class="section-badge" style="color: var(--accent-mint); border-color: rgba(0,209,178,0.3); background: rgba(0,209,178,0.1);">Smart Matching</span>
                 <h2 class="section-title">The Mentor Algorithm</h2>
@@ -533,7 +577,7 @@
         </section>
 
         <!-- 2. Live Calendar Booking -->
-        <section class="kb-section container">
+        <section class="kb-section container legacy-mentorship">
             <div class="section-header">
                 <span class="section-badge" style="color: var(--accent-coral); border-color: rgba(255,64,129,0.3); background: rgba(255,64,129,0.1);">1-on-1 Sessions</span>
                 <h2 class="section-title">Seamless Booking</h2>
@@ -571,8 +615,106 @@
             </div>
         </section>
 
-        <!-- 3. Career Roadmap -->
-        <section class="kb-section container">
+        <section class="kb-section container" id="mentorship-tools">
+            <div class="section-header">
+                <span class="section-badge" style="color:var(--accent-mint); border-color:rgba(0,209,178,0.3); background:rgba(0,209,178,0.1);">Mentorship Toolkit</span>
+                <h2 class="section-title">Make Every Mentor Moment Count</h2>
+                <p class="section-desc">Get matched to the right kind of guidance, arrive prepared, and turn every week into visible progress.</p>
+            </div>
+            <div class="mentor-tools-grid">
+                <article class="mentor-tool-card">
+                    <div class="mentor-tool-icon"><i class="fa-solid fa-compass"></i></div>
+                    <h3>Mentor Match Score</h3><p>Find the mentoring style that fits your goal—not a random profile.</p>
+                    <select class="m-select" id="match-goal-new"><option value="internship">I need internship guidance</option><option value="skills">I want to improve core skills</option><option value="career">I need career direction</option></select>
+                    <select class="m-select" id="match-style-new"><option value="direct">Direct accountability</option><option value="friendly">Friendly coaching</option><option value="structured">Structured planning</option></select>
+                    <button class="m-btn" type="button" id="match-score-btn" style="margin-top:0.8rem;"><i class="fa-solid fa-sparkles"></i> Find My Fit</button>
+                    <div class="mentor-tool-result" id="match-score-result"></div>
+                </article>
+                <article class="mentor-tool-card">
+                    <div class="mentor-tool-icon"><i class="fa-solid fa-list-check"></i></div>
+                    <h3>1-on-1 Session Prep Kit</h3><p>Bring a clear agenda so your mentor can help with the problem that matters most.</p>
+                    <input class="m-input" id="prep-topic" placeholder="Topic or blocker (e.g. SQL joins)">
+                    <textarea class="m-input" id="prep-questions" placeholder="Your 2–3 questions for the session"></textarea>
+                    <button class="m-btn" type="button" id="prep-kit-btn" style="margin-top:0.8rem;"><i class="fa-solid fa-clipboard-check"></i> Create My Agenda</button>
+                    <div class="mentor-tool-result" id="prep-kit-result"></div>
+                </article>
+                <article class="mentor-tool-card">
+                    <div class="mentor-tool-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <h3>Growth Check-In</h3><p>Track how the week felt, capture the blocker, and get a useful next mentor prompt.</p>
+                    <div class="checkin-moods" id="checkin-moods"><button type="button" data-mood="Struggling">😟</button><button type="button" data-mood="Steady" class="active">🙂</button><button type="button" data-mood="Confident">🚀</button></div>
+                    <input class="m-input" id="checkin-win" placeholder="This week's biggest win">
+                    <button class="m-btn" type="button" id="checkin-btn" style="margin-top:0.8rem;"><i class="fa-solid fa-arrow-trend-up"></i> Save Check-In</button>
+                    <div class="mentor-tool-result" id="checkin-result"></div>
+                </article>
+            </div>
+        </section>
+
+        <section class="kb-section container" id="decision-simulator">
+            <div class="section-header"><span class="section-badge">Mentor Intelligence</span><h2 class="section-title">Career Decision Simulator</h2><p class="section-desc">Turn an uncertain student decision into a mentor-quality action plan in seconds.</p></div>
+            <div class="glass-panel mentor-experience">
+                <div class="mentor-visual"><i class="fa-solid fa-chess-knight big-icon"></i><h3>Think three moves ahead.</h3><p>Not sure whether to learn a new skill, finish a project, or prepare for an interview? Simulate the decision before your next mentor call.</p></div>
+                <div class="mentor-workspace">
+                    <label>Your current crossroads</label><select class="m-select" id="decision-type"><option value="project">Build a portfolio project</option><option value="skill">Fix a weak technical skill</option><option value="internship">Prepare for an internship</option></select>
+                    <label>Time available this week</label><select class="m-select" id="decision-time"><option value="3">3 focused hours</option><option value="6">6 focused hours</option><option value="10">10+ focused hours</option></select>
+                    <button class="m-btn" type="button" id="decision-btn" style="margin-top:1rem;"><i class="fa-solid fa-wand-magic-sparkles"></i> Simulate Best Move</button><div class="mentor-output" id="decision-output"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="kb-section container" id="readiness-radar">
+            <div class="section-header"><span class="section-badge" style="color:#c77dff; border-color:rgba(142,36,170,0.35); background:rgba(142,36,170,0.12);">Opportunity Signals</span><h2 class="section-title">Opportunity Readiness Radar</h2><p class="section-desc">See the gap between where you are now and the opportunity you want—then get the exact StudentSync resource to close it.</p></div>
+            <div class="glass-panel mentor-experience reverse">
+                <div class="mentor-workspace">
+                    <label>Your target opportunity</label><select class="m-select" id="radar-target"><option value="internship">Tech internship</option><option value="project">Strong portfolio project</option><option value="exam">High-stakes course exam</option></select>
+                    <label>Current evidence of skill</label><select class="m-select" id="radar-level"><option value="starter">I have started learning</option><option value="building">I can build with guidance</option><option value="ready">I can explain and ship independently</option></select>
+                    <button class="m-btn" type="button" id="radar-btn" style="margin-top:1rem;"><i class="fa-solid fa-radar"></i> Scan My Readiness</button><div class="mentor-output" id="radar-output"></div>
+                </div>
+                <div class="mentor-visual violet"><i class="fa-solid fa-satellite-dish big-icon"></i><h3>Make your gaps visible.</h3><p>A mentor does not just give advice—they spot the missing proof. This radar converts a vague goal into a clear next signal.</p></div>
+            </div>
+        </section>
+
+        <section class="kb-section container" id="accountability-sprint">
+            <div class="section-header"><span class="section-badge" style="color:var(--accent-mint); border-color:rgba(0,209,178,0.3); background:rgba(0,209,178,0.1);">Momentum System</span><h2 class="section-title">Mentor Accountability Sprint</h2><p class="section-desc">Create a short, focused challenge with milestones your mentor can actually review.</p></div>
+            <div class="glass-panel mentor-experience">
+                <div class="mentor-visual mint"><i class="fa-solid fa-rocket big-icon"></i><h3>From advice to proof.</h3><p>Choose one meaningful outcome. The sprint turns it into a compact weekly commitment, a review checkpoint, and a discussion prompt.</p></div>
+                <div class="mentor-workspace">
+                    <label>Your sprint outcome</label><input class="m-input" id="sprint-goal" placeholder="e.g. Build a responsive JavaScript project">
+                    <label>Sprint length</label><select class="m-select" id="sprint-length"><option value="7">7-day focus sprint</option><option value="14">14-day build sprint</option><option value="21">21-day mastery sprint</option></select>
+                    <button class="m-btn" type="button" id="sprint-btn" style="margin-top:1rem;"><i class="fa-solid fa-flag-checkered"></i> Launch My Sprint</button><div class="mentor-output" id="sprint-output"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="kb-section container" id="evidence-studio">
+            <div class="section-header"><span class="section-badge" style="color:var(--accent-mint); border-color:rgba(0,209,178,0.3); background:rgba(0,209,178,0.1);">Portfolio Proof</span><h2 class="section-title">Mentor Evidence Studio</h2><p class="section-desc">Turn a rough project into a mentor-ready review brief, a measurable CV bullet, and a polished portfolio case-study opening.</p></div>
+            <div class="glass-panel mentor-experience">
+                <div class="mentor-visual mint"><i class="fa-solid fa-file-circle-check big-icon"></i><h3>Bring proof, not vague progress.</h3><p>Mentors can give much better feedback when they see the problem, the tools, and the impact. Create a ready-to-send evidence pack in one click.</p></div>
+                <div class="mentor-workspace">
+                    <label>Project name</label><input class="m-input" id="evidence-project" placeholder="e.g. Student expense tracker">
+                    <label>Problem you solved</label><input class="m-input" id="evidence-problem" placeholder="e.g. Students could not track monthly spending">
+                    <label>Tech / skills used</label><input class="m-input" id="evidence-stack" placeholder="e.g. HTML, CSS, JavaScript, MySQL">
+                    <label>Outcome or metric</label><input class="m-input" id="evidence-impact" placeholder="e.g. Reduced manual tracking from 20 min to 5 min">
+                    <button class="m-btn" type="button" id="evidence-btn" style="margin-top:1rem;"><i class="fa-solid fa-wand-magic-sparkles"></i> Build Evidence Pack</button><div class="mentor-output" id="evidence-output"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="kb-section container" id="interview-arena">
+            <div class="section-header"><span class="section-badge" style="color:#c77dff; border-color:rgba(142,36,170,0.35); background:rgba(142,36,170,0.12);">Practice Under Pressure</span><h2 class="section-title">Mentor Mock Interview Arena</h2><p class="section-desc">Get a realistic prompt, write your response, and receive an instant evidence-based score before taking it to a mentor for deeper feedback.</p></div>
+            <div class="glass-panel mentor-experience reverse">
+                <div class="mentor-workspace">
+                    <label>Interview track</label><select class="m-select" id="arena-track"><option value="technical">Technical / Software</option><option value="project">Project & Portfolio</option><option value="behavioral">Behavioural / Internship</option></select>
+                    <button class="m-btn" type="button" id="arena-load-btn" style="margin-top:1rem;"><i class="fa-solid fa-bolt"></i> Load Challenge</button>
+                    <div class="mentor-output active" id="arena-question"><strong>Choose a track and load a challenge.</strong></div>
+                    <label>Your answer</label><textarea class="m-input" id="arena-answer" placeholder="Write your answer using specific examples, decisions, tools and outcomes..."></textarea>
+                    <button class="m-btn" type="button" id="arena-score-btn" style="margin-top:1rem;"><i class="fa-solid fa-chart-simple"></i> Score My Answer</button><div class="mentor-output" id="arena-output"></div>
+                </div>
+                <div class="mentor-visual violet"><i class="fa-solid fa-microphone-lines big-icon"></i><h3>Practise before it counts.</h3><p>Your score is based on the signals a mentor or interviewer actually looks for: context, action, technical evidence, and measurable impact.</p></div>
+            </div>
+        </section>
+
+        <!-- Career Roadmap -->
+        <section class="kb-section container legacy-mentorship">
             <div class="section-header">
                 <span class="section-badge" style="color: var(--accent-violet); border-color: rgba(142,36,170,0.3); background: rgba(142,36,170,0.1);">Trajectory</span>
                 <h2 class="section-title">Dynamic Roadmaps</h2>
@@ -598,8 +740,47 @@
             </div>
         </section>
 
+        <section class="kb-section container" id="mentor-directory">
+            <div class="section-header">
+                <span class="section-badge"><i class="fa-solid fa-users"></i> Verified Alumni</span>
+                <h2 class="section-title">Find the right mentor, faster.</h2>
+                <p class="section-desc">Filter by field or university, then connect with a mentor who has already walked your path.</p>
+            </div>
+            <div class="glass-panel">
+                <div class="directory-controls">
+                    <select class="m-select" id="directory-field" aria-label="Filter mentors by field"><option value="all">All fields</option><option value="tech">Technology</option><option value="medical">Medical</option><option value="business">Business</option><option value="engineering">Engineering</option></select>
+                    <select class="m-select" id="directory-university" aria-label="Filter mentors by university"><option value="all">All universities</option><option value="fast">FAST-NUCES</option><option value="aku">Aga Khan University</option><option value="lums">LUMS</option><option value="uet">UET Lahore</option></select>
+                    <input class="m-input" id="directory-search" type="search" placeholder="Search mentor or company">
+                </div>
+                <p id="directory-count" style="color:var(--text-muted);font-size:.85rem;margin-bottom:1rem;">Showing 6 mentors</p>
+                <div class="mentor-directory-grid" id="mentor-directory-grid">
+                    <article class="directory-card" data-field="tech" data-university="fast" data-search="ayesha khan fast-nuces microsoft technology computer science"><h3>Ayesha Khan</h3><p>Software Engineer · Microsoft<br>FAST-NUCES, Computer Science</p><div class="mentor-tags"><span>#Scholarships</span><span>#EntryTest</span><span>#Portfolio</span></div><div class="directory-actions"><a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn <i class="fa-solid fa-arrow-up-right-from-square"></i></a><button type="button" class="open-inquiry" data-mentor="Ayesha Khan" data-field="Technology">Request guidance</button></div></article>
+                    <article class="directory-card" data-field="medical" data-university="aku" data-search="dr hamza rafiq aga khan university medical mbbs"><h3>Dr. Hamza Rafiq</h3><p>Resident Doctor · AKUH<br>Aga Khan University, MBBS</p><div class="mentor-tags"><span>#MDCAT</span><span>#Admissions</span><span>#FirstYear</span></div><div class="directory-actions"><a href="mailto:hamza.rafiq@studentsync.pk">Email <i class="fa-solid fa-envelope"></i></a><button type="button" class="open-inquiry" data-mentor="Dr. Hamza Rafiq" data-field="Medical">Request guidance</button></div></article>
+                    <article class="directory-card" data-field="business" data-university="lums" data-search="mariam siddiqui lums unilever business management"><h3>Mariam Siddiqui</h3><p>Brand Manager · Unilever<br>LUMS, Management Science</p><div class="mentor-tags"><span>#CareerShift</span><span>#Internships</span><span>#CV</span></div><div class="directory-actions"><a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn <i class="fa-solid fa-arrow-up-right-from-square"></i></a><button type="button" class="open-inquiry" data-mentor="Mariam Siddiqui" data-field="Business">Request guidance</button></div></article>
+                    <article class="directory-card" data-field="engineering" data-university="uet" data-search="bilal ahmed uet lahore nestle engineering mechanical"><h3>Bilal Ahmed</h3><p>Project Engineer · Nestlé<br>UET Lahore, Mechanical Engineering</p><div class="mentor-tags"><span>#EntryTest</span><span>#IndustryExposure</span><span>#Career</span></div><div class="directory-actions"><a href="mailto:bilal.ahmed@studentsync.pk">Email <i class="fa-solid fa-envelope"></i></a><button type="button" class="open-inquiry" data-mentor="Bilal Ahmed" data-field="Engineering">Request guidance</button></div></article>
+                    <article class="directory-card" data-field="tech" data-university="lums" data-search="zain ali lums careem product technology"><h3>Zain Ali</h3><p>Product Analyst · Careem<br>LUMS, Computer Science</p><div class="mentor-tags"><span>#CareerShift</span><span>#Interviews</span><span>#Product</span></div><div class="directory-actions"><a href="https://wa.me/?text=Hi%20Zain!%20I%20am%20a%20StudentSync%20student%20and%20need%20technology%20guidance." target="_blank" rel="noopener">WhatsApp <i class="fa-brands fa-whatsapp"></i></a><button type="button" class="open-inquiry" data-mentor="Zain Ali" data-field="Technology">Request guidance</button></div></article>
+                    <article class="directory-card" data-field="business" data-university="fast" data-search="sana iqbal fast-nuces pwc business finance"><h3>Sana Iqbal</h3><p>Associate · PwC<br>FAST-NUCES, Business Analytics</p><div class="mentor-tags"><span>#Scholarships</span><span>#CareerPlanning</span><span>#Finance</span></div><div class="directory-actions"><a href="mailto:sana.iqbal@studentsync.pk">Email <i class="fa-solid fa-envelope"></i></a><button type="button" class="open-inquiry" data-mentor="Sana Iqbal" data-field="Business">Request guidance</button></div></article>
+                </div>
+            </div>
+        </section>
+
+        <section class="kb-section container" id="career-roadmap">
+            <div class="section-header"><span class="section-badge"><i class="fa-solid fa-route"></i> Career Roadmap</span><h2 class="section-title">Your next three milestones.</h2><p class="section-desc">Open a step for practical advice and the mentor best placed to help.</p></div>
+            <div class="career-accordion">
+                <details open><summary>Step 1 · After XI/XII: choose subjects, skills &amp; direction</summary><p>Match your strongest subjects with real work: build one small project for Tech, shadow a clinic or study biology for Medical, or try a case competition for Business. Keep your options broad before committing.</p><span class="roadmap-mentor">Ask Ayesha · Tech foundations</span><span class="roadmap-mentor">Ask Dr. Hamza · Medical pathway</span></details>
+                <details><summary>Step 2 · Entry test preparation &amp; university selection</summary><p>Make a weekly practice routine, compare merit, fees, location and programme outcomes, then apply to at least one ambitious and one safe option. Ask a mentor to review your shortlist.</p><span class="roadmap-mentor">Ask Bilal · ECAT &amp; Engineering</span><span class="roadmap-mentor">Ask Mariam · Scholarships &amp; LUMS</span></details>
+                <details><summary>Step 3 · First-year checklist &amp; industry exposure</summary><p>Join one society, maintain a simple CV and LinkedIn profile, build proof of one skill, and schedule informational chats before internship season arrives.</p><span class="roadmap-mentor">Ask Zain · Portfolio &amp; Product</span><span class="roadmap-mentor">Ask Sana · CV &amp; Career planning</span></details>
+            </div>
+        </section>
+
+        <section class="kb-section container" id="find-my-path"><div class="section-header"><span class="section-badge"><i class="fa-solid fa-compass"></i> 60-second quiz</span><h2 class="section-title">Find My Path</h2><p class="section-desc">Answer four quick questions for a focused starting direction.</p></div><div class="glass-panel path-quiz"><div id="path-quiz"></div><div class="quiz-result" id="quiz-result"></div></div></section>
+
+        <section class="kb-section container" id="knowledge-vault"><div class="section-header"><span class="section-badge"><i class="fa-solid fa-magnifying-glass"></i> Knowledge Vault</span><h2 class="section-title">Answers before your next call.</h2><p class="section-desc">Search frequently asked questions and get verified alumni advice instantly.</p></div><div class="glass-panel"><div class="vault-search"><input class="m-input" type="search" id="vault-search" placeholder="Try: CS vs SE, scholarships, MDCAT..."></div><div id="vault-results" style="display:grid;gap:.75rem;margin-top:1rem;"><article class="vault-item active" data-question="cs vs se software engineering computer science"><h3>CS vs SE: what should I choose?</h3><p>CS gives you a wider computing foundation; SE puts more emphasis on building and managing software systems. Choose based on curriculum, projects and where you want to work—not title alone.</p><p><strong style="color:var(--accent-mint)">Ayesha says:</strong> “Look at the first four semesters. Strong programming and problem-solving matter more than the label.”</p></article><article class="vault-item active" data-question="scholarship apply financial aid merit"><h3>How do I apply for a scholarship?</h3><p>Start early: collect transcripts, income documents, a short personal statement, and references. Track each deadline in one sheet and apply even when you are unsure.</p><p><strong style="color:var(--accent-mint)">Mariam says:</strong> “Your story should show effort and impact, not just need.”</p></article><article class="vault-item active" data-question="mdcat entry test medical preparation"><h3>How should I prepare for an entry test?</h3><p>Use timed practice twice a week, log every mistake by topic, then revise weak topics before doing another full test.</p><p><strong style="color:var(--accent-mint)">Dr. Hamza says:</strong> “Consistency beats last-month cramming—review mistakes the same day.”</p></article></div><p class="vault-empty" id="vault-empty">No answer found yet. Try a broader keyword or send an inquiry.</p></div></section>
+
+        <section class="kb-section container" id="resource-hub"><div class="section-header"><span class="section-badge"><i class="fa-solid fa-folder-open"></i> Free Resources</span><h2 class="section-title">Blueprints you can use today.</h2></div><div class="resource-grid"><article class="resource-card"><h3>Entry Test Study Timetable</h3><p>A four-week routine for concepts, timed practice and revision.</p><button class="m-btn resource-download" data-resource="timetable" type="button" style="padding:.65rem 1rem;font-size:.82rem">Download timetable <i class="fa-solid fa-download"></i></button></article><article class="resource-card"><h3>University Comparison Sheet</h3><p>Compare fees, merit, programme fit and career scope in one place.</p><button class="m-btn resource-download" data-resource="comparison" type="button" style="padding:.65rem 1rem;font-size:.82rem">Download comparison sheet <i class="fa-solid fa-download"></i></button></article><article class="resource-card"><h3>Freshman Outreach Kit</h3><p>CV structure plus a concise message template for contacting mentors.</p><button class="m-btn resource-download" data-resource="outreach" type="button" style="padding:.65rem 1rem;font-size:.82rem">Download outreach kit <i class="fa-solid fa-download"></i></button></article></div></section>
+
         <!-- 4. Resume Roaster -->
-        <section class="kb-section container">
+        <section class="kb-section container legacy-mentorship">
             <div class="section-header">
                 <span class="section-badge" style="color: #00d1b2; border-color: rgba(0,209,178,0.3); background: rgba(0,209,178,0.1);">Optimization</span>
                 <h2 class="section-title">The Resume Roaster</h2>
@@ -623,7 +804,7 @@
         </section>
 
         <!-- 5. AMA Board -->
-        <section class="kb-section container" style="margin-bottom: 100px;">
+        <section class="kb-section container legacy-mentorship" style="margin-bottom: 100px;">
             <div class="section-header">
                 <span class="section-badge"><i class="fa-solid fa-comments"></i> Community</span>
                 <h2 class="section-title">Alumni AMA Board</h2>
@@ -650,6 +831,20 @@
         </section>
 
     </main>
+
+    <div class="inquiry-modal" id="inquiry-modal" aria-hidden="true">
+        <div class="inquiry-box" role="dialog" aria-modal="true" aria-labelledby="inquiry-title">
+            <div class="modal-top"><h3 id="inquiry-title">Request mentor guidance</h3><button class="modal-close" type="button" id="close-inquiry" aria-label="Close inquiry form">&times;</button></div>
+            <form id="inquiry-form">
+                <input class="m-input" id="inquiry-name" name="name" required placeholder="Your name">
+                <input class="m-input" id="inquiry-email" name="email" type="email" required placeholder="Your email">
+                <input class="m-input" id="inquiry-topic" name="topic" required placeholder="What do you need help with?">
+                <textarea class="m-input" id="inquiry-message" name="message" rows="4" placeholder="Tell your mentor a little about your current stage"></textarea>
+                <button class="m-btn" type="submit" style="margin-top:1rem;width:100%;justify-content:center"><i class="fa-brands fa-whatsapp"></i> Continue on WhatsApp</button>
+            </form>
+            <p class="modal-note">Your message is pre-filled in WhatsApp—no account or page reload needed.</p>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer glass-card">

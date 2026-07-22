@@ -224,7 +224,256 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* =========================================
-       Feature 3: Career Roadmap
+       Feature 3: Mentorship Toolkit
+       ========================================= */
+    const matchScoreBtn = document.getElementById('match-score-btn');
+    const matchScoreResult = document.getElementById('match-score-result');
+    const prepKitBtn = document.getElementById('prep-kit-btn');
+    const prepKitResult = document.getElementById('prep-kit-result');
+    const checkinBtn = document.getElementById('checkin-btn');
+    const checkinResult = document.getElementById('checkin-result');
+    let selectedMood = 'Steady';
+
+    matchScoreBtn?.addEventListener('click', () => {
+        const goal = document.getElementById('match-goal-new')?.value || 'career';
+        const style = document.getElementById('match-style-new')?.value || 'structured';
+        const score = goal === 'internship' && style === 'direct' ? 96 : style === 'structured' ? 93 : 90;
+        const focus = goal === 'internship' ? 'an internship mentor who can review projects and practise interviews' : goal === 'skills' ? 'a skills coach who will turn weak concepts into a weekly plan' : 'a career mentor who can help you choose a clear next direction';
+        matchScoreResult.innerHTML = `<div class="mentor-score">${score}% fit</div><strong>Your best fit:</strong> ${focus}. Start with a focused 30-minute conversation and bring your Session Prep Kit.`;
+        matchScoreResult.classList.add('active');
+    });
+
+    prepKitBtn?.addEventListener('click', () => {
+        const topic = document.getElementById('prep-topic')?.value.trim() || 'your current challenge';
+        const questions = document.getElementById('prep-questions')?.value.trim() || 'the questions you want to clarify';
+        prepKitResult.innerHTML = `<strong>Session agenda ready</strong><br>1. Context: ${topic}<br>2. Ask: ${questions}<br>3. End with one measurable action for this week.`;
+        prepKitResult.classList.add('active');
+    });
+
+    document.querySelectorAll('#checkin-moods button').forEach(button => button.addEventListener('click', () => {
+        selectedMood = button.dataset.mood;
+        document.querySelectorAll('#checkin-moods button').forEach(item => item.classList.toggle('active', item === button));
+    }));
+    checkinBtn?.addEventListener('click', () => {
+        const win = document.getElementById('checkin-win')?.value.trim() || 'No win recorded yet';
+        const prompt = selectedMood === 'Struggling' ? 'Ask your mentor: “What is the smallest next step I should take this week?”' : selectedMood === 'Confident' ? 'Ask your mentor: “What challenge should I take on next?”' : 'Ask your mentor: “What would make my current plan stronger?”';
+        checkinResult.innerHTML = `<strong>${selectedMood} check-in saved.</strong><br>Win: ${win}<br>${prompt}`;
+        checkinResult.classList.add('active');
+    });
+
+    const setMentorOutput = (id, html) => {
+        const output = document.getElementById(id);
+        if (!output) return;
+        output.innerHTML = html;
+        output.classList.add('active');
+    };
+
+    document.getElementById('decision-btn')?.addEventListener('click', () => {
+        const type = document.getElementById('decision-type')?.value;
+        const hours = document.getElementById('decision-time')?.value;
+        const plans = {
+            project: { move: 'Build a deliberately small project slice first.', action: `Use ${hours} hours to define one user problem, ship one working screen, then ask your mentor to review the decision—not the design.`, link: 'knowledge-base.html#concept-connections', resource: 'Concept Connections Map' },
+            skill: { move: 'Fix one high-leverage weakness before expanding scope.', action: `Use ${hours} hours for one concept, one recall quiz, and one explain-back note. Bring the mistake you made to your mentor.`, link: 'knowledge-base.html#quiz-lab', resource: 'Active Recall Quiz Lab' },
+            internship: { move: 'Create proof before sending more applications.', action: `Use ${hours} hours to polish one project outcome, rehearse one interview story, and ask your mentor for one specific improvement.`, link: 'knowledge-base.html#knowledge-quest', resource: 'Knowledge Quest Arena' }
+        };
+        const plan = plans[type] || plans.project;
+        setMentorOutput('decision-output', `<strong>Best move: ${plan.move}</strong><br>${plan.action}<br><a href="${plan.link}">Open ${plan.resource} <i class="fa-solid fa-arrow-right"></i></a>`);
+    });
+
+    document.getElementById('radar-btn')?.addEventListener('click', () => {
+        const target = document.getElementById('radar-target')?.value;
+        const level = document.getElementById('radar-level')?.value;
+        const scoreBase = target === 'exam' ? 46 : target === 'project' ? 52 : 48;
+        const score = level === 'ready' ? scoreBase + 38 : level === 'building' ? scoreBase + 20 : scoreBase;
+        const targetText = target === 'exam' ? 'exam performance' : target === 'project' ? 'portfolio proof' : 'internship readiness';
+        const resource = target === 'exam' ? ['Exam Sprint Planner', 'knowledge-base.html#exam-planner'] : target === 'project' ? ['Concept Connections Map', 'knowledge-base.html#concept-connections'] : ['Knowledge Quest Arena', 'knowledge-base.html#knowledge-quest'];
+        setMentorOutput('radar-output', `<strong>${score}% ready for ${targetText}.</strong><br>Your next signal is consistent practice that you can explain to a mentor. Close the gap with <a href="${resource[1]}">${resource[0]} <i class="fa-solid fa-arrow-right"></i></a>.`);
+    });
+
+    document.getElementById('sprint-btn')?.addEventListener('click', () => {
+        const goal = document.getElementById('sprint-goal')?.value.trim() || 'your selected outcome';
+        const days = parseInt(document.getElementById('sprint-length')?.value || '7', 10);
+        const checkpoint = days <= 7 ? 'Day 3: show your first working proof.' : `Day ${Math.ceil(days / 2)}: send a short progress update and one blocker.`;
+        setMentorOutput('sprint-output', `<strong>${days}-day sprint launched: ${goal}</strong><br>Day 1: define the smallest deliverable. <br>${checkpoint}<br>Final day: demo the result and ask your mentor, “What should I improve next?”<br><a href="knowledge-base.html#focus-hub">Open Focus Hub <i class="fa-solid fa-arrow-right"></i></a>`);
+    });
+
+    /* Practical mentorship outputs: evidence pack + scored mock interview */
+    const evidenceBtn = document.getElementById('evidence-btn');
+    const evidenceOutput = document.getElementById('evidence-output');
+    evidenceBtn?.addEventListener('click', () => {
+        const project = document.getElementById('evidence-project')?.value.trim() || 'My project';
+        const problem = document.getElementById('evidence-problem')?.value.trim() || 'a clear student problem';
+        const stack = document.getElementById('evidence-stack')?.value.trim() || 'the selected tools';
+        const impact = document.getElementById('evidence-impact')?.value.trim() || 'a measurable improvement';
+        const pack = `MENTOR REVIEW BRIEF\n\nProject: ${project}\nProblem: ${problem}\nBuilt with: ${stack}\nImpact: ${impact}\n\nCV BULLET\nBuilt ${project} using ${stack} to solve ${problem}, resulting in ${impact}.\n\nMENTOR QUESTION\nWhich part of this project should I improve first to make the strongest portfolio evidence?`;
+        evidenceOutput.replaceChildren();
+        const pre = document.createElement('pre');
+        pre.style.cssText = 'white-space:pre-wrap; margin:0; font:inherit; color:var(--text-muted);';
+        pre.textContent = pack;
+        const copy = document.createElement('button');
+        copy.type = 'button'; copy.className = 'm-btn'; copy.style.marginTop = '0.85rem';
+        copy.innerHTML = '<i class="fa-solid fa-copy"></i> Copy Evidence Pack';
+        copy.addEventListener('click', async () => {
+            try { await navigator.clipboard.writeText(pack); copy.innerHTML = '<i class="fa-solid fa-check"></i> Copied'; } catch { copy.textContent = 'Select and copy the pack above'; }
+        });
+        evidenceOutput.append(pre, copy);
+        evidenceOutput.classList.add('active');
+    });
+
+    const arenaChallenges = {
+        technical: { question: 'Explain how you would build a responsive student task dashboard. What data would you store, which tools would you use, and how would you test it?', signals: ['data', 'javascript', 'database', 'test', 'responsive'] },
+        project: { question: 'Choose one project from your portfolio. What user problem did it solve, what decision did you make, and what measurable result did it create?', signals: ['problem', 'built', 'decision', 'result', 'user'] },
+        behavioral: { question: 'Tell me about a time you faced a difficult learning challenge. What was the situation, what action did you take, and what did you learn?', signals: ['situation', 'action', 'result', 'learned', 'challenge'] }
+    };
+    let activeArenaChallenge = arenaChallenges.technical;
+    document.getElementById('arena-load-btn')?.addEventListener('click', () => {
+        const track = document.getElementById('arena-track')?.value || 'technical';
+        activeArenaChallenge = arenaChallenges[track];
+        const question = document.getElementById('arena-question');
+        question.innerHTML = `<strong>Challenge:</strong> ${activeArenaChallenge.question}`;
+        document.getElementById('arena-output')?.classList.remove('active');
+    });
+    document.getElementById('arena-score-btn')?.addEventListener('click', () => {
+        const answer = document.getElementById('arena-answer')?.value.trim() || '';
+        const output = document.getElementById('arena-output');
+        if (answer.length < 40) { setMentorOutput('arena-output', '<strong>Need more evidence.</strong><br>Write at least a short, specific answer so the arena can assess it.'); return; }
+        const found = activeArenaChallenge.signals.filter(signal => answer.toLowerCase().includes(signal));
+        const score = Math.min(100, 35 + Math.min(35, Math.round(answer.split(/\s+/).length / 3)) + found.length * 6);
+        const missing = activeArenaChallenge.signals.filter(signal => !found.includes(signal)).slice(0, 2);
+        setMentorOutput('arena-output', `<strong>${score}/100 interview evidence score</strong><br>Signals detected: ${found.length ? found.join(', ') : 'add more specific evidence'}.<br>${missing.length ? `Improve it by including: ${missing.join(' and ')}.` : 'Strong structure—now practise saying it aloud to a mentor.'}`);
+    });
+
+    /* =========================================
+       Student mentor directory, path quiz & vault
+       ========================================= */
+    const directoryCards = [...document.querySelectorAll('.directory-card')];
+    const directoryField = document.getElementById('directory-field');
+    const directoryUniversity = document.getElementById('directory-university');
+    const directorySearch = document.getElementById('directory-search');
+    const directoryCount = document.getElementById('directory-count');
+
+    const filterDirectory = () => {
+        const field = directoryField?.value || 'all';
+        const university = directoryUniversity?.value || 'all';
+        const query = directorySearch?.value.trim().toLowerCase() || '';
+        let visible = 0;
+        directoryCards.forEach(card => {
+            const matches = (field === 'all' || card.dataset.field === field)
+                && (university === 'all' || card.dataset.university === university)
+                && (!query || card.dataset.search.includes(query));
+            card.hidden = !matches;
+            if (matches) visible += 1;
+        });
+        if (directoryCount) directoryCount.textContent = `Showing ${visible} mentor${visible === 1 ? '' : 's'}`;
+    };
+    [directoryField, directoryUniversity, directorySearch].forEach(control => control?.addEventListener('input', filterDirectory));
+
+    const quizQuestions = [
+        { question: 'Which activity feels most exciting?', answers: [['Building apps or solving logic puzzles', 'tech'], ['Understanding people, markets or money', 'business'], ['Learning how the body works', 'medical'], ['Designing how things are built', 'engineering']] },
+        { question: 'What are you preparing for right now?', answers: [['XI / XII subject choices', 'all'], ['University entry test', 'all'], ['First year and exposure', 'all'], ['A career switch or internship', 'all']] },
+        { question: 'What kind of impact do you want to make?', answers: [['Digital products that help people', 'tech'], ['Better health outcomes', 'medical'], ['Growing teams or businesses', 'business'], ['Real-world systems and infrastructure', 'engineering']] },
+        { question: 'Which support would help most this month?', answers: [['Scholarship and university shortlist', 'all'], ['Entry-test strategy', 'all'], ['Portfolio and skills plan', 'tech'], ['Industry exposure and career plan', 'engineering']] }
+    ];
+    const pathResults = {
+        tech: { title: 'Technology & Computing', mentors: 'Ayesha Khan and Zain Ali', next: 'Choose one programming starter project, make a weekly practice plan, and ask Ayesha to review your university shortlist.' },
+        medical: { title: 'Medical & Health Sciences', mentors: 'Dr. Hamza Rafiq', next: 'Build an MDCAT revision routine, compare MBBS programmes, and book a call to understand first-year workload.' },
+        business: { title: 'Business & Management', mentors: 'Mariam Siddiqui and Sana Iqbal', next: 'Explore one business case or society, shortlist programmes by curriculum, and polish your scholarship story.' },
+        engineering: { title: 'Engineering & Applied Sciences', mentors: 'Bilal Ahmed', next: 'Compare engineering disciplines, start ECAT practice, and ask Bilal what industry exposure matters in first year.' }
+    };
+    const pathQuiz = document.getElementById('path-quiz');
+    const quizResult = document.getElementById('quiz-result');
+    let quizStep = 0;
+    const quizScores = { tech: 0, medical: 0, business: 0, engineering: 0 };
+    const renderPathQuiz = () => {
+        if (!pathQuiz) return;
+        if (quizStep >= quizQuestions.length) {
+            const recommendation = Object.entries(quizScores).sort((a, b) => b[1] - a[1])[0][0];
+            const result = pathResults[recommendation];
+            pathQuiz.innerHTML = '<p class="quiz-progress">Completed · Your starting direction</p>';
+            quizResult.innerHTML = `<strong style="color:white;font-size:1.15rem">Recommended path: ${result.title}</strong><br><br><strong>Relevant mentors:</strong> ${result.mentors}<br><strong>Next step:</strong> ${result.next}<br><br><a href="#mentor-directory" style="color:var(--accent-gold);font-weight:700">Meet your mentors <i class="fa-solid fa-arrow-right"></i></a>`;
+            quizResult.classList.add('active');
+            return;
+        }
+        const current = quizQuestions[quizStep];
+        pathQuiz.replaceChildren();
+        const progress = document.createElement('p'); progress.className = 'quiz-progress'; progress.textContent = `Question ${quizStep + 1} of ${quizQuestions.length}`;
+        const question = document.createElement('h3'); question.className = 'quiz-question'; question.textContent = current.question;
+        const choices = document.createElement('div'); choices.className = 'quiz-choices';
+        current.answers.forEach(([label, value]) => {
+            const button = document.createElement('button'); button.type = 'button'; button.textContent = label;
+            button.addEventListener('click', () => { if (value !== 'all') quizScores[value] += 1; quizStep += 1; renderPathQuiz(); });
+            choices.appendChild(button);
+        });
+        pathQuiz.append(progress, question, choices);
+    };
+    renderPathQuiz();
+
+    const vaultSearch = document.getElementById('vault-search');
+    const vaultItems = [...document.querySelectorAll('.vault-item')];
+    const vaultEmpty = document.getElementById('vault-empty');
+    vaultSearch?.addEventListener('input', () => {
+        const terms = vaultSearch.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+        let matched = 0;
+        vaultItems.forEach(item => {
+            const searchable = `${item.dataset.question} ${item.textContent}`.toLowerCase();
+            const show = !terms.length || terms.every(term => searchable.includes(term));
+            item.classList.toggle('active', show);
+            if (show) matched += 1;
+        });
+        if (vaultEmpty) vaultEmpty.style.display = matched ? 'none' : 'block';
+    });
+
+    const inquiryModal = document.getElementById('inquiry-modal');
+    const inquiryForm = document.getElementById('inquiry-form');
+    const inquiryTopic = document.getElementById('inquiry-topic');
+    const closeInquiry = () => { inquiryModal?.classList.remove('active'); inquiryModal?.setAttribute('aria-hidden', 'true'); };
+    document.querySelectorAll('.open-inquiry').forEach(button => button.addEventListener('click', () => {
+        const mentor = button.dataset.mentor || 'StudentSync Mentor Team';
+        const field = button.dataset.field || 'career guidance';
+        if (inquiryTopic) inquiryTopic.value = `${field} guidance with ${mentor}`;
+        inquiryModal?.classList.add('active'); inquiryModal?.setAttribute('aria-hidden', 'false');
+        document.getElementById('inquiry-name')?.focus();
+    }));
+    document.getElementById('close-inquiry')?.addEventListener('click', closeInquiry);
+    inquiryModal?.addEventListener('click', event => { if (event.target === inquiryModal) closeInquiry(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') closeInquiry(); });
+    inquiryForm?.addEventListener('submit', event => {
+        event.preventDefault();
+        const name = document.getElementById('inquiry-name')?.value.trim() || 'a StudentSync student';
+        const topic = inquiryTopic?.value.trim() || 'career guidance';
+        const details = document.getElementById('inquiry-message')?.value.trim() || 'I would like to know the best next steps.';
+        const message = `Hi! Main ${name} hu. Mujhe ${topic} ke baare mein guidance chahiye thi. ${details}`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank', 'noopener');
+        closeInquiry();
+        inquiryForm.reset();
+    });
+
+    const downloadableResources = {
+        timetable: {
+            filename: 'studentsync-entry-test-timetable.txt',
+            content: 'STUDENTSYNC ENTRY TEST STUDY TIMETABLE\n\nWeek 1: Diagnose\nMon–Thu: 90 minutes of core concepts\nFri: Review weak-topic notes\nSat: Timed mini-test\nSun: Rest and plan\n\nWeek 2: Build speed\nMon–Thu: Timed practice by topic\nFri: Error log review\nSat: Full mock test\nSun: Revise the lowest-scoring topic\n\nWeek 3: Strengthen\nRepeat mocks and target your three weakest areas.\n\nWeek 4: Final revision\nAlternate full tests, concise revision and proper rest.'
+        },
+        comparison: {
+            filename: 'studentsync-university-comparison.csv',
+            content: 'University,Programme,Estimated Fees,Merit / Entry Test,Best Fit,Notes\nFAST-NUCES,Computing / Business,Add your current fee,NU / entry test,Tech or analytics,Confirm latest admissions details\nLUMS,Management / CS,Add your current fee,SAT / university criteria,Business or interdisciplinary,Check financial aid deadlines\nUET Lahore,Engineering,Add your current fee,ECAT,Engineering,Compare campus and discipline\nAga Khan University,MBBS,Add your current fee,MDCAT / university criteria,Medical,Review eligibility carefully'
+        },
+        outreach: {
+            filename: 'studentsync-freshman-outreach-kit.txt',
+            content: 'STUDENTSYNC FRESHMAN OUTREACH KIT\n\nCV STARTER\nName | City | Email | LinkedIn\nEducation: Programme, university, expected graduation\nProjects / activities: What you built or contributed, tools used, outcome\nSkills: Keep only skills you can explain\n\nMENTOR MESSAGE\nHi [Mentor Name],\nI am [Your Name], currently [class / programme]. I found your work in [field] inspiring. I am exploring [specific goal] and would value 15 minutes of guidance on [one precise question]. I have prepared [project / shortlist / CV] in advance. Thank you for considering it!'
+        }
+    };
+    document.querySelectorAll('.resource-download').forEach(button => button.addEventListener('click', () => {
+        const resource = downloadableResources[button.dataset.resource];
+        if (!resource) return;
+        const url = URL.createObjectURL(new Blob([resource.content], { type: 'text/plain;charset=utf-8' }));
+        const link = document.createElement('a');
+        link.href = url; link.download = resource.filename;
+        document.body.appendChild(link); link.click(); link.remove();
+        URL.revokeObjectURL(url);
+    }));
+
+    /* =========================================
+       Feature 4: Career Roadmap
        ========================================= */
     const roadmapSelect = document.getElementById('roadmap-select');
     const btnGenRoadmap = document.getElementById('btn-generate-roadmap');
@@ -248,6 +497,27 @@ document.addEventListener('DOMContentLoaded', () => {
             { year: 'Semester 3-4', title: 'Design + Delivery', desc: 'Learn wireframing, user stories, metrics, and agile collaboration.' },
             { year: 'Semester 5-6', title: 'Leadership Evidence', desc: 'Lead a campus project, document decisions, and measure outcomes.' },
             { year: 'Final Year', title: 'APM Prep', desc: 'Practice product cases, stakeholder communication, and launch a portfolio case study.' }
+        ]
+    };
+
+    const roadmapResources = {
+        swe: [
+            [{ label: 'HTML & CSS', url: 'conceptual-mastery.html#html' }, { label: 'JavaScript', url: 'conceptual-mastery.html#javascript' }, { label: 'Concept Map', url: 'knowledge-base.html#concept-connections' }],
+            [{ label: 'MySQL', url: 'conceptual-mastery.html#mysql' }, { label: 'PHP', url: 'conceptual-mastery.html#php' }, { label: 'Node.js', url: 'conceptual-mastery.html#nodejs' }],
+            [{ label: 'Knowledge Quest', url: 'knowledge-base.html#knowledge-quest' }, { label: 'Active Recall Quiz', url: 'knowledge-base.html#quiz-lab' }],
+            [{ label: 'React', url: 'conceptual-mastery.html#react' }, { label: 'Exam Sprint Planner', url: 'knowledge-base.html#exam-planner' }]
+        ],
+        data: [
+            [{ label: 'Python', url: 'conceptual-mastery.html#python' }, { label: 'Flashcards', url: 'knowledge-base.html#flashcard-builder' }],
+            [{ label: 'MySQL', url: 'conceptual-mastery.html#mysql' }, { label: 'Knowledge Quest', url: 'knowledge-base.html#knowledge-quest' }],
+            [{ label: 'Active Recall Quiz', url: 'knowledge-base.html#quiz-lab' }, { label: 'Focus Hub', url: 'knowledge-base.html#focus-hub' }],
+            [{ label: 'Custom Flashcards', url: 'knowledge-base.html#flashcard-builder' }, { label: 'Concept Map', url: 'knowledge-base.html#concept-connections' }]
+        ],
+        pm: [
+            [{ label: 'Concept Map', url: 'knowledge-base.html#concept-connections' }, { label: 'Knowledge Quest', url: 'knowledge-base.html#knowledge-quest' }],
+            [{ label: 'HTML & CSS', url: 'conceptual-mastery.html#html' }, { label: 'JavaScript', url: 'conceptual-mastery.html#javascript' }],
+            [{ label: 'Exam Sprint Planner', url: 'knowledge-base.html#exam-planner' }, { label: 'Focus Hub', url: 'knowledge-base.html#focus-hub' }],
+            [{ label: 'Active Recall Quiz', url: 'knowledge-base.html#quiz-lab' }, { label: 'Custom Flashcards', url: 'knowledge-base.html#flashcard-builder' }]
         ]
     };
 
@@ -278,7 +548,15 @@ document.addEventListener('DOMContentLoaded', () => {
             title.textContent = item.title;
             const desc = document.createElement('p');
             desc.textContent = item.desc;
-            content.append(year, title, desc);
+            const resources = document.createElement('div');
+            resources.className = 'roadmap-resources';
+            (roadmapResources[key]?.[index] || []).forEach(resource => {
+                const link = document.createElement('a');
+                link.href = resource.url;
+                link.innerHTML = `<i class="fa-solid fa-arrow-up-right-from-square"></i> ${resource.label}`;
+                resources.appendChild(link);
+            });
+            content.append(year, title, desc, resources);
             div.appendChild(content);
             timelineContainer.appendChild(div);
         });
