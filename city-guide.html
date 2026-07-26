@@ -51,9 +51,10 @@
 
         .city-hero h1 {
             font-size: clamp(2.35rem, 7vw, 5rem);
-            line-height: 0.95;
+            line-height: 1;
             max-width: 850px;
             margin-bottom: 1.25rem;
+            letter-spacing: 0;
         }
 
         .city-hero-copy {
@@ -71,7 +72,7 @@
         }
 
         .city-visual {
-            min-height: 470px;
+            min-height: 490px;
             border-radius: 24px;
             overflow: hidden;
             position: relative;
@@ -230,13 +231,15 @@
 
         .campus-lead h2 {
             color: white;
-            font-size: 1.7rem;
+            font-size: clamp(1.35rem, 3vw, 1.85rem);
             margin-bottom: 0.5rem;
+            letter-spacing: 0;
         }
 
         .campus-lead p {
             color: var(--text-muted);
             line-height: 1.6;
+            font-size: 0.95rem;
         }
 
         .score-card {
@@ -420,7 +423,7 @@
 
         .top-campus-grid {
             display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
+            grid-template-columns: repeat(5, minmax(170px, 1fr));
             gap: 0.85rem;
             margin-top: 1rem;
         }
@@ -499,7 +502,7 @@
             }
 
             .top-campus-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
@@ -520,6 +523,10 @@
             .city-visual {
                 min-height: 320px;
                 border-radius: 16px;
+            }
+
+            .city-hero h1 {
+                font-size: 2.45rem;
             }
 
             .guide-toolbar,
@@ -581,8 +588,8 @@
             <div class="container city-hero-grid">
                 <div>
                     <span class="city-kicker"><i class="fa-solid fa-location-dot"></i> Karachi Relocation Command Center</span>
-                    <h1>Move to Karachi without guessing.</h1>
-                    <p class="city-hero-copy">A survival-grade city guide for out-station students: pick your campus, compare nearby areas, estimate rent and mess costs, plan your first 48 hours, and avoid the most common housing mistakes.</p>
+                    <h1>Plan your move to Karachi with confidence.</h1>
+                    <p class="city-hero-copy">A practical relocation guide for out-station students. Select your campus, compare nearby neighbourhoods, estimate monthly expenses, plan food and transport, and prepare your first week before you arrive.</p>
                     <div class="city-actions">
                         <a href="#relocation-planner" class="btn btn-primary btn-large" style="text-decoration:none;">Build My Plan <i class="fa-solid fa-arrow-right"></i></a>
                         <a href="#top-campuses" class="btn btn-outline btn-large" style="text-decoration:none;">Top 5 Campuses <i class="fa-solid fa-building-columns"></i></a>
@@ -590,8 +597,8 @@
                 </div>
                 <div class="city-visual" role="img" aria-label="Karachi city visual for incoming students">
                     <div class="city-visual-card">
-                        <h3>For students coming from Hyderabad, Sukkur, Quetta, Multan, Lahore, Islamabad and beyond.</h3>
-                        <p>Focus on three decisions first: campus corridor, safe room or hostel, and reliable food routine. Everything below is designed around those decisions.</p>
+                        <h3>Built for students arriving from other cities.</h3>
+                        <p>Start with three decisions: the right campus corridor, verified accommodation, and a sustainable food and commute routine.</p>
                     </div>
                 </div>
             </div>
@@ -655,8 +662,8 @@
         <section class="container guide-panel" id="top-campuses">
             <div class="guide-section-title">
                 <div>
-                    <h2>Top 5 Karachi Student Corridors</h2>
-                    <p>Not a formal ranking. These are high-demand campus corridors for incoming students, selected for recognition, student volume, and relocation planning value.</p>
+                        <h2>Top 5 Karachi University Corridors</h2>
+                        <p>A practical shortlist for relocation planning, selected for student demand, campus recognition, and the availability of nearby housing and transport options.</p>
                 </div>
                 <span class="guide-badge"><i class="fa-solid fa-shield-halved"></i> HEC-recognized names checked</span>
             </div>
