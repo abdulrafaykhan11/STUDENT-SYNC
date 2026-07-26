@@ -78,9 +78,10 @@
             position: relative;
             border: 1px solid rgba(255, 255, 255, 0.12);
             box-shadow: var(--glass-shadow);
-            background:
-                linear-gradient(180deg, rgba(11, 12, 16, 0.08), rgba(11, 12, 16, 0.82)),
-                url("https://source.unsplash.com/1200x900/?karachi,city,university") center/cover;
+            background: linear-gradient(135deg, rgba(255, 64, 129, 0.14), rgba(0, 209, 178, 0.1)), rgba(31, 40, 51, 0.44);
+            padding: 1rem;
+            display: grid;
+            align-content: stretch;
         }
 
         .city-visual::after {
@@ -93,16 +94,16 @@
         }
 
         .city-visual-card {
-            position: absolute;
-            left: 1rem;
-            right: 1rem;
-            bottom: 1rem;
+            position: relative;
             z-index: 1;
-            background: rgba(11, 12, 16, 0.74);
+            height: 100%;
+            background: rgba(11, 12, 16, 0.68);
             border: 1px solid rgba(255, 255, 255, 0.13);
             border-radius: 16px;
-            padding: 1rem;
+            padding: 1.1rem;
             backdrop-filter: blur(18px);
+            display: grid;
+            gap: 1rem;
         }
 
         .city-visual-card h3 {
@@ -117,13 +118,59 @@
             line-height: 1.55;
         }
 
+        .arrival-board {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .arrival-main {
+            border: 1px solid rgba(0, 209, 178, 0.22);
+            border-radius: 14px;
+            padding: 1rem;
+            background: rgba(0, 209, 178, 0.08);
+        }
+
+        .arrival-main span,
+        .arrival-stat span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.74rem;
+            font-weight: 700;
+            margin-bottom: 0.28rem;
+        }
+
+        .arrival-main strong {
+            color: white;
+            font-size: 1.35rem;
+            line-height: 1.2;
+        }
+
+        .arrival-stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.7rem;
+        }
+
+        .arrival-stat {
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 12px;
+            padding: 0.85rem;
+            background: rgba(255, 255, 255, 0.045);
+        }
+
+        .arrival-stat strong {
+            color: white;
+            font-size: 1.02rem;
+            line-height: 1.25;
+        }
+
         .guide-shell {
             padding: 1.5rem 0 5rem;
         }
 
         .guide-toolbar {
             display: grid;
-            grid-template-columns: minmax(260px, 1.1fr) repeat(3, minmax(170px, 0.7fr));
+            grid-template-columns: 150px minmax(240px, 1.1fr) repeat(3, minmax(150px, 0.7fr));
             gap: 0.9rem;
             align-items: end;
             padding: 1rem;
@@ -215,34 +262,34 @@
             white-space: nowrap;
         }
 
-        .campus-profile {
+        .simple-summary {
             display: grid;
             grid-template-columns: minmax(0, 1fr) 220px;
             gap: 1rem;
             margin-bottom: 1rem;
         }
 
-        .campus-lead {
+        .simple-summary > div:first-child {
             background: linear-gradient(135deg, rgba(255, 64, 129, 0.13), rgba(0, 209, 178, 0.08));
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             padding: 1rem;
         }
 
-        .campus-lead h2 {
+        .simple-summary h2 {
             color: white;
             font-size: clamp(1.35rem, 3vw, 1.85rem);
             margin-bottom: 0.5rem;
             letter-spacing: 0;
         }
 
-        .campus-lead p {
+        .simple-summary p {
             color: var(--text-muted);
             line-height: 1.6;
             font-size: 0.95rem;
         }
 
-        .score-card {
+        .simple-score {
             background: rgba(0, 0, 0, 0.22);
             border: 1px solid rgba(0, 209, 178, 0.2);
             border-radius: 16px;
@@ -252,33 +299,33 @@
             gap: 0.5rem;
         }
 
-        .score-card strong {
+        .simple-score strong {
             color: white;
-            font-size: 2rem;
-            line-height: 1;
+            font-size: 1.25rem;
+            line-height: 1.2;
         }
 
-        .score-card span,
-        .score-card p {
+        .simple-score span,
+        .simple-score small {
             color: var(--text-muted);
             font-size: 0.82rem;
             line-height: 1.45;
         }
 
-        .guide-grid {
+        .action-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 0.85rem;
         }
 
-        .mini-card {
+        .action-card {
             background: var(--guide-soft);
             border: 1px solid rgba(255, 255, 255, 0.09);
             border-radius: 14px;
             padding: 0.95rem;
         }
 
-        .mini-card h3 {
+        .action-card h3 {
             display: flex;
             align-items: center;
             gap: 0.45rem;
@@ -287,17 +334,17 @@
             margin-bottom: 0.55rem;
         }
 
-        .mini-card h3 i {
+        .action-card h3 i {
             color: var(--accent-mint);
         }
 
-        .mini-card ul {
+        .action-card ul {
             list-style: none;
             display: grid;
             gap: 0.5rem;
         }
 
-        .mini-card li {
+        .action-card li {
             color: var(--text-muted);
             font-size: 0.84rem;
             line-height: 1.45;
@@ -305,54 +352,54 @@
             padding-bottom: 0.45rem;
         }
 
-        .mini-card li:last-child {
+        .action-card li:last-child {
             border-bottom: 0;
             padding-bottom: 0;
         }
 
         .area-list {
             display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 0.7rem;
+            margin: 1rem 0;
         }
 
-        .area-card {
+        .area-choice {
             display: grid;
             gap: 0.55rem;
             border: 1px solid rgba(255, 255, 255, 0.09);
             border-radius: 14px;
             padding: 0.85rem;
             background: rgba(255, 255, 255, 0.045);
+            color: inherit;
+            font: inherit;
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
         }
 
-        .area-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
+        .area-choice:hover,
+        .area-choice.active {
+            border-color: var(--accent-mint);
+            background: rgba(0, 209, 178, 0.08);
         }
 
-        .area-top strong {
+        .area-choice span {
             color: white;
-            display: block;
-            line-height: 1.25;
+            font-weight: 800;
         }
 
-        .area-top span {
+        .area-choice strong {
+            color: var(--accent-mint);
+            font-size: 0.82rem;
+        }
+
+        .area-choice small,
+        .area-choice em {
             color: var(--text-muted);
             font-size: 0.78rem;
-        }
-
-        .fit-meter {
-            height: 8px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.08);
-            overflow: hidden;
-        }
-
-        .fit-meter div {
-            height: 100%;
-            border-radius: inherit;
-            background: linear-gradient(90deg, var(--accent-coral), var(--accent-gold), var(--accent-mint));
+            font-style: normal;
+            line-height: 1.45;
         }
 
         .budget-card {
@@ -419,6 +466,32 @@
         .planner-list i {
             color: var(--accent-mint);
             margin-top: 0.18rem;
+        }
+
+        .checklist {
+            display: grid;
+            gap: 0.55rem;
+        }
+
+        .check-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.55rem;
+            color: var(--text-muted);
+            font-size: 0.84rem;
+            line-height: 1.45;
+            cursor: pointer;
+        }
+
+        .check-row input {
+            accent-color: var(--accent-mint);
+            margin-top: 0.18rem;
+        }
+
+        .check-row:has(input:checked) span {
+            color: white;
+            text-decoration: line-through;
+            text-decoration-color: rgba(0, 209, 178, 0.7);
         }
 
         .top-campus-grid {
@@ -489,7 +562,7 @@
         @media (max-width: 1050px) {
             .city-hero-grid,
             .guide-dashboard,
-            .campus-profile {
+            .simple-summary {
                 grid-template-columns: 1fr;
             }
 
@@ -530,7 +603,8 @@
             }
 
             .guide-toolbar,
-            .guide-grid,
+            .action-grid,
+            .area-list,
             .top-campus-grid {
                 grid-template-columns: 1fr;
             }
@@ -592,13 +666,39 @@
                     <p class="city-hero-copy">A practical relocation guide for out-station students. Select your campus, compare nearby neighbourhoods, estimate monthly expenses, plan food and transport, and prepare your first week before you arrive.</p>
                     <div class="city-actions">
                         <a href="#relocation-planner" class="btn btn-primary btn-large" style="text-decoration:none;">Build My Plan <i class="fa-solid fa-arrow-right"></i></a>
-                        <a href="#top-campuses" class="btn btn-outline btn-large" style="text-decoration:none;">Top 5 Campuses <i class="fa-solid fa-building-columns"></i></a>
+                        <a href="#top-campuses" class="btn btn-outline btn-large" style="text-decoration:none;">Browse Campuses <i class="fa-solid fa-building-columns"></i></a>
                     </div>
                 </div>
                 <div class="city-visual" role="img" aria-label="Karachi city visual for incoming students">
                     <div class="city-visual-card">
-                        <h3>Built for students arriving from other cities.</h3>
-                        <p>Start with three decisions: the right campus corridor, verified accommodation, and a sustainable food and commute routine.</p>
+                        <div>
+                            <h3>Your live arrival plan</h3>
+                            <p>Change the planner below and this board updates instantly.</p>
+                        </div>
+                        <div class="arrival-board">
+                            <div class="arrival-main">
+                                <span>Selected campus</span>
+                                <strong id="heroCampusName">NED University</strong>
+                            </div>
+                            <div class="arrival-stats">
+                                <div class="arrival-stat">
+                                    <span>Start search in</span>
+                                    <strong id="heroAreaName">Gulshan-e-Iqbal</strong>
+                                </div>
+                                <div class="arrival-stat">
+                                    <span>Monthly estimate</span>
+                                    <strong id="heroBudget">PKR 0</strong>
+                                </div>
+                                <div class="arrival-stat">
+                                    <span>Commute range</span>
+                                    <strong id="heroCommute">10-30 min</strong>
+                                </div>
+                                <div class="arrival-stat">
+                                    <span>Move-in checklist</span>
+                                    <strong id="heroChecklist">0/6 ready</strong>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -607,32 +707,38 @@
         <section class="guide-shell container" id="relocation-planner">
             <div class="guide-toolbar">
                 <div class="guide-field">
-                    <label for="uniSelect">Campus / University</label>
+                    <label for="typeSelect">Institution Type</label>
+                    <select id="typeSelect">
+                        <option value="university">University</option>
+                        <option value="college">College</option>
+                    </select>
+                </div>
+                <div class="guide-field">
+                    <label for="uniSelect">Institution</label>
                     <select id="uniSelect"></select>
                 </div>
                 <div class="guide-field">
-                    <label for="budgetSelect">Monthly Budget</label>
+                    <label for="budgetSelect">Budget</label>
                     <select id="budgetSelect">
-                        <option value="lean">Lean: under 45k</option>
-                        <option value="balanced" selected>Balanced: 45k-70k</option>
-                        <option value="comfort">Comfort: 70k+</option>
+                        <option value="lean">Lean</option>
+                        <option value="balanced" selected>Balanced</option>
+                        <option value="comfort">Comfort</option>
                     </select>
                 </div>
                 <div class="guide-field">
-                    <label for="genderSelect">Accommodation Type</label>
-                    <select id="genderSelect">
-                        <option value="any">Any safe option</option>
-                        <option value="boys">Boys hostel / sharing</option>
-                        <option value="girls">Girls hostel / family PG</option>
+                    <label for="prioritySelect">Priority</label>
+                    <select id="prioritySelect">
+                        <option value="near">Near campus</option>
+                        <option value="balanced" selected>Balanced area</option>
+                        <option value="cheap">Lower rent</option>
+                    </select>
+                </div>
+                <div class="guide-field">
+                    <label for="staySelect">Stay Type</label>
+                    <select id="staySelect">
+                        <option value="hostel" selected>Hostel</option>
+                        <option value="pg">Paying guest</option>
                         <option value="flat">Shared flat</option>
-                    </select>
-                </div>
-                <div class="guide-field">
-                    <label for="commuteSelect">Commute Priority</label>
-                    <select id="commuteSelect">
-                        <option value="near">Stay near campus</option>
-                        <option value="balanced" selected>Balance rent + commute</option>
-                        <option value="cheap">Save rent, travel more</option>
                     </select>
                 </div>
             </div>
@@ -640,6 +746,20 @@
             <div class="guide-dashboard">
                 <div class="guide-panel">
                     <div id="guideContent"></div>
+                    <div class="guide-section-title">
+                        <div>
+                            <h3>Step 3 - Choose a starting area</h3>
+                            <p>Click an area. Budget, commute and hero plan update immediately.</p>
+                        </div>
+                    </div>
+                    <div class="area-list" id="areaOptions"></div>
+                    <div class="guide-section-title">
+                        <div>
+                            <h3>What to do next</h3>
+                            <p>Four simple action cards instead of a long wall of text.</p>
+                        </div>
+                    </div>
+                    <div class="action-grid" id="actionCards"></div>
                 </div>
 
                 <aside class="guide-card budget-card">
@@ -655,6 +775,15 @@
                     </div>
                     <div class="budget-lines" id="budgetLines"></div>
                     <ul class="planner-list" id="quickPlan"></ul>
+                    <div>
+                        <div class="guide-section-title" style="margin:0 0 .65rem;">
+                            <div>
+                                <h3>Move-in Checklist</h3>
+                                <p>Tick items as you prepare.</p>
+                            </div>
+                        </div>
+                        <div class="checklist" id="checklist"></div>
+                    </div>
                 </aside>
             </div>
         </section>
@@ -662,24 +791,59 @@
         <section class="container guide-panel" id="top-campuses">
             <div class="guide-section-title">
                 <div>
-                        <h2>Top 5 Karachi University Corridors</h2>
-                        <p>A practical shortlist for relocation planning, selected for student demand, campus recognition, and the availability of nearby housing and transport options.</p>
+                    <h2>Same Campuses as Route Intelligence</h2>
+                    <p>Use the same universities and colleges from the Route Intelligence page, then build a relocation plan around them.</p>
                 </div>
-                <span class="guide-badge"><i class="fa-solid fa-shield-halved"></i> HEC-recognized names checked</span>
+                <span class="guide-badge"><i class="fa-solid fa-route"></i> Route Intelligence synced</span>
             </div>
             <div class="top-campus-grid" id="topCampusGrid"></div>
             <p class="source-strip">
-                Sources checked for recognition/campus context:
-                <a href="https://www.hec.gov.pk/english/universities/Pages/recognised.aspx" target="_blank" rel="noopener">HEC recognized universities</a>,
-                <a href="https://www.neduet.edu.pk/contact-us" target="_blank" rel="noopener">NED official contact page</a>,
-                <a href="https://osa.iba.edu.pk/" target="_blank" rel="noopener">IBA Office of Student Affairs</a>.
-                Local rent and mess figures are StudentSync planning estimates, not live property listings.
+                This guide uses the same universities and colleges listed in Route Intelligence. Rent, commute and mess figures are StudentSync planning estimates, not live property listings.
             </p>
         </section>
     </main>
 
-    <footer style="padding: 2rem 0; color: var(--text-muted); text-align: center;">
-        <div class="container">StudentSync City Guide - built for out-station students arriving in Karachi.</div>
+    <footer class="footer glass-card">
+        <div class="container footer-container">
+            <div class="footer-col brand-col">
+                <a href="index.html" class="logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    Student<span>Sync</span>
+                </a>
+                <p>Empowering college students to connect, share, and thrive together.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/login" target="_blank" rel="noopener noreferrer" aria-label="Facebook login"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/accounts/login/" target="_blank" rel="noopener noreferrer" aria-label="Instagram login"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://x.com/i/flow/login" target="_blank" rel="noopener noreferrer" aria-label="X login" class="social-x"><span>X</span></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Challenges</h4>
+                <a href="transit-economics.html">Transit Economics</a>
+                <a href="route-intelligence.html">Route Intelligence</a>
+                <a href="civic-voice.html">Civic Voice Hub</a>
+                <a href="conceptual-mastery.html">Conceptual Mastery</a>
+                <a href="knowledge-base.html">Knowledge Base</a>
+                <a href="strategic-mentorship.html">Strategic Mentorship</a>
+                <a href="city-guide.html">City Guide</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="about.html">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="#">Campus Reps</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 StudentSync. All rights reserved.</p>
+        </div>
     </footer>
 
     <script src="city-guide.js"></script>

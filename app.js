@@ -115,6 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Book guidance before confusion becomes delay',
             copy: 'Strategic Mentorship connects students with roadmap support for course selection, skill planning, and career direction.',
             metrics: ['20 min mentor slot', '1 roadmap generated']
+        },
+        city: {
+            title: 'Build a Karachi arrival plan before moving',
+            copy: 'City Guide helps out-station students choose a campus corridor, estimate rent and mess costs, shortlist safer areas, and prepare a first-week checklist.',
+            metrics: ['13 campuses synced', '6 move-in checks']
         }
     };
 

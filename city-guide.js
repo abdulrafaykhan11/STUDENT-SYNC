@@ -1,328 +1,321 @@
-const campuses = {
-    ku: {
-        name: 'University of Karachi',
-        short: 'KU',
-        type: 'Public university',
-        corridor: 'University Road / Gulshan-e-Iqbal',
-        bestFor: 'Students who want a large public university environment with affordable nearby housing.',
-        summary: 'A major campus corridor with strong student housing density around Gulshan-e-Iqbal, NIPA, Mosamiyat and Abul Hasan Isphahani Road.',
-        commuteAnchor: 'University Road',
-        monthly: { rent: [18000, 32000], food: [12000, 19000], transport: [5000, 10000], utilities: [5000, 9000] },
-        areas: [
-            { name: 'Gulshan-e-Iqbal Block 13D / NIPA', vibe: 'Most balanced for KU students', commute: '10-25 min', rent: [20000, 35000], safety: 78, food: 90, commuteScore: 88, notes: 'Good mess access, shared flats and bus routes.' },
-            { name: 'Mosamiyat / Abul Hasan Isphahani Road', vibe: 'Budget-friendly student belt', commute: '15-30 min', rent: [16000, 28000], safety: 70, food: 84, commuteScore: 82, notes: 'Better for students prioritising rent over polish.' },
-            { name: 'Johar Blocks 14-17', vibe: 'More residential, mixed budget', commute: '20-40 min', rent: [22000, 40000], safety: 76, food: 78, commuteScore: 70, notes: 'Check commute at morning peak before finalising.' }
+const institutions = {
+    ned: { name: 'NED University', type: 'University', area: 'gulshan', corridor: 'University Road', campusNote: 'Engineering students usually do best near Gulshan, NIPA or University Road.' },
+    ku: { name: 'Karachi University', type: 'University', area: 'gulshan', corridor: 'University Road', campusNote: 'Large public campus with many affordable student housing options nearby.' },
+    fast: { name: 'FAST NUCES', type: 'University', area: 'pechs', corridor: 'Shahrah-e-Faisal / National Highway access', campusNote: 'Choose housing after checking the actual campus commute and point route.' },
+    iba: { name: 'IBA Karachi', type: 'University', area: 'gulshan', corridor: 'Main Campus / City Campus split', campusNote: 'Confirm whether your classes are mostly at Main Campus or City Campus before renting.' },
+    dhaus: { name: 'DHA Suffa University', type: 'University', area: 'clifton', corridor: 'DHA / Korangi Road', campusNote: 'DHA and Gizri are convenient; PECHS can reduce rent if commute is manageable.' },
+    szabist: { name: 'SZABIST Karachi', type: 'University', area: 'clifton', corridor: 'Clifton / DHA', campusNote: 'Clifton is close but costly; Gizri and PECHS are common student alternatives.' },
+    indus: { name: 'Indus University', type: 'University', area: 'pechs', corridor: 'Johar / Gulshan link', campusNote: 'Johar and Gulshan work well if you want food access and shared flats.' },
+    dj_science: { name: 'DJ Science College', type: 'College', area: 'gulshan', corridor: 'Saddar / city access', campusNote: 'Saddar access matters; verify commute timing before choosing Gulshan or PECHS.' },
+    st_patricks: { name: "St. Patrick's College", type: 'College', area: 'pechs', corridor: 'Saddar approach', campusNote: 'Garden, Saddar and PECHS are practical starting points for daily commute.' },
+    gcw: { name: 'Govt College for Women', type: 'College', area: 'north_nazimabad', corridor: 'North Nazimabad belt', campusNote: 'For women students, prioritise verified hostel policy and guardian-friendly location.' },
+    bahria_college: { name: 'Bahria College Karsaz', type: 'College', area: 'pechs', corridor: 'Karsaz Road', campusNote: 'Karsaz, PECHS and Bahadurabad give better access than far budget areas.' },
+    adamjee: { name: 'Adamjee Science College', type: 'College', area: 'gulshan', corridor: 'Gulshan / Stadium Road', campusNote: 'Gulshan, Bahadurabad and Karsaz can work depending on family preference.' },
+    djmc: { name: 'DJ Sindh Govt Science College', type: 'College', area: 'malir', corridor: 'Malir connector', campusNote: 'Malir and Model Colony help keep commute short and rent lower.' }
+};
+
+const areaGuides = {
+    gulshan: {
+        label: 'Gulshan / University Road',
+        bestAreas: [
+            { name: 'Gulshan-e-Iqbal', rent: [18000, 36000], commute: '10-30 min', fit: 92, note: 'Best balance for University Road campuses.' },
+            { name: 'NIPA / Civic Center', rent: [20000, 40000], commute: '10-25 min', fit: 86, note: 'Good transport access and food options.' },
+            { name: 'Gulistan-e-Johar', rent: [22000, 42000], commute: '20-45 min', fit: 74, note: 'Better flats, but check traffic before booking.' }
         ],
-        housing: ['University hostel if available', 'Verified private hostel near University Road', 'Two or three-person shared flat in Gulshan', 'Family-referenced paying guest option for first semester'],
-        food: ['Monthly mess near Gulshan / Mosamiyat', 'Campus canteens for lunch', 'Tiffin service for dinner during exam weeks', 'Keep one self-cooking backup for late nights'],
-        transport: ['University points where available', 'People Bus / local bus corridors on University Road', 'Ride-hailing only for late or rainy days', 'Keep 20-30 minutes buffer in monsoon season'],
-        firstWeek: ['Visit department and transport office on day one', 'Confirm student card and library process', 'Test morning commute before first class', 'Save two nearby pharmacies and one clinic'],
-        caution: ['Do not pay hostel advance without visiting or video verification', 'Check room ventilation and water timing', 'Confirm if electricity backup is included']
+        food: ['Monthly mess in Gulshan or Johar', 'Campus canteen for lunch', 'Tiffin service during exam weeks'],
+        transport: ['University Road buses and points', 'Classmate ride sharing', 'Ride-hailing only for late days'],
+        safety: ['Visit the room in evening hours', 'Ask about water timing', 'Avoid paying full advance before inspection']
     },
-    ned: {
-        name: 'NED University of Engineering & Technology',
-        short: 'NED',
-        type: 'Public engineering university',
-        corridor: 'University Road / Safari Park',
-        bestFor: 'Engineering students who need reliable commute and a focused academic routine.',
-        summary: 'NED sits in the same high-demand student corridor as KU, making Gulshan and nearby University Road areas practical for daily classes.',
-        commuteAnchor: 'University Road near Safari Park',
-        monthly: { rent: [19000, 34000], food: [13000, 20000], transport: [5000, 11000], utilities: [5000, 9000] },
-        areas: [
-            { name: 'Gulshan-e-Iqbal Block 10 / 13D', vibe: 'Best all-round NED zone', commute: '10-25 min', rent: [21000, 36000], safety: 78, food: 88, commuteScore: 90, notes: 'Good for point routes, groceries and mess options.' },
-            { name: 'NIPA / Federal B. Area edge', vibe: 'Practical commute belt', commute: '20-35 min', rent: [18000, 31000], safety: 74, food: 80, commuteScore: 76, notes: 'Compare actual travel time before booking.' },
-            { name: 'Johar / Munawar Chowrangi side', vibe: 'Better flats, longer commute', commute: '25-45 min', rent: [23000, 42000], safety: 77, food: 78, commuteScore: 68, notes: 'Useful if sharing with friends from multiple campuses.' }
+    pechs: {
+        label: 'PECHS / Karsaz / Saddar Link',
+        bestAreas: [
+            { name: 'PECHS / Nursery', rent: [26000, 52000], commute: '15-40 min', fit: 88, note: 'Central area with strong food and transport access.' },
+            { name: 'Garden / Saddar', rent: [21000, 41000], commute: '10-30 min', fit: 80, note: 'Useful for city-side colleges; inspect carefully.' },
+            { name: 'Bahadurabad / Karsaz', rent: [30000, 60000], commute: '15-35 min', fit: 78, note: 'Safer and cleaner, usually more expensive.' }
         ],
-        housing: ['Official hostel route where eligible', 'Private hostel near University Road', 'Shared apartment with engineering batchmates', 'Short-stay guest room for the first two weeks'],
-        food: ['Campus cafeteria for day meals', 'Monthly mess in Gulshan', 'Budget dhabas around University Road', 'Cook breakfast at home to control cost'],
-        transport: ['Campus point or private van', 'University Road bus corridor', 'Bike/ride-hailing only after route familiarity', 'Avoid very remote rentals to save small rent'],
-        firstWeek: ['Map all lab buildings before classes begin', 'Ask seniors about point timings', 'Buy basic drafting/lab supplies early', 'Join official class WhatsApp or LMS channel'],
-        caution: ['Engineering schedules can run long; avoid housing with strict early gate closure', 'Check water pressure and backup power before advance']
+        food: ['PECHS mess services', 'Saddar budget restaurants', 'Weekly grocery plan to avoid delivery overspend'],
+        transport: ['Shahrah-e-Faisal routes', 'Karsaz main road access', 'Keep extra buffer during office hours'],
+        safety: ['Prefer main-road access', 'Check gate timings', 'Confirm electricity and utility split']
     },
-    iba: {
-        name: 'IBA Karachi',
-        short: 'IBA',
-        type: 'Public sector institute',
-        corridor: 'Main Campus: University Road, City Campus: Garden / Saddar',
-        bestFor: 'Business, CS and economics students who may move between main and city campus.',
-        summary: 'IBA students should choose housing based on actual campus allocation. Main Campus fits Gulshan; City Campus fits Garden, Saddar or PECHS.',
-        commuteAnchor: 'Main Campus and City Campus split',
-        monthly: { rent: [24000, 47000], food: [15000, 24000], transport: [7000, 15000], utilities: [7000, 12000] },
-        areas: [
-            { name: 'Gulshan-e-Iqbal / NIPA', vibe: 'Best for Main Campus', commute: '10-25 min', rent: [23000, 42000], safety: 78, food: 88, commuteScore: 88, notes: 'Choose this if most classes are at Main Campus.' },
-            { name: 'Garden East / Saddar', vibe: 'Best for City Campus', commute: '10-25 min', rent: [22000, 39000], safety: 68, food: 86, commuteScore: 84, notes: 'Visit at evening time before finalising.' },
-            { name: 'PECHS / Nursery', vibe: 'Comfortable middle option', commute: '20-40 min', rent: [30000, 55000], safety: 80, food: 90, commuteScore: 72, notes: 'Higher cost, better access to both sides of city.' }
+    clifton: {
+        label: 'Clifton / DHA / Gizri',
+        bestAreas: [
+            { name: 'Gizri / DHA Phase 2 Extension', rent: [28000, 52000], commute: '10-25 min', fit: 87, note: 'Good value for Clifton and DHA campuses.' },
+            { name: 'Clifton Blocks 2-5', rent: [42000, 80000], commute: '5-20 min', fit: 82, note: 'Closest option, but rent is high.' },
+            { name: 'PECHS as backup', rent: [26000, 52000], commute: '25-50 min', fit: 70, note: 'Lower rent if you can manage commute.' }
         ],
-        housing: ['IBA hostel if allotted', 'Shared flat near Main Campus for lower commute', 'PECHS shared apartment for balanced access', 'Verified girls hostel / family PG near Garden or PECHS'],
-        food: ['Campus cafeteria', 'Monthly mess in PECHS or Gulshan', 'Saddar budget restaurants for City Campus days', 'Weekly grocery plan to avoid food app overspend'],
-        transport: ['Campus shuttle if available', 'Main-to-city campus commute buffer', 'Ride share with classmates on late days', 'Avoid daily long ride-hailing if budget is tight'],
-        firstWeek: ['Confirm campus-wise timetable', 'Register with student affairs / hostel office', 'Build a class commute group', 'Track attendance policy from week one'],
-        caution: ['Do not rent near Main Campus if your schedule is mostly City Campus', 'For girls hostels, verify guardian policy, curfew and visitors policy']
+        food: ['Gizri mess and tiffin options', 'Campus food for lunch', 'Limit food apps to control monthly cost'],
+        transport: ['Ride share with classmates', 'Main Clifton/DHA corridors', 'Rainy-day transport budget is important'],
+        safety: ['Ask about curfew and visitor policy', 'Confirm AC/electricity charges', 'Avoid isolated side streets']
     },
-    duhs: {
-        name: 'Dow University of Health Sciences',
-        short: 'DUHS',
-        type: 'Public medical university',
-        corridor: 'Ojha Campus / Civil Hospital corridor',
-        bestFor: 'Medical, dental and health sciences students with hospital-linked schedules.',
-        summary: 'Dow has multiple campus realities. Ojha side points toward Safoora and Scheme 33; City/Civil side points toward Saddar, Garden and PECHS.',
-        commuteAnchor: 'Ojha / Civil Hospital split',
-        monthly: { rent: [22000, 42000], food: [14000, 23000], transport: [6000, 14000], utilities: [6000, 11000] },
-        areas: [
-            { name: 'Safoora / Scheme 33', vibe: 'Best for Ojha Campus', commute: '10-25 min', rent: [20000, 36000], safety: 74, food: 76, commuteScore: 88, notes: 'Prioritise secure building and reliable water.' },
-            { name: 'Garden / Saddar', vibe: 'Best for Civil Hospital side', commute: '10-25 min', rent: [22000, 40000], safety: 67, food: 88, commuteScore: 86, notes: 'Convenient but inspect area carefully at night.' },
-            { name: 'PECHS', vibe: 'Safer balanced option', commute: '25-45 min', rent: [31000, 56000], safety: 82, food: 90, commuteScore: 70, notes: 'Higher rent, good for students with family preference.' }
+    north_nazimabad: {
+        label: 'North Nazimabad / Nazimabad',
+        bestAreas: [
+            { name: 'North Nazimabad', rent: [20000, 42000], commute: '10-30 min', fit: 90, note: 'Strong for colleges in the north corridor.' },
+            { name: 'Nazimabad', rent: [17000, 34000], commute: '15-35 min', fit: 82, note: 'Budget-friendly and busy.' },
+            { name: 'Federal B. Area', rent: [18000, 36000], commute: '20-40 min', fit: 76, note: 'Good backup if direct area is full.' }
         ],
-        housing: ['Official hostel route where eligible', 'Medical student hostel near Safoora or Saddar', 'Family-referenced PG for first-year students', 'Shared flat with classmates after first semester'],
-        food: ['Hospital canteens for day meals', 'Monthly mess near Safoora / Garden', 'Simple meal prep for late study nights', 'Keep ORS, snacks and water routine during rotations'],
-        transport: ['Choose housing by campus/ward schedule', 'Keep emergency ride budget', 'Avoid very long commute during clinical years', 'Share verified driver contacts with batchmates'],
-        firstWeek: ['Confirm campus and hospital reporting location', 'Find nearest pharmacy and lab services', 'Prepare copies of documents and medical forms', 'Set a reliable sleep and food routine early'],
-        caution: ['Late hospital duties need safer commute planning', 'Avoid isolated hostels even if rent is low']
+        food: ['Local mess and home tiffin services', 'Market food for budget meals', 'Simple breakfast at room'],
+        transport: ['Nazimabad main roads', 'Shared vans where available', 'Avoid unnecessary cross-city commute'],
+        safety: ['Prefer family residential streets', 'Verify girls hostel references', 'Check transport after sunset']
     },
-    aku: {
-        name: 'Aga Khan University',
-        short: 'AKU',
-        type: 'Private health sciences university',
-        corridor: 'Stadium Road / Karsaz / Gulshan edge',
-        bestFor: 'Health sciences students who value safety, predictable commute and disciplined routines.',
-        summary: 'AKU students usually benefit from safer, higher-quality housing around Karsaz, Gulshan edge, PECHS or family-referenced PG options.',
-        commuteAnchor: 'Stadium Road',
-        monthly: { rent: [35000, 65000], food: [18000, 30000], transport: [8000, 18000], utilities: [8000, 15000] },
-        areas: [
-            { name: 'Karsaz / Stadium Road edge', vibe: 'Closest premium corridor', commute: '10-25 min', rent: [40000, 70000], safety: 84, food: 78, commuteScore: 90, notes: 'Higher rent but excellent commute control.' },
-            { name: 'Gulshan-e-Iqbal blocks near Civic Center', vibe: 'Balanced student option', commute: '20-35 min', rent: [28000, 50000], safety: 78, food: 86, commuteScore: 76, notes: 'More mess and shared flat availability.' },
-            { name: 'PECHS / Bahadurabad', vibe: 'Comfort-focused option', commute: '20-40 min', rent: [36000, 68000], safety: 83, food: 90, commuteScore: 72, notes: 'Good for students with family visits or comfort priority.' }
+    malir: {
+        label: 'Malir / Model Colony',
+        bestAreas: [
+            { name: 'Model Colony', rent: [16000, 32000], commute: '10-30 min', fit: 86, note: 'Good for Malir-side campuses and lower rent.' },
+            { name: 'Malir Cantt edge', rent: [22000, 45000], commute: '15-35 min', fit: 80, note: 'Safer feel, usually higher cost.' },
+            { name: 'Shah Faisal / Airport link', rent: [18000, 36000], commute: '20-45 min', fit: 70, note: 'Only choose after testing the route.' }
         ],
-        housing: ['Official or institution-recommended accommodation first', 'Family-referenced PG near Karsaz / PECHS', 'Shared apartment in Gulshan or Bahadurabad', 'Short stay before signing long lease'],
-        food: ['Campus / hospital food options', 'Premium mess in PECHS or Bahadurabad', 'Weekly grocery and meal prep', 'Avoid daily delivery to keep budget realistic'],
-        transport: ['Keep commute short for clinical workload', 'Ride-hailing buffer for late duties', 'Prefer known driver or class groups', 'Check road closures around Stadium Road'],
-        firstWeek: ['Confirm ID, hostel and hospital access rules', 'Save campus security numbers', 'Build a commute group', 'Set a weekly laundry and meal schedule'],
-        caution: ['Do not optimise only for rent; health sciences workload makes commute fatigue expensive', 'Verify building security and entry policy']
-    },
-    szabist: {
-        name: 'SZABIST Karachi',
-        short: 'SZABIST',
-        type: 'Private university',
-        corridor: 'Clifton / DHA / Gizri',
-        bestFor: 'Students studying business, media, social sciences or computing around Clifton.',
-        summary: 'Clifton is convenient but expensive. Many students control cost by living in Gizri, DHA Phase 2 Extension or PECHS with a planned commute.',
-        commuteAnchor: 'Clifton Blocks 2-5',
-        monthly: { rent: [30000, 58000], food: [16000, 28000], transport: [8000, 18000], utilities: [7000, 14000] },
-        areas: [
-            { name: 'Gizri / DHA Phase 2 Extension', vibe: 'Best student value near Clifton', commute: '10-25 min', rent: [28000, 50000], safety: 78, food: 84, commuteScore: 86, notes: 'Good balance if room is verified.' },
-            { name: 'Clifton Blocks 2 / 5', vibe: 'Closest but expensive', commute: '5-15 min', rent: [40000, 75000], safety: 82, food: 92, commuteScore: 95, notes: 'Only choose if budget comfortably allows.' },
-            { name: 'PECHS / Nursery', vibe: 'Budget-control alternative', commute: '25-45 min', rent: [26000, 52000], safety: 80, food: 90, commuteScore: 66, notes: 'Works if you can tolerate commute.' }
-        ],
-        housing: ['Private hostel in DHA / Gizri', 'Paying guest room with references', 'Shared flat in PECHS', 'Short commute sublet for first semester'],
-        food: ['Gizri mess and tiffin options', 'Campus / Clifton cafes for occasional meals', 'PECHS monthly mess', 'Limit delivery apps to protect budget'],
-        transport: ['Ride share with classmates', 'Bus routes on main corridors where practical', 'Keep rainy-day transport budget', 'Avoid far areas without direct commute'],
-        firstWeek: ['Walk the campus-to-room route in daylight', 'Find grocery, laundry and pharmacy nearby', 'Join batch groups for ride sharing', 'Track attendance and class timing early'],
-        caution: ['Clifton rent can quietly break budget', 'Check hostel curfew, AC charges and utility splits']
+        food: ['Local mess near Model Colony', 'Campus canteen for lunch', 'Keep water and snacks for long commute days'],
+        transport: ['Campus point if available', 'Malir main connector roads', 'Keep buffer for traffic bottlenecks'],
+        safety: ['Avoid very remote cheap rooms', 'Check evening commute', 'Confirm building security']
     }
 };
 
-const budgetModes = {
-    lean: { label: 'Lean', rent: 0.82, food: 0.88, transport: 0.9, utilities: 0.85, comfort: 'Shared room, monthly mess, strict transport planning.' },
-    balanced: { label: 'Balanced', rent: 1, food: 1, transport: 1, utilities: 1, comfort: 'Shared room or hostel with reliable food and commute.' },
-    comfort: { label: 'Comfort', rent: 1.25, food: 1.18, transport: 1.22, utilities: 1.15, comfort: 'Better room quality, safer corridor and flexible commute.' }
+const budgets = {
+    lean: { label: 'Lean', rentFactor: 0.86, food: 13000, transport: 7000, utilities: 5000 },
+    balanced: { label: 'Balanced', rentFactor: 1, food: 18000, transport: 10000, utilities: 7000 },
+    comfort: { label: 'Comfort', rentFactor: 1.22, food: 24000, transport: 15000, utilities: 10000 }
 };
 
-const accommodationBias = {
-    any: { label: 'Any safe option', rent: 1, safety: 0 },
-    boys: { label: 'Boys hostel / sharing', rent: 0.92, safety: 1 },
-    girls: { label: 'Girls hostel / family PG', rent: 1.08, safety: 8 },
-    flat: { label: 'Shared flat', rent: 1.15, safety: 3 }
-};
-
-const commuteBias = {
-    near: { label: 'Stay near campus', commute: 15, rent: 1.12 },
-    balanced: { label: 'Balance rent + commute', commute: 0, rent: 1 },
-    cheap: { label: 'Save rent, travel more', commute: -8, rent: 0.88 }
+const state = {
+    type: 'university',
+    campus: 'ned',
+    budget: 'balanced',
+    priority: 'balanced',
+    stay: 'hostel',
+    areaIndex: 0,
+    checklist: new Set()
 };
 
 const money = value => `PKR ${Math.round(value / 1000)}k`;
-const rangeMoney = range => `${money(range[0])}-${money(range[1])}`;
-const average = range => (range[0] + range[1]) / 2;
+const range = values => `${money(values[0])}-${money(values[1])}`;
 
-const getSelected = () => ({
-    campusKey: document.getElementById('uniSelect').value,
-    budgetKey: document.getElementById('budgetSelect').value,
-    accommodationKey: document.getElementById('genderSelect').value,
-    commuteKey: document.getElementById('commuteSelect').value
-});
-
-const scoreArea = (area, accommodationKey, commuteKey) => {
-    const accommodation = accommodationBias[accommodationKey];
-    const commute = commuteBias[commuteKey];
-    return Math.max(35, Math.min(98, Math.round(
-        area.commuteScore * 0.42 +
-        area.food * 0.22 +
-        (area.safety + accommodation.safety) * 0.26 +
-        commute.commute * 0.1
-    )));
+const currentInstitution = () => institutions[state.campus];
+const currentGuide = () => areaGuides[currentInstitution().area];
+const currentAreas = () => {
+    const areas = [...currentGuide().bestAreas];
+    if (state.priority === 'cheap') return areas.sort((a, b) => a.rent[0] - b.rent[0]);
+    if (state.priority === 'near') return areas.sort((a, b) => b.fit - a.fit);
+    return areas;
 };
 
-const adjustedBudget = (campus, budgetKey, accommodationKey, commuteKey) => {
-    const budget = budgetModes[budgetKey];
-    const accommodation = accommodationBias[accommodationKey];
-    const commute = commuteBias[commuteKey];
+const selectedArea = () => currentAreas()[state.areaIndex] || currentAreas()[0];
 
-    const rent = average(campus.monthly.rent) * budget.rent * accommodation.rent * commute.rent;
-    const food = average(campus.monthly.food) * budget.food;
-    const transport = average(campus.monthly.transport) * budget.transport * (commuteKey === 'near' ? 0.78 : commuteKey === 'cheap' ? 1.22 : 1);
-    const utilities = average(campus.monthly.utilities) * budget.utilities;
+const institutionKeysByType = type => Object.entries(institutions)
+    .filter(([, inst]) => inst.type.toLowerCase() === type)
+    .map(([key]) => key);
 
+const syncFormValues = () => {
+    document.getElementById('typeSelect').value = state.type;
+    document.getElementById('uniSelect').value = state.campus;
+    document.getElementById('budgetSelect').value = state.budget;
+    document.getElementById('prioritySelect').value = state.priority;
+    document.getElementById('staySelect').value = state.stay;
+};
+
+const calcBudget = () => {
+    const area = selectedArea();
+    const budget = budgets[state.budget];
+    const stayFactor = state.stay === 'flat' ? 1.18 : state.stay === 'pg' ? 1.08 : 0.95;
+    const rent = ((area.rent[0] + area.rent[1]) / 2) * budget.rentFactor * stayFactor;
     return {
         rent,
-        food,
-        transport,
-        utilities,
-        total: rent + food + transport + utilities
+        food: budget.food,
+        transport: state.priority === 'near' ? budget.transport * 0.8 : state.priority === 'cheap' ? budget.transport * 1.2 : budget.transport,
+        utilities: budget.utilities
     };
 };
 
-const renderCampusOptions = () => {
-    const select = document.getElementById('uniSelect');
-    select.innerHTML = Object.entries(campuses).map(([key, campus]) =>
-        `<option value="${key}">${campus.name}</option>`
-    ).join('');
+const renderHeroWidget = () => {
+    const inst = currentInstitution();
+    const area = selectedArea();
+    const budget = calcBudget();
+    const total = budget.rent + budget.food + budget.transport + budget.utilities;
+
+    document.getElementById('heroCampusName').textContent = inst.name;
+    document.getElementById('heroAreaName').textContent = area.name;
+    document.getElementById('heroBudget').textContent = money(total);
+    document.getElementById('heroCommute').textContent = area.commute;
+    document.getElementById('heroChecklist').textContent = `${state.checklist.size}/6 ready`;
 };
 
-const renderGuide = () => {
-    const { campusKey, budgetKey, accommodationKey, commuteKey } = getSelected();
-    const campus = campuses[campusKey];
-    const budget = adjustedBudget(campus, budgetKey, accommodationKey, commuteKey);
-    const rankedAreas = [...campus.areas]
-        .map(area => ({ ...area, fit: scoreArea(area, accommodationKey, commuteKey) }))
-        .sort((a, b) => b.fit - a.fit);
-
+const renderSummary = () => {
+    const inst = currentInstitution();
+    const area = selectedArea();
     document.getElementById('guideContent').innerHTML = `
-        <div class="campus-profile">
-            <div class="campus-lead">
-                <span class="guide-badge"><i class="fa-solid fa-building-columns"></i> ${campus.type}</span>
-                <h2>${campus.name}</h2>
-                <p>${campus.summary}</p>
-            </div>
-            <div class="score-card">
-                <span>Best matched area</span>
-                <strong>${rankedAreas[0].fit}%</strong>
-                <p>${rankedAreas[0].name}<br>${rankedAreas[0].vibe}</p>
-            </div>
-        </div>
-
-        <div class="guide-grid">
-            <article class="mini-card">
-                <h3><i class="fa-solid fa-house-user"></i> Accommodation Strategy</h3>
-                <ul>${campus.housing.map(item => `<li>${item}</li>`).join('')}</ul>
-            </article>
-            <article class="mini-card">
-                <h3><i class="fa-solid fa-utensils"></i> Food & Mess Plan</h3>
-                <ul>${campus.food.map(item => `<li>${item}</li>`).join('')}</ul>
-            </article>
-            <article class="mini-card">
-                <h3><i class="fa-solid fa-bus"></i> Commute Plan</h3>
-                <ul>${campus.transport.map(item => `<li>${item}</li>`).join('')}</ul>
-            </article>
-        </div>
-
-        <div class="guide-section-title" style="margin-top:1.2rem;">
+        <div class="simple-summary">
             <div>
-                <h3>Recommended Neighbourhoods</h3>
-                <p>Fit score combines commute, food access, safety signals and your selected budget style.</p>
+                <span class="guide-badge"><i class="fa-solid fa-building-columns"></i> ${inst.type}</span>
+                <h2>${inst.name}</h2>
+                <p>${inst.campusNote}</p>
             </div>
-            <span class="guide-badge"><i class="fa-solid fa-sliders"></i> ${budgetModes[budgetKey].label} plan</span>
-        </div>
-        <div class="area-list">
-            ${rankedAreas.map(area => `
-                <article class="area-card">
-                    <div class="area-top">
-                        <div>
-                            <strong>${area.name}</strong>
-                            <span>${area.vibe} - commute ${area.commute}</span>
-                        </div>
-                        <span class="guide-badge">${area.fit}% fit</span>
-                    </div>
-                    <div class="fit-meter"><div style="width:${area.fit}%"></div></div>
-                    <p style="color:var(--text-muted);font-size:.82rem;line-height:1.5;">Rent estimate: ${rangeMoney(area.rent)}. ${area.notes}</p>
-                </article>
-            `).join('')}
-        </div>
-
-        <div class="guide-grid" style="margin-top:1rem;">
-            <article class="mini-card">
-                <h3><i class="fa-solid fa-calendar-check"></i> First 7 Days</h3>
-                <ul>${campus.firstWeek.map(item => `<li>${item}</li>`).join('')}</ul>
-            </article>
-            <article class="mini-card">
-                <h3><i class="fa-solid fa-shield-halved"></i> Safety Checks</h3>
-                <ul>${campus.caution.map(item => `<li>${item}</li>`).join('')}</ul>
-            </article>
-            <article class="mini-card">
-                <h3><i class="fa-solid fa-file-circle-check"></i> Documents To Keep</h3>
-                <ul>
-                    <li>CNIC/B-form copies, admission letter and fee challan.</li>
-                    <li>Parent/guardian CNIC copy and emergency contacts.</li>
-                    <li>Passport-size photos, medical record and blood group.</li>
-                    <li>Soft copies saved in email and phone gallery.</li>
-                </ul>
-            </article>
+            <div class="simple-score">
+                <span>Recommended start</span>
+                <strong>${area.name}</strong>
+                <small>${currentGuide().label}</small>
+            </div>
         </div>
     `;
-
-    renderBudget(campus, budget, budgetKey, accommodationKey, commuteKey);
 };
 
-const renderBudget = (campus, budget, budgetKey, accommodationKey, commuteKey) => {
-    document.getElementById('budgetTotal').textContent = money(budget.total);
+const renderAreaChoices = () => {
+    const areas = currentAreas();
+    if (state.areaIndex >= areas.length) state.areaIndex = 0;
+    document.getElementById('areaOptions').innerHTML = areas.map((area, index) => `
+        <button type="button" class="area-choice${index === state.areaIndex ? ' active' : ''}" data-area-index="${index}">
+            <span>${area.name}</span>
+            <strong>${area.fit}% match</strong>
+            <small>${area.commute} - ${range(area.rent)}</small>
+            <em>${area.note}</em>
+        </button>
+    `).join('');
+};
+
+const renderActionCards = () => {
+    const guide = currentGuide();
+    const cards = [
+        ['Housing', 'fa-house-user', guide.bestAreas.map(area => `Shortlist ${area.name}`).slice(0, 2).concat(['Visit or video-call before advance'])],
+        ['Food', 'fa-utensils', guide.food],
+        ['Commute', 'fa-bus', guide.transport],
+        ['Safety', 'fa-shield-halved', guide.safety]
+    ];
+
+    document.getElementById('actionCards').innerHTML = cards.map(([title, icon, items]) => `
+        <article class="action-card">
+            <h3><i class="fa-solid ${icon}"></i> ${title}</h3>
+            <ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>
+        </article>
+    `).join('');
+};
+
+const renderBudget = () => {
+    const budget = calcBudget();
+    const total = budget.rent + budget.food + budget.transport + budget.utilities;
+    document.getElementById('budgetTotal').textContent = money(total);
     document.getElementById('budgetLines').innerHTML = `
         <div class="budget-line"><span>Room / hostel</span><strong>${money(budget.rent)}</strong></div>
-        <div class="budget-line"><span>Mess / groceries</span><strong>${money(budget.food)}</strong></div>
+        <div class="budget-line"><span>Food / mess</span><strong>${money(budget.food)}</strong></div>
         <div class="budget-line"><span>Transport</span><strong>${money(budget.transport)}</strong></div>
         <div class="budget-line"><span>Utilities + mobile</span><strong>${money(budget.utilities)}</strong></div>
     `;
-
-    const selectedArea = [...campus.areas]
-        .map(area => ({ ...area, fit: scoreArea(area, accommodationKey, commuteKey) }))
-        .sort((a, b) => b.fit - a.fit)[0];
-
     document.getElementById('quickPlan').innerHTML = `
-        <li><i class="fa-solid fa-location-dot"></i><span>Start your search in <strong style="color:white;">${selectedArea.name}</strong>, then compare one cheaper backup area.</span></li>
-        <li><i class="fa-solid fa-wallet"></i><span>${budgetModes[budgetKey].comfort}</span></li>
-        <li><i class="fa-solid fa-house-lock"></i><span>${accommodationBias[accommodationKey].label}: verify room, water timing, electricity backup, curfew and visitor policy.</span></li>
-        <li><i class="fa-solid fa-route"></i><span>${commuteBias[commuteKey].label}: test the commute during actual class timing before paying advance.</span></li>
+        <li><i class="fa-solid fa-location-dot"></i><span>Start in <strong style="color:white;">${selectedArea().name}</strong>.</span></li>
+        <li><i class="fa-solid fa-wallet"></i><span>${budgets[state.budget].label} budget selected.</span></li>
+        <li><i class="fa-solid fa-route"></i><span>Test commute during your actual class time.</span></li>
     `;
 };
 
+const checklistItems = [
+    'Admission letter and fee receipt saved',
+    'Room/hostel verified by visit or video call',
+    'Monthly mess or food plan selected',
+    'Morning commute tested once',
+    'Emergency contacts saved',
+    'CNIC copies and photos packed'
+];
+
+const renderChecklist = () => {
+    document.getElementById('checklist').innerHTML = checklistItems.map((item, index) => `
+        <label class="check-row">
+            <input type="checkbox" data-check="${index}" ${state.checklist.has(index) ? 'checked' : ''}>
+            <span>${item}</span>
+        </label>
+    `).join('');
+};
+
+const renderCampusOptions = () => {
+    const keys = institutionKeysByType(state.type);
+    if (!keys.includes(state.campus)) state.campus = keys[0] || 'ned';
+    document.getElementById('uniSelect').innerHTML = keys.map(key => {
+        const inst = institutions[key];
+        return `<option value="${key}">${inst.name}</option>`;
+    }).join('');
+};
+
 const renderTopCampuses = () => {
-    const topKeys = ['ku', 'ned', 'iba', 'duhs', 'aku'];
-    document.getElementById('topCampusGrid').innerHTML = topKeys.map(key => {
-        const campus = campuses[key];
+    const keys = Object.keys(institutions);
+    document.getElementById('topCampusGrid').innerHTML = keys.map(key => {
+        const inst = institutions[key];
         return `
             <article class="campus-card">
-                <span class="campus-icon"><i class="fa-solid fa-building-columns"></i></span>
-                <h3>${campus.name}</h3>
-                <p>${campus.corridor}</p>
-                <p>${campus.bestFor}</p>
-                <button type="button" data-campus="${key}">Use this campus <i class="fa-solid fa-arrow-right"></i></button>
+                <span class="campus-icon"><i class="fa-solid ${inst.type === 'College' ? 'fa-school' : 'fa-building-columns'}"></i></span>
+                <h3>${inst.name}</h3>
+                <p>${inst.type} - ${inst.corridor}</p>
+                <button type="button" data-campus="${key}">Plan for this <i class="fa-solid fa-arrow-right"></i></button>
             </article>
         `;
     }).join('');
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+const render = () => {
     renderCampusOptions();
-    renderTopCampuses();
-    renderGuide();
+    syncFormValues();
+    renderSummary();
+    renderAreaChoices();
+    renderActionCards();
+    renderBudget();
+    renderChecklist();
+    renderHeroWidget();
+};
 
-    ['uniSelect', 'budgetSelect', 'genderSelect', 'commuteSelect'].forEach(id => {
-        document.getElementById(id).addEventListener('change', renderGuide);
+document.addEventListener('DOMContentLoaded', () => {
+    renderTopCampuses();
+    render();
+
+    document.getElementById('typeSelect').addEventListener('change', event => {
+        state.type = event.target.value;
+        state.campus = institutionKeysByType(state.type)[0] || state.campus;
+        state.areaIndex = 0;
+        render();
     });
 
-    document.getElementById('topCampusGrid').addEventListener('click', event => {
-        const button = event.target.closest('[data-campus]');
-        if (!button) return;
-        document.getElementById('uniSelect').value = button.dataset.campus;
-        renderGuide();
-        document.getElementById('relocation-planner').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('uniSelect').addEventListener('change', event => {
+        state.campus = event.target.value;
+        state.areaIndex = 0;
+        render();
+    });
+
+    document.getElementById('budgetSelect').addEventListener('change', event => {
+        state.budget = event.target.value;
+        render();
+    });
+
+    document.getElementById('prioritySelect').addEventListener('change', event => {
+        state.priority = event.target.value;
+        state.areaIndex = 0;
+        render();
+    });
+
+    document.getElementById('staySelect').addEventListener('change', event => {
+        state.stay = event.target.value;
+        render();
+    });
+
+    document.addEventListener('click', event => {
+        const areaBtn = event.target.closest('[data-area-index]');
+        const campusBtn = event.target.closest('[data-campus]');
+
+        if (areaBtn) {
+            state.areaIndex = parseInt(areaBtn.dataset.areaIndex, 10);
+            render();
+        }
+
+        if (campusBtn) {
+            state.campus = campusBtn.dataset.campus;
+            state.type = institutions[state.campus].type.toLowerCase();
+            state.areaIndex = 0;
+            render();
+            document.getElementById('relocation-planner').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+
+    document.getElementById('checklist').addEventListener('change', event => {
+        const item = event.target.closest('[data-check]');
+        if (!item) return;
+        const index = parseInt(item.dataset.check, 10);
+        if (item.checked) state.checklist.add(index);
+        else state.checklist.delete(index);
+        renderHeroWidget();
     });
 });
