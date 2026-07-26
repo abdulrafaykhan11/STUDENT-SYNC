@@ -496,9 +496,9 @@
 
         .top-campus-grid {
             display: grid;
-            grid-template-columns: repeat(5, minmax(170px, 1fr));
-            gap: 0.85rem;
-            margin-top: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
         .campus-card {
@@ -559,6 +559,16 @@
             font-weight: 700;
         }
 
+        /* Responsive Breakpoints */
+        @media (max-width: 1200px) {
+            .guide-toolbar {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+            .action-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
         @media (max-width: 1050px) {
             .city-hero-grid,
             .guide-dashboard,
@@ -574,18 +584,22 @@
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
-            .top-campus-grid {
+            .guide-toolbar .guide-field:last-child {
+                grid-column: span 2;
+            }
+
+            .area-list {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
-        @media (max-width: 760px) {
+        @media (max-width: 768px) {
             body.city-guide-page {
                 padding-top: 116px;
             }
 
             .container {
-                padding: 0 1rem;
+                padding: 0 1.25rem;
             }
 
             .city-hero {
@@ -599,28 +613,74 @@
             }
 
             .city-hero h1 {
-                font-size: 2.45rem;
+                font-size: clamp(2rem, 6vw, 2.75rem);
+            }
+
+            .city-hero-copy {
+                font-size: 0.95rem;
             }
 
             .guide-toolbar,
             .action-grid,
-            .area-list,
-            .top-campus-grid {
+            .area-list {
                 grid-template-columns: 1fr;
+            }
+
+            .guide-toolbar .guide-field:last-child {
+                grid-column: auto;
             }
 
             .guide-panel,
             .guide-card {
                 border-radius: 14px;
+                padding: 1rem;
+            }
+
+            .city-actions {
+                flex-direction: column;
             }
 
             .city-actions .btn {
                 width: 100%;
+                justify-content: center;
+                text-align: center;
             }
 
             .guide-section-title {
                 align-items: flex-start;
                 flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .simple-score {
+                padding: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .arrival-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .city-hero h1 {
+                font-size: 1.85rem;
+            }
+            
+            .guide-dashboard {
+                gap: 0.75rem;
+            }
+            
+            .budget-total strong {
+                font-size: 1.5rem;
+            }
+            
+            .arrival-main strong {
+                font-size: 1.15rem;
+            }
+            
+            .guide-badge {
+                font-size: 0.65rem;
+                padding: 0.25rem 0.45rem;
             }
         }
     </style>
@@ -788,7 +848,7 @@
             </div>
         </section>
 
-        <section class="container guide-panel" id="top-campuses">
+        <section class="container guide-panel" id="top-campuses" style="margin-top: 3rem; margin-bottom: 6rem; position: relative; z-index: 2;">
             <div class="guide-section-title">
                 <div>
                     <h2>Same Campuses as Route Intelligence</h2>
