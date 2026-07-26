@@ -548,53 +548,278 @@ document.addEventListener('DOMContentLoaded', () => {
     const questXpFill = document.getElementById('quest-xp-fill');
     const questXpVal = document.getElementById('quest-xp-val');
     const questXpText = document.getElementById('quest-xp-text');
+    const questBlitzInsight = document.getElementById('quest-blitz-insight');
+    const questStartRun = document.getElementById('quest-start-run');
+    const questNewSet = document.getElementById('quest-new-set');
+    const questAdaptiveTitle = document.getElementById('quest-adaptive-title');
+    const questAdaptiveNote = document.getElementById('quest-adaptive-note');
 
-    const QUEST_BLITZ = {
+    const QUEST_PROGRESS_KEY = 'studentsync.quest.progress.v2';
+    const QUEST_PROFILE_KEY = 'studentsync.quest.profile.v2';
+    const QUEST_CONCEPTS = {
         html: [
-            { q: 'Which tag gives semantic meaning to main page content?', opts: ['<div>', '<main>', '<span>'], a: 1 },
-            { q: 'What attribute makes an input field required?', opts: ['mandatory', 'required', 'must'], a: 1 },
-            { q: 'Which tag creates a hyperlink?', opts: ['<link>', '<a>', '<href>'], a: 1 }
+            { id: 'semantic-main', tag: 'Semantic Tags', term: '<main>', definition: 'the landmark element for the primary content of a page', useCase: 'mark the unique central content so assistive tech can jump to it', misconception: 'using only <div> for every important page region', level: 1 },
+            { id: 'required-input', tag: 'Forms & Input', term: 'required', definition: 'the boolean attribute that stops empty form submission', useCase: 'make an email field mandatory before the form submits', misconception: 'writing mandatory instead of a real browser-recognized attribute', level: 1 },
+            { id: 'anchor-link', tag: 'Links', term: '<a>', definition: 'the element that navigates to another page, file, email, or page section', useCase: 'send a learner from the quest card to a revision resource', misconception: 'using <link> inside body content for a clickable navigation item', level: 1 },
+            { id: 'alt-text', tag: 'Accessibility', term: 'alt', definition: 'text alternative read when an image cannot be seen or loaded', useCase: 'describe a chart image for screen reader users', misconception: 'leaving every image alt empty even when the image carries meaning', level: 2 },
+            { id: 'viewport-meta', tag: 'Meta Tags', term: 'viewport meta tag', definition: 'the head tag that tells mobile browsers how to scale the layout', useCase: 'make a responsive page match the device width', misconception: 'expecting media queries to work well without mobile viewport setup', level: 2 },
+            { id: 'label-for', tag: 'Forms & Input', term: '<label for>', definition: 'the form label pattern that connects visible text with a specific input id', useCase: 'let users click label text to focus an input field', misconception: 'placing label-looking text near an input without linking it', level: 3 }
         ],
         css: [
-            { q: 'Which property controls space INSIDE an element border?', opts: ['margin', 'padding', 'gap'], a: 1 },
-            { q: 'Flexbox main axis direction is set by:', opts: ['flex-flow', 'flex-direction', 'align-items'], a: 1 },
-            { q: 'Which unit is relative to root font size?', opts: ['em', 'rem', 'px'], a: 1 }
+            { id: 'padding', tag: 'Box Model', term: 'padding', definition: 'space between content and its border', useCase: 'give button text breathing room inside the border', misconception: 'using margin when the spacing should be inside the element', level: 1 },
+            { id: 'flex-direction', tag: 'Flexbox', term: 'flex-direction', definition: 'the property that sets the main axis of a flex container', useCase: 'stack navigation items vertically on a narrow screen', misconception: 'changing align-items when the real issue is row versus column flow', level: 1 },
+            { id: 'rem', tag: 'Responsive Units', term: 'rem', definition: 'a unit based on the root font size', useCase: 'keep spacing consistent across nested components', misconception: 'assuming rem changes based on the current element font size', level: 2 },
+            { id: 'media-query', tag: 'Media Queries', term: '@media', definition: 'a conditional CSS block for viewport or device features', useCase: 'switch a four-column grid into one column on phones', misconception: 'writing separate HTML pages instead of adapting CSS', level: 2 },
+            { id: 'grid-template', tag: 'Grid', term: 'grid-template-columns', definition: 'the property that defines grid column tracks', useCase: 'create equal dashboard columns that collapse responsively', misconception: 'trying to make two-dimensional layout with only gap', level: 3 },
+            { id: 'specificity', tag: 'Cascade', term: 'specificity', definition: 'the scoring system browsers use when CSS selectors compete', useCase: 'understand why a class rule loses to an id rule', misconception: 'adding random !important flags without finding the stronger selector', level: 4 }
         ],
         javascript: [
-            { q: 'Which operator checks value AND type?', opts: ['==', '===', '='], a: 1 },
-            { q: 'const variables can be:', opts: ['reassigned', 'redeclared', 'neither'], a: 2 },
-            { q: 'DOM stands for:', opts: ['Document Object Model', 'Data Object Method', 'Dynamic Output Module'], a: 0 }
+            { id: 'strict-equality', tag: 'Operators', term: '===', definition: 'the comparison operator that checks value and type', useCase: 'compare a stored answer with the expected answer safely', misconception: 'using == and being surprised by type coercion', level: 1 },
+            { id: 'const', tag: 'Variables', term: 'const', definition: 'a declaration whose binding cannot be reassigned', useCase: 'keep a DOM reference from pointing to a different element later', misconception: 'thinking const freezes every property inside an object', level: 1 },
+            { id: 'dom', tag: 'DOM Manipulation', term: 'Document Object Model', definition: 'the browser object tree representing page elements', useCase: 'find a quiz button and update its class after a click', misconception: 'expecting HTML text to change without touching the DOM or state', level: 2 },
+            { id: 'event-listener', tag: 'Events', term: 'addEventListener', definition: 'the method used to run code when a browser event happens', useCase: 'score an MCQ when the learner clicks an option', misconception: 'calling the handler immediately instead of passing it as a function', level: 2 },
+            { id: 'async-await', tag: 'Async/Await', term: 'async/await', definition: 'syntax that makes promise-based code read like a sequence', useCase: 'wait for fetched notes before rendering a quiz', misconception: 'expecting await to work in a non-async function everywhere', level: 3 },
+            { id: 'map', tag: 'Arrays', term: 'map', definition: 'the array method that transforms each item into a new array item', useCase: 'convert question objects into rendered option labels', misconception: 'using map only for side effects and ignoring the returned array', level: 3 }
         ],
         python: [
-            { q: 'Python uses what for code blocks instead of braces?', opts: ['semicolons', 'indentation', 'parentheses'], a: 1 },
-            { q: 'Which is a mutable data type?', opts: ['tuple', 'string', 'list'], a: 2 },
-            { q: 'def keyword is used to:', opts: ['define a function', 'delete a file', 'declare a variable'], a: 0 }
+            { id: 'indentation', tag: 'Syntax', term: 'indentation', definition: 'the whitespace structure Python uses to define code blocks', useCase: 'show which statements belong inside a function or loop', misconception: 'adding braces like JavaScript to create a block', level: 1 },
+            { id: 'list', tag: 'Lists & Dicts', term: 'list', definition: 'a mutable ordered collection', useCase: 'store quiz scores that can be appended during practice', misconception: 'choosing tuple when the values must change often', level: 1 },
+            { id: 'def', tag: 'Functions', term: 'def', definition: 'the keyword used to define a function', useCase: 'wrap repeated grading logic in one reusable block', misconception: 'using function as the Python keyword', level: 1 },
+            { id: 'dict', tag: 'Lists & Dicts', term: 'dictionary', definition: 'a key-value collection for fast lookup by key', useCase: 'store XP by topic name', misconception: 'searching a list manually when named keys are needed', level: 2 },
+            { id: 'exception', tag: 'Errors', term: 'try/except', definition: 'the structure used to handle runtime errors gracefully', useCase: 'show a friendly message when file loading fails', misconception: 'letting one bad input crash the whole program', level: 3 },
+            { id: 'with-open', tag: 'File Handling', term: 'with open(...)', definition: 'the context-manager pattern that closes a file automatically', useCase: 'read notes without forgetting cleanup', misconception: 'opening a file and never closing it', level: 3 }
         ],
         php: [
-            { q: 'PHP runs on the:', opts: ['browser', 'server', 'database'], a: 1 },
-            { q: 'Which superglobal holds form POST data?', opts: ['$_GET', '$_POST', '$_SESSION'], a: 1 },
-            { q: 'Prepared statements prevent:', opts: ['XSS', 'SQL Injection', 'CSRF'], a: 1 }
+            { id: 'server-side', tag: 'Runtime', term: 'server-side execution', definition: 'running code on the web server before the response reaches the browser', useCase: 'process login data before sending HTML back', misconception: 'expecting PHP variables to change after the page loads without a request', level: 1 },
+            { id: 'post', tag: 'Forms & $_POST', term: '$_POST', definition: 'the PHP superglobal that holds submitted POST form fields', useCase: 'read a password field sent by a login form', misconception: 'checking $_GET for data submitted with method="post"', level: 1 },
+            { id: 'session', tag: 'Sessions', term: '$_SESSION', definition: 'server-side storage that remembers a user across requests', useCase: 'keep a learner logged in after authentication', misconception: 'storing private login state only in visible form fields', level: 2 },
+            { id: 'pdo', tag: 'PDO', term: 'prepared statement', definition: 'a database query pattern that separates SQL from user values', useCase: 'insert form data without SQL injection risk', misconception: 'concatenating raw user input into a SQL string', level: 3 },
+            { id: 'include', tag: 'Include/Require', term: 'include', definition: 'a statement that loads another PHP file into the current script', useCase: 'reuse the same header across multiple pages', misconception: 'copy-pasting shared markup into every file', level: 2 },
+            { id: 'password-hash', tag: 'Security', term: 'password_hash', definition: 'the PHP function for safely hashing passwords', useCase: 'store a password verifier instead of the original password', misconception: 'saving plain-text passwords in a database', level: 4 }
         ],
         mysql: [
-            { q: 'Which SQL command retrieves data?', opts: ['INSERT', 'SELECT', 'DELETE'], a: 1 },
-            { q: 'Primary key ensures:', opts: ['speed only', 'unique row identity', 'encryption'], a: 1 },
-            { q: 'JOIN combines data from:', opts: ['multiple tables', 'multiple databases only', 'CSV files'], a: 0 }
+            { id: 'select', tag: 'SELECT & JOINs', term: 'SELECT', definition: 'the SQL command used to retrieve rows', useCase: 'show all saved flashcards for a learner', misconception: 'using INSERT when the task is only reading data', level: 1 },
+            { id: 'primary-key', tag: 'Keys', term: 'primary key', definition: 'a column or set of columns that uniquely identifies each row', useCase: 'give every student record a stable identity', misconception: 'allowing duplicate ids in the main table', level: 1 },
+            { id: 'join', tag: 'SELECT & JOINs', term: 'JOIN', definition: 'a clause that combines related rows from multiple tables', useCase: 'show orders together with the customer names', misconception: 'duplicating customer data inside every order row', level: 2 },
+            { id: 'normalization', tag: 'Normalization', term: 'normalization', definition: 'organizing tables to reduce duplication and update problems', useCase: 'separate courses and enrollments into related tables', misconception: 'putting repeating groups into one giant table column', level: 3 },
+            { id: 'index', tag: 'Indexes', term: 'index', definition: 'a data structure that helps MySQL find rows faster', useCase: 'speed up searches by email or roll number', misconception: 'adding indexes to every column without considering writes', level: 3 },
+            { id: 'foreign-key', tag: 'Relationships', term: 'foreign key', definition: 'a constraint that links a child row to a parent row', useCase: 'ensure an enrollment references an existing student', misconception: 'trusting app code only to protect table relationships', level: 4 }
         ],
         react: [
-            { q: 'React UI is built from:', opts: ['templates', 'components', 'directives'], a: 1 },
-            { q: 'useState returns:', opts: ['a boolean', 'state + setter', 'a DOM node'], a: 1 },
-            { q: 'Virtual DOM helps React:', opts: ['store cookies', 'update efficiently', 'run on server only'], a: 1 }
+            { id: 'component', tag: 'Components & Props', term: 'component', definition: 'a reusable piece of UI described with JavaScript and JSX', useCase: 'render the same quiz card for multiple questions', misconception: 'copying the same markup instead of reusing a component', level: 1 },
+            { id: 'props', tag: 'Components & Props', term: 'props', definition: 'read-only inputs passed from parent component to child component', useCase: 'send question text into a QuizCard component', misconception: 'mutating props directly inside the child', level: 2 },
+            { id: 'use-state', tag: 'useState', term: 'useState', definition: 'a Hook that gives a component state value and setter', useCase: 'track selected answer and score', misconception: 'editing a state variable directly without calling its setter', level: 1 },
+            { id: 'use-effect', tag: 'useEffect', term: 'useEffect', definition: 'a Hook for running side effects after render', useCase: 'sync quiz progress to localStorage', misconception: 'fetching or subscribing directly inside render logic', level: 3 },
+            { id: 'virtual-dom', tag: 'Virtual DOM', term: 'Virtual DOM', definition: 'React representation used to compute efficient UI updates', useCase: 'update only the changed answer state instead of rebuilding the page manually', misconception: 'thinking React edits HTML strings as its main model', level: 2 },
+            { id: 'key-prop', tag: 'Lists', term: 'key prop', definition: 'the stable identity React needs when rendering lists', useCase: 'keep quiz card state attached to the right question after reshuffle', misconception: 'using array index as key when list order changes often', level: 4 }
         ],
         nodejs: [
-            { q: 'Node.js runs JavaScript on the:', opts: ['GPU', 'server', 'CSS engine'], a: 1 },
-            { q: 'npm is used to:', opts: ['manage packages', 'style pages', 'query databases'], a: 0 },
-            { q: 'Node is event-driven and:', opts: ['blocking', 'non-blocking', 'single-threaded only on GPU'], a: 1 }
+            { id: 'server-js', tag: 'Runtime', term: 'Node.js', definition: 'a runtime that runs JavaScript outside the browser', useCase: 'build an API that serves adaptive quiz attempts', misconception: 'thinking Node.js is a CSS or browser-only tool', level: 1 },
+            { id: 'npm', tag: 'npm & package.json', term: 'npm', definition: 'the package manager commonly used with Node.js projects', useCase: 'install a tested quiz or validation library', misconception: 'manually downloading every dependency file', level: 1 },
+            { id: 'module', tag: 'Modules', term: 'module', definition: 'a reusable file that exports code for other files to import', useCase: 'separate question generation from route handlers', misconception: 'placing the entire server inside one huge file forever', level: 2 },
+            { id: 'express-route', tag: 'Express Routes', term: 'Express route', definition: 'a handler that responds to a matching HTTP method and path', useCase: 'return a learner-specific quiz at /api/quest', misconception: 'handling every URL with unrelated if statements', level: 2 },
+            { id: 'event-loop', tag: 'Event Loop', term: 'event loop', definition: 'the mechanism that lets Node coordinate asynchronous work', useCase: 'serve other requests while waiting for database results', misconception: 'blocking the server with slow synchronous work', level: 3 },
+            { id: 'middleware', tag: 'Middleware', term: 'middleware', definition: 'functions that run between request arrival and final route response', useCase: 'check authentication before a protected quiz route', misconception: 'copying auth checks into every route manually', level: 4 }
         ]
     };
 
     let activeQuestKey = 'html';
     let questProgress = {};
-    let blitzScore = { correct: 0, total: 0 };
+    let questProfile = {};
+    let questRun = null;
+
+    const QUEST_QUESTIONS_PER_LEVEL = 6;
+    const QUEST_MAX_LEVEL = 3;
+    const QUEST_FLOW_LEVELS = {
+        1: { name: 'Level 1 Gate', icon: 'fa-seedling', intent: 'baseline check' },
+        2: { name: 'Level 2 Adapt', icon: 'fa-bullseye', intent: 'targets your right and wrong answers' },
+        3: { name: 'Level 3 Mastery', icon: 'fa-crown', intent: 'final mixed challenge' }
+    };
+
+    const questShuffle = items => items
+        .map(item => ({ item, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ item }) => item);
+
+    const readQuestStore = (key, fallback) => {
+        try {
+            const raw = localStorage.getItem(key);
+            return raw ? JSON.parse(raw) : fallback;
+        } catch (error) {
+            return fallback;
+        }
+    };
+
+    const writeQuestStore = (key, value) => {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        } catch (error) {
+            // Progress still works for this page load if storage is blocked.
+        }
+    };
+
+    questProgress = readQuestStore(QUEST_PROGRESS_KEY, {});
+    questProfile = readQuestStore(QUEST_PROFILE_KEY, {});
+
+    const saveQuestProgress = () => writeQuestStore(QUEST_PROGRESS_KEY, questProgress);
+    const saveQuestProfile = () => writeQuestStore(QUEST_PROFILE_KEY, questProfile);
+
+    const getTopicProfile = key => {
+        if (!questProfile[key]) {
+            questProfile[key] = {
+                attempts: 0,
+                correct: 0,
+                total: 0,
+                streak: 0,
+                bestLevel: 1,
+                weak: {},
+                recent: []
+            };
+        }
+        return questProfile[key];
+    };
+
+    const getConceptsForTopic = key => QUEST_CONCEPTS[key] || [];
+
+    const getQuestLabel = key => Object.keys(SITE_RESOURCES).find(k => SITE_RESOURCES[k].key === key) || 'Topic';
+
+    const formatQuestTime = ms => {
+        const seconds = Math.max(0, Math.round(ms / 1000));
+        if (seconds < 60) return `${seconds}s`;
+        return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+    };
+
+    const getRunAnswers = () => questRun
+        ? questRun.levels.flatMap(level => level.answers)
+        : [];
+
+    const countByTag = (answers, expectedCorrect) => answers.reduce((counts, answer) => {
+        if (answer.correct === expectedCorrect) counts[answer.tag] = (counts[answer.tag] || 0) + 1;
+        return counts;
+    }, {});
+
+    const rankedTags = counts => Object.entries(counts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([tag]) => tag);
+
+    const buildQuestionFromConcept = (concept, topicConcepts, type, level) => {
+        const distractorTerms = questShuffle(topicConcepts
+            .filter(item => item.id !== concept.id)
+            .map(item => item.term))
+            .slice(0, 3);
+        const distractorDefinitions = questShuffle(topicConcepts
+            .filter(item => item.id !== concept.id)
+            .map(item => item.definition))
+            .slice(0, 3);
+
+        if (type === 'scenario') {
+            const options = questShuffle([concept.term, ...distractorTerms]);
+            return {
+                id: `${concept.id}-scenario-${Date.now()}-${Math.random()}`,
+                q: `A learner needs to ${concept.useCase}. Which ${getQuestLabel(activeQuestKey)} concept fits best?`,
+                opts: options,
+                a: options.indexOf(concept.term),
+                conceptId: concept.id,
+                tag: concept.tag,
+                level,
+                explain: `${concept.term}: ${concept.definition}.`
+            };
+        }
+
+        if (type === 'mistake') {
+            const options = questShuffle([concept.term, ...distractorTerms]);
+            return {
+                id: `${concept.id}-mistake-${Date.now()}-${Math.random()}`,
+                q: `Which concept fixes this common mistake: ${concept.misconception}?`,
+                opts: options,
+                a: options.indexOf(concept.term),
+                conceptId: concept.id,
+                tag: concept.tag,
+                level,
+                explain: `${concept.term} is the safer move because it handles ${concept.useCase}.`
+            };
+        }
+
+        if (type === 'why') {
+            const options = questShuffle([concept.definition, ...distractorDefinitions]);
+            return {
+                id: `${concept.id}-why-${Date.now()}-${Math.random()}`,
+                q: `Why does ${concept.term} matter in ${getQuestLabel(activeQuestKey)}?`,
+                opts: options,
+                a: options.indexOf(concept.definition),
+                conceptId: concept.id,
+                tag: concept.tag,
+                level,
+                explain: `${concept.term}: ${concept.definition}.`
+            };
+        }
+
+        const options = questShuffle([concept.term, ...distractorTerms]);
+        return {
+            id: `${concept.id}-definition-${Date.now()}-${Math.random()}`,
+            q: `Which key idea matches this: ${concept.definition}?`,
+            opts: options,
+            a: options.indexOf(concept.term),
+            conceptId: concept.id,
+            tag: concept.tag,
+            level,
+            explain: `${concept.term} is the correct match. Watch for this trap: ${concept.misconception}.`
+        };
+    };
+
+    const makeQuestLevelQuestions = (key, level) => {
+        const concepts = getConceptsForTopic(key);
+        const previousAnswers = getRunAnswers();
+        const wrongTags = rankedTags(countByTag(previousAnswers, false));
+        const rightTags = rankedTags(countByTag(previousAnswers, true));
+        const seenConcepts = new Set(previousAnswers.map(answer => answer.conceptId));
+        const templatePlan = level === 1
+            ? ['definition', 'definition', 'scenario', 'definition', 'mistake', 'why']
+            : level === 2
+                ? ['mistake', 'scenario', 'definition', 'why', 'scenario', 'mistake']
+                : ['scenario', 'why', 'mistake', 'why', 'scenario', 'mistake'];
+
+        const scored = concepts
+            .filter(concept => concept.level <= Math.min(4, level + 1))
+            .map(concept => {
+                let score = 20 - Math.abs(concept.level - level) * 3;
+                if (wrongTags.includes(concept.tag)) score += level === 2 ? 28 : 20;
+                if (rightTags.includes(concept.tag)) score += level === 3 ? 10 : 4;
+                if (!seenConcepts.has(concept.id)) score += 7;
+                score += Math.random() * 6;
+                return { concept, score };
+            })
+            .sort((a, b) => b.score - a.score);
+
+        let selected = scored.map(item => item.concept).slice(0, QUEST_QUESTIONS_PER_LEVEL);
+        while (selected.length < QUEST_QUESTIONS_PER_LEVEL && concepts.length) {
+            selected.push(concepts[selected.length % concepts.length]);
+        }
+
+        return questShuffle(selected).map((concept, index) =>
+            buildQuestionFromConcept(concept, concepts, templatePlan[index] || 'definition', level)
+        );
+    };
+
+    const createQuestLevel = level => ({
+        level,
+        startedAt: Date.now(),
+        answers: [],
+        questions: makeQuestLevelQuestions(activeQuestKey, level)
+    });
+
+    const startQuestRun = () => {
+        questRun = {
+            topic: activeQuestKey,
+            startedAt: Date.now(),
+            currentLevel: 1,
+            currentIndex: 0,
+            questionStartedAt: Date.now(),
+            levels: [createQuestLevel(1)],
+            completed: false
+        };
+        renderBlitzQuiz();
+    };
 
     const getQuestSteps = key => {
         const res = Object.values(SITE_RESOURCES).find(r => r.key === key);
@@ -618,8 +843,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderQuest = () => {
         if (!questPipeline || !questTopicsEl) return;
-        const res = Object.values(SITE_RESOURCES).find(r => r.key === activeQuestKey);
-        const label = Object.keys(SITE_RESOURCES).find(k => SITE_RESOURCES[k].key === activeQuestKey) || 'Topic';
+        const label = getQuestLabel(activeQuestKey);
         if (questTopicLabel) questTopicLabel.textContent = label + ' Quest';
         const xp = getQuestXP(activeQuestKey);
         const maxXp = 150;
@@ -648,31 +872,297 @@ document.addEventListener('DOMContentLoaded', () => {
 
         questPipeline.querySelectorAll('a[href]').forEach(link => bindResourceLink(link, link.getAttribute('href')));
 
+        if (questRun?.topic !== activeQuestKey) questRun = null;
         renderBlitzQuiz();
+    };
+
+    const updateQuestRunHeader = () => {
+        const levelInfo = questRun ? QUEST_FLOW_LEVELS[questRun.currentLevel] : QUEST_FLOW_LEVELS[1];
+        const answers = questRun ? questRun.levels[questRun.levels.length - 1].answers : [];
+        const correct = answers.filter(answer => answer.correct).length;
+
+        if (questAdaptiveTitle) {
+            questAdaptiveTitle.textContent = questRun
+                ? `${levelInfo.name}: ${getQuestLabel(activeQuestKey)}`
+                : `Level 1 gate is ready`;
+        }
+
+        if (questAdaptiveNote) {
+            questAdaptiveNote.textContent = questRun
+                ? `${levelInfo.intent}. Question ${Math.min(answers.length + 1, QUEST_QUESTIONS_PER_LEVEL)} of ${QUEST_QUESTIONS_PER_LEVEL}.`
+                : `Answer ${QUEST_QUESTIONS_PER_LEVEL} MCQs in Level 1. Levels 2 and 3 will be generated from your correct and wrong answers.`;
+        }
+
+        if (questBlitzScore) {
+            questBlitzScore.textContent = questRun
+                ? `Level score: ${correct}/${QUEST_QUESTIONS_PER_LEVEL}`
+                : `Level score: 0/${QUEST_QUESTIONS_PER_LEVEL}`;
+        }
+    };
+
+    const renderQuestStart = () => {
+        if (!questBlitzQuestions) return;
+        updateQuestRunHeader();
+        questBlitzQuestions.innerHTML = `
+            <div class="quest-next-panel">
+                <h4><i class="fa-solid fa-play" style="color:var(--accent-mint);"></i> Start the 3-level adaptive quest</h4>
+                <p>Level 1 gives you ${QUEST_QUESTIONS_PER_LEVEL} baseline MCQs. After that, every next level is generated from your mistakes, strong tags, and answer speed.</p>
+                <button type="button" class="quest-action-btn active" data-start-quest><i class="fa-solid fa-play"></i> Start Level 1</button>
+            </div>
+        `;
+        if (questBlitzInsight) questBlitzInsight.textContent = 'Timer starts when Level 1 begins.';
     };
 
     const renderBlitzQuiz = () => {
         if (!questBlitzQuestions) return;
-        const questions = QUEST_BLITZ[activeQuestKey] || [];
-        blitzScore = { correct: 0, total: questions.length };
+        if (!questRun || questRun.completed) {
+            renderQuestStart();
+            return;
+        }
+
+        const levelData = questRun.levels[questRun.levels.length - 1];
+        const question = levelData.questions[questRun.currentIndex];
+        const levelInfo = QUEST_FLOW_LEVELS[questRun.currentLevel];
         const res = Object.values(SITE_RESOURCES).find(r => r.key === activeQuestKey);
         const reviseLink = res ? res.concept : KB_LINKS.quest;
 
-        questBlitzQuestions.innerHTML = questions.map((q, qi) => `
-            <div class="quest-blitz-q" data-blitz="${qi}">
-                <h4>${qi + 1}. ${escapeHtml(q.q)}</h4>
+        updateQuestRunHeader();
+        questRun.questionStartedAt = Date.now();
+
+        questBlitzQuestions.innerHTML = `
+            <div class="quest-blitz-q" data-blitz="${questRun.currentIndex}">
+                <div class="quest-flow-meta">
+                    <span class="quest-flow-pill"><i class="fa-solid ${levelInfo.icon}"></i> ${levelInfo.name}</span>
+                    <span class="quest-flow-pill"><i class="fa-solid fa-list-check"></i> MCQ ${questRun.currentIndex + 1}/${QUEST_QUESTIONS_PER_LEVEL}</span>
+                    <span class="quest-flow-pill"><i class="fa-solid fa-tag"></i> ${escapeHtml(question.tag)}</span>
+                </div>
+                <span class="quest-level-chip"><i class="fa-solid ${levelInfo.icon}"></i> ${levelInfo.intent}</span>
+                <h4>${questRun.currentIndex + 1}. ${escapeHtml(question.q)}</h4>
                 <div class="quest-blitz-opts">
-                    ${q.opts.map((opt, oi) => `<button type="button" class="quest-blitz-opt" data-q="${qi}" data-opt="${oi}"><span class="quest-opt-letter">${String.fromCharCode(65 + oi)}</span><span class="quest-opt-text">${escapeHtml(opt)}</span></button>`).join('')}
+                    ${question.opts.map((opt, oi) => `<button type="button" class="quest-blitz-opt" data-opt="${oi}"><span class="quest-opt-letter">${String.fromCharCode(65 + oi)}</span><span class="quest-opt-text">${escapeHtml(opt)}</span></button>`).join('')}
                 </div>
                 <p class="quest-blitz-hint" style="display:none; color:var(--text-muted); font-size:0.82rem; margin-top:0.5rem;">
-                    Wrong? Revise at <a href="${reviseLink}">Concept Deconstructor</a>
+                    ${escapeHtml(question.explain)} Revise at <a href="${reviseLink}">Concept Deconstructor</a>
                 </p>
+            </div>
+        `;
+
+        questBlitzQuestions.querySelectorAll('a[href]').forEach(link => bindResourceLink(link, link.getAttribute('href')));
+        if (questBlitzInsight) {
+            questBlitzInsight.textContent = `Timing MCQ ${questRun.currentIndex + 1}. Answer carefully; the final report includes time per question.`;
+        }
+    };
+
+    const saveQuestAnswer = (selectedIndex, card) => {
+        if (!questRun) return;
+        const levelData = questRun.levels[questRun.levels.length - 1];
+        const question = levelData.questions[questRun.currentIndex];
+        const elapsed = Date.now() - questRun.questionStartedAt;
+        const isCorrect = question.a === selectedIndex;
+
+        card.querySelectorAll('.quest-blitz-opt').forEach(button => {
+            const optionIndex = parseInt(button.dataset.opt, 10);
+            button.disabled = true;
+            if (optionIndex === question.a) button.classList.add('correct');
+            if (optionIndex === selectedIndex && !isCorrect) button.classList.add('wrong');
+        });
+
+        const hint = card.querySelector('.quest-blitz-hint');
+        if (hint) {
+            hint.style.display = 'block';
+            hint.insertAdjacentHTML('beforeend', ` <strong style="color:${isCorrect ? 'var(--accent-mint)' : 'var(--accent-coral)'};">Time: ${formatQuestTime(elapsed)}</strong>`);
+        }
+
+        levelData.answers.push({
+            level: questRun.currentLevel,
+            questionNo: questRun.currentIndex + 1,
+            prompt: question.q,
+            options: question.opts,
+            answer: question.opts[question.a],
+            selected: question.opts[selectedIndex],
+            correct: isCorrect,
+            tag: question.tag,
+            conceptId: question.conceptId,
+            explanation: question.explain,
+            timeMs: elapsed
+        });
+
+        const correct = levelData.answers.filter(answer => answer.correct).length;
+        if (questBlitzScore) questBlitzScore.textContent = `Level score: ${correct}/${QUEST_QUESTIONS_PER_LEVEL}`;
+
+        const actionLabel = questRun.currentIndex + 1 >= QUEST_QUESTIONS_PER_LEVEL
+            ? questRun.currentLevel >= QUEST_MAX_LEVEL ? 'Build Final Report' : `Go to Level ${questRun.currentLevel + 1}`
+            : 'Next MCQ';
+
+        card.insertAdjacentHTML('beforeend', `
+            <button type="button" class="quest-action-btn active" data-next-question style="margin-top:0.8rem;">
+                <i class="fa-solid fa-arrow-right"></i> ${actionLabel}
+            </button>
+        `);
+    };
+
+    const updateStoredQuestProfile = () => {
+        const profile = getTopicProfile(activeQuestKey);
+        const answers = getRunAnswers();
+        const total = answers.length;
+        const attemptCorrect = answers.filter(answer => answer.correct).length;
+        const attemptAccuracy = total ? attemptCorrect / total : 0;
+
+        profile.attempts += 1;
+        profile.correct += attemptCorrect;
+        profile.total += total;
+        profile.streak = attemptAccuracy >= 0.75 ? profile.streak + 1 : 0;
+        profile.bestLevel = Math.max(profile.bestLevel || 1, QUEST_MAX_LEVEL);
+        profile.recent = answers
+            .map(answer => answer.conceptId)
+            .filter(Boolean)
+            .concat(profile.recent || [])
+            .filter((id, index, list) => id && list.indexOf(id) === index)
+            .slice(0, 8);
+
+        answers.filter(answer => !answer.correct).forEach(answer => {
+            profile.weak[answer.tag] = (profile.weak[answer.tag] || 0) + 1;
+        });
+
+        answers.filter(answer => answer.correct).forEach(answer => {
+            if (profile.weak[answer.tag]) profile.weak[answer.tag] = Math.max(0, profile.weak[answer.tag] - 1);
+        });
+
+        saveQuestProfile();
+    };
+
+    const showLevelComplete = () => {
+        const levelData = questRun.levels[questRun.levels.length - 1];
+        if (!levelData.completedAt) levelData.completedAt = Date.now();
+        const correct = levelData.answers.filter(answer => answer.correct).length;
+        const wrongTags = rankedTags(countByTag(levelData.answers, false)).slice(0, 2);
+        const rightTags = rankedTags(countByTag(levelData.answers, true)).slice(0, 2);
+        const time = levelData.completedAt - levelData.startedAt;
+        const isFinal = questRun.currentLevel >= QUEST_MAX_LEVEL;
+
+        questBlitzQuestions.innerHTML = `
+            <div class="quest-next-panel">
+                <h4>${QUEST_FLOW_LEVELS[questRun.currentLevel].name} complete: ${correct}/${QUEST_QUESTIONS_PER_LEVEL}</h4>
+                <p>Level time: ${formatQuestTime(time)}. ${wrongTags.length ? `Next questions will revisit ${wrongTags.join(', ')}.` : 'No weak tag in this level. Next questions will push your strong areas harder.'}</p>
+                <div class="quest-flow-meta">
+                    <span class="quest-flow-pill"><i class="fa-solid fa-check"></i> Strong: ${rightTags.join(', ') || 'building'}</span>
+                    <span class="quest-flow-pill"><i class="fa-solid fa-triangle-exclamation"></i> Weak: ${wrongTags.join(', ') || 'none'}</span>
+                </div>
+                <button type="button" class="quest-action-btn active" data-next-level>
+                    <i class="fa-solid ${isFinal ? 'fa-chart-line' : 'fa-arrow-right'}"></i> ${isFinal ? 'View Full Report' : `Start Level ${questRun.currentLevel + 1}`}
+                </button>
+            </div>
+        `;
+
+        if (questBlitzInsight) {
+            questBlitzInsight.textContent = isFinal
+                ? 'Level 3 done. Your full report is ready.'
+                : `Level ${questRun.currentLevel + 1} will be generated from this level's correct and wrong answers.`;
+        }
+    };
+
+    const goToNextQuestStep = () => {
+        if (!questRun) return;
+        const levelData = questRun.levels[questRun.levels.length - 1];
+
+        if (questRun.currentIndex + 1 < QUEST_QUESTIONS_PER_LEVEL) {
+            questRun.currentIndex += 1;
+            renderBlitzQuiz();
+            return;
+        }
+
+        showLevelComplete();
+    };
+
+    const startNextQuestLevel = () => {
+        if (!questRun) return;
+        if (questRun.currentLevel >= QUEST_MAX_LEVEL) {
+            renderQuestReport();
+            return;
+        }
+
+        questRun.currentLevel += 1;
+        questRun.currentIndex = 0;
+        questRun.levels.push(createQuestLevel(questRun.currentLevel));
+        renderBlitzQuiz();
+    };
+
+    const renderQuestReport = () => {
+        if (!questRun) return;
+        questRun.completed = true;
+        updateStoredQuestProfile();
+
+        const answers = getRunAnswers();
+        const total = answers.length;
+        const correct = answers.filter(answer => answer.correct).length;
+        const totalTime = questRun.levels.reduce((sum, levelData) =>
+            sum + ((levelData.completedAt || Date.now()) - levelData.startedAt), 0);
+        const avgAnswerTime = total ? answers.reduce((sum, answer) => sum + answer.timeMs, 0) / total : 0;
+        const accuracy = total ? Math.round((correct / total) * 100) : 0;
+        const wrongTags = rankedTags(countByTag(answers, false));
+        const rightTags = rankedTags(countByTag(answers, true));
+        const slowest = [...answers].sort((a, b) => b.timeMs - a.timeMs)[0];
+
+        if (!questProgress[activeQuestKey]) questProgress[activeQuestKey] = {};
+        if (accuracy >= 75) questProgress[activeQuestKey].blitzMaster = true;
+        saveQuestProgress();
+
+        const xp = getQuestXP(activeQuestKey);
+        const maxXp = 150;
+        if (questXpFill) questXpFill.style.width = Math.min(100, (xp / maxXp) * 100) + '%';
+        if (questXpVal) questXpVal.textContent = xp + ' XP';
+        if (questXpText) questXpText.textContent = accuracy >= 75 ? 'Quest Mastered from report!' : `${Math.round((xp / maxXp) * 100)}% complete`;
+
+        if (questAdaptiveTitle) questAdaptiveTitle.textContent = `${getQuestLabel(activeQuestKey)} final report`;
+        if (questAdaptiveNote) {
+            questAdaptiveNote.textContent = `Completed ${QUEST_MAX_LEVEL} levels and ${total} MCQs. Report includes score, mistakes, strengths, and timing.`;
+        }
+        if (questBlitzScore) questBlitzScore.textContent = `Final score: ${correct}/${total}`;
+        if (questBlitzInsight) {
+            questBlitzInsight.textContent = wrongTags.length
+                ? `Revise ${wrongTags.slice(0, 2).join(', ')} first.`
+                : 'Clean run. Move to the next topic or raise the challenge.';
+        }
+
+        const levelRows = questRun.levels.map(levelData => {
+            const levelCorrect = levelData.answers.filter(answer => answer.correct).length;
+            const levelTime = (levelData.completedAt || Date.now()) - levelData.startedAt;
+            return `<div class="quest-report-metric"><span>${QUEST_FLOW_LEVELS[levelData.level].name}</span><strong>${levelCorrect}/${levelData.answers.length} - ${formatQuestTime(levelTime)}</strong></div>`;
+        }).join('');
+
+        const answerRows = answers.map(answer => `
+            <div class="quest-report-item${answer.correct ? '' : ' wrong'}">
+                <strong>L${answer.level} Q${answer.questionNo}: ${answer.correct ? 'Correct' : 'Wrong'} - ${escapeHtml(answer.tag)} - ${formatQuestTime(answer.timeMs)}</strong>
+                <span>${escapeHtml(answer.prompt)}</span>
+                <span>Your answer: ${escapeHtml(answer.selected || 'No answer')} | Correct: ${escapeHtml(answer.answer)}</span>
+                <span>${escapeHtml(answer.explanation)}</span>
             </div>
         `).join('');
 
-        questBlitzQuestions.querySelectorAll('a[href]').forEach(link => bindResourceLink(link, link.getAttribute('href')));
+        questBlitzQuestions.innerHTML = `
+            <div class="quest-report">
+                <h4><i class="fa-solid fa-chart-line" style="color:var(--accent-mint);"></i> Full Quest Report</h4>
+                <p>${accuracy >= 75 ? 'Strong work. You cleared the quest.' : 'You reached the final report. The weak areas below show exactly where to revise next.'}</p>
+                <div class="quest-report-grid">
+                    <div class="quest-report-metric"><span>Total Score</span><strong>${correct}/${total}</strong></div>
+                    <div class="quest-report-metric"><span>Accuracy</span><strong>${accuracy}%</strong></div>
+                    <div class="quest-report-metric"><span>Total Time</span><strong>${formatQuestTime(totalTime)}</strong></div>
+                    <div class="quest-report-metric"><span>Avg MCQ Time</span><strong>${formatQuestTime(avgAnswerTime)}</strong></div>
+                    <div class="quest-report-metric"><span>Slowest MCQ</span><strong>${slowest ? `${formatQuestTime(slowest.timeMs)} - ${escapeHtml(slowest.tag)}` : '0s'}</strong></div>
+                    ${levelRows}
+                    <div class="quest-report-metric"><span>Strong Areas</span><strong>${rightTags.slice(0, 2).join(', ') || 'None yet'}</strong></div>
+                    <div class="quest-report-metric"><span>Revise First</span><strong>${wrongTags.slice(0, 2).join(', ') || 'No weak tag'}</strong></div>
+                </div>
+                <h4>MCQ Breakdown</h4>
+                <div class="quest-report-list">${answerRows}</div>
+                <button type="button" class="quest-action-btn active" data-start-quest style="margin-top:0.9rem;"><i class="fa-solid fa-rotate-left"></i> Try Again</button>
+            </div>
+        `;
+    };
 
-        if (questBlitzScore) questBlitzScore.textContent = `Score: 0/${questions.length}`;
+    const resetQuestRun = () => {
+        questRun = null;
+        renderBlitzQuiz();
     };
 
     if (questTopicsEl && questPipeline) {
@@ -680,6 +1170,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const btn = e.target.closest('[data-quest]');
             if (!btn) return;
             activeQuestKey = btn.dataset.quest;
+            questRun = null;
             renderQuest();
         });
 
@@ -689,38 +1180,40 @@ document.addEventListener('DOMContentLoaded', () => {
             const stepId = checkBtn.dataset.stepCheck;
             if (!questProgress[activeQuestKey]) questProgress[activeQuestKey] = {};
             questProgress[activeQuestKey][stepId] = !questProgress[activeQuestKey][stepId];
+            saveQuestProgress();
             renderQuest();
         });
 
+        questStartRun?.addEventListener('click', startQuestRun);
+
+        questNewSet?.addEventListener('click', resetQuestRun);
+
         questBlitzQuestions?.addEventListener('click', e => {
+            const startBtn = e.target.closest('[data-start-quest]');
+            if (startBtn) {
+                startQuestRun();
+                return;
+            }
+
+            const nextQuestionBtn = e.target.closest('[data-next-question]');
+            if (nextQuestionBtn) {
+                goToNextQuestStep();
+                return;
+            }
+
+            const nextLevelBtn = e.target.closest('[data-next-level]');
+            if (nextLevelBtn) {
+                startNextQuestLevel();
+                return;
+            }
+
             const opt = e.target.closest('.quest-blitz-opt');
             if (!opt || opt.disabled) return;
-            const qIdx = parseInt(opt.dataset.q, 10);
-            const oIdx = parseInt(opt.dataset.opt, 10);
-            const questions = QUEST_BLITZ[activeQuestKey] || [];
+            if (!questRun || questRun.completed) return;
+            const selectedIndex = parseInt(opt.dataset.opt, 10);
             const card = opt.closest('.quest-blitz-q');
-            const isCorrect = questions[qIdx]?.a === oIdx;
-
-            card.querySelectorAll('.quest-blitz-opt').forEach(b => {
-                b.disabled = true;
-                if (parseInt(b.dataset.opt, 10) === questions[qIdx].a) b.classList.add('correct');
-                if (parseInt(b.dataset.opt, 10) === oIdx && !isCorrect) b.classList.add('wrong');
-            });
-            if (!isCorrect) {
-                card.querySelector('.quest-blitz-hint').style.display = 'block';
-            } else {
-                blitzScore.correct++;
-            }
-
-            const answered = questBlitzQuestions.querySelectorAll('.quest-blitz-opt:disabled').length / Math.max(1, questions.length);
-            if (questBlitzScore) questBlitzScore.textContent = `Score: ${blitzScore.correct}/${questions.length}`;
-
-            if (answered >= questions.length && blitzScore.correct === questions.length) {
-                if (!questProgress[activeQuestKey]) questProgress[activeQuestKey] = {};
-                questProgress[activeQuestKey].blitzMaster = true;
-                if (questXpText) questXpText.textContent = 'Blitz Master! +50 XP bonus';
-                renderQuest();
-            }
+            if (!card || card.querySelector('[data-next-question]')) return;
+            saveQuestAnswer(selectedIndex, card);
         });
 
         renderQuest();

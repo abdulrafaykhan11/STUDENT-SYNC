@@ -327,6 +327,80 @@
             padding: 1.25rem;
         }
         .quest-blitz h3 { margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; color: white; }
+        .quest-adaptive-panel {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0.8rem;
+            align-items: end;
+            margin: 0.9rem 0 1rem;
+            padding: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.035);
+        }
+        .quest-adaptive-copy strong {
+            color: white;
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+        .quest-adaptive-copy span {
+            color: var(--text-muted);
+            display: block;
+            font-size: 0.8rem;
+            line-height: 1.45;
+        }
+        .quest-controls {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.55rem;
+            flex-wrap: wrap;
+        }
+        .quest-select,
+        .quest-action-btn {
+            min-height: 38px;
+            border-radius: 9px;
+            border: 1px solid rgba(255,255,255,0.13);
+            background: rgba(0,0,0,0.22);
+            color: white;
+            font-family: inherit;
+            font-size: 0.82rem;
+        }
+        .quest-select {
+            padding: 0.45rem 0.65rem;
+            outline: none;
+        }
+        .quest-select option { background: var(--bg-dark); }
+        .quest-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .quest-action-btn:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+        .quest-action-btn.active {
+            border-color: var(--accent-mint);
+            color: var(--accent-mint);
+            background: rgba(0,209,178,0.08);
+        }
+        .quest-level-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: var(--accent-mint);
+            border: 1px solid rgba(0,209,178,0.22);
+            border-radius: 999px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin-bottom: 0.55rem;
+        }
         .quest-blitz-q {
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.08);
@@ -336,6 +410,24 @@
         }
         .quest-blitz-q h4 { font-size: 0.95rem; margin-bottom: 0.75rem; color: white; line-height: 1.45; }
         .quest-blitz-opts { display: grid; gap: 0.55rem; }
+        .quest-flow-meta {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.8rem;
+        }
+        .quest-flow-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 999px;
+            color: var(--text-muted);
+            font-size: 0.74rem;
+            font-weight: 700;
+            padding: 0.28rem 0.55rem;
+            background: rgba(255,255,255,0.035);
+        }
         .quest-blitz-opt {
             border: 1px solid rgba(255,255,255,0.12);
             background: rgba(255,255,255,0.04);
@@ -373,7 +465,7 @@
         .quest-opt-text {
             flex: 1;
             overflow-wrap: anywhere;
-            font-family: 'Courier New', monospace;
+            font-family: inherit;
             font-size: 0.86rem;
         }
         .quest-blitz-score {
@@ -381,6 +473,79 @@
             font-size: 0.92rem;
             margin-top: 0.65rem;
             font-weight: 600;
+        }
+        .quest-blitz-insight {
+            color: var(--text-muted);
+            font-size: 0.84rem;
+            line-height: 1.5;
+            margin-top: 0.55rem;
+        }
+        .quest-next-panel,
+        .quest-report {
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            padding: 1rem;
+        }
+        .quest-next-panel h4,
+        .quest-report h4 {
+            color: white;
+            margin-bottom: 0.45rem;
+            line-height: 1.35;
+        }
+        .quest-next-panel p,
+        .quest-report p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.55;
+            margin-bottom: 0.75rem;
+        }
+        .quest-report-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.65rem;
+            margin: 0.85rem 0;
+        }
+        .quest-report-metric {
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 10px;
+            background: rgba(0,0,0,0.16);
+            padding: 0.75rem;
+        }
+        .quest-report-metric span {
+            color: var(--text-muted);
+            display: block;
+            font-size: 0.72rem;
+            margin-bottom: 0.25rem;
+        }
+        .quest-report-metric strong {
+            color: white;
+            font-size: 1rem;
+        }
+        .quest-report-list {
+            display: grid;
+            gap: 0.55rem;
+            margin-top: 0.75rem;
+        }
+        .quest-report-item {
+            border: 1px solid rgba(255,255,255,0.08);
+            border-left: 3px solid var(--accent-mint);
+            border-radius: 10px;
+            padding: 0.75rem;
+            background: rgba(0,0,0,0.14);
+        }
+        .quest-report-item.wrong { border-left-color: var(--accent-coral); }
+        .quest-report-item strong {
+            color: white;
+            display: block;
+            font-size: 0.86rem;
+            margin-bottom: 0.35rem;
+        }
+        .quest-report-item span {
+            color: var(--text-muted);
+            display: block;
+            font-size: 0.78rem;
+            line-height: 1.45;
         }
         .quest-blitz-hint a { color: var(--accent-gold); text-decoration: none; font-weight: 600; }
         .quest-blitz-hint a:hover { text-decoration: underline; }
@@ -1342,6 +1507,11 @@
             #knowledge-quest .quest-sidebar,
             #knowledge-quest .quest-blitz,
             #knowledge-quest .quest-xp-bar { border-radius: 12px; padding: 0.85rem; }
+            #knowledge-quest .quest-adaptive-panel { grid-template-columns: 1fr; }
+            #knowledge-quest .quest-controls { justify-content: stretch; }
+            #knowledge-quest .quest-select,
+            #knowledge-quest .quest-action-btn { width: 100%; justify-content: center; }
+            #knowledge-quest .quest-report-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             #knowledge-quest .quest-topics { grid-template-columns: 1fr; gap: 0.45rem; }
             #knowledge-quest .quest-topic-btn { padding: 0.7rem 0.75rem; }
             #knowledge-quest .quest-xp-bar {
@@ -1554,9 +1724,20 @@
                     <div class="quest-pipeline" id="quest-pipeline"></div>
                     <div class="quest-blitz">
                         <h3><i class="fa-solid fa-bolt" style="color:var(--accent-gold);"></i> Blitz Quiz — Prove You Know It</h3>
-                        <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:1rem;">Answer all 3 questions correctly to unlock Master status. Wrong answer? The link below shows exactly where to revise on our site.</p>
+                        <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:1rem;">Clear 3 levels. Level 1 starts with 6 MCQs, Level 2 adapts to your correct and wrong answers, and Level 3 ends with a full performance report.</p>
+                        <div class="quest-adaptive-panel">
+                            <div class="quest-adaptive-copy">
+                                <strong id="quest-adaptive-title">Level 1 gate is ready</strong>
+                                <span id="quest-adaptive-note">Answer each MCQ one by one. Time, score, strong areas, and weak areas will be tracked until the final report.</span>
+                            </div>
+                            <div class="quest-controls">
+                                <button type="button" class="quest-action-btn active" id="quest-start-run"><i class="fa-solid fa-play"></i> Start Level 1</button>
+                                <button type="button" class="quest-action-btn" id="quest-new-set"><i class="fa-solid fa-rotate-left"></i> Restart Quest</button>
+                            </div>
+                        </div>
                         <div id="quest-blitz-questions"></div>
-                        <p class="quest-blitz-score" id="quest-blitz-score">Score: 0/3</p>
+                        <p class="quest-blitz-score" id="quest-blitz-score">Level score: 0/6</p>
+                        <p class="quest-blitz-insight" id="quest-blitz-insight">Start Level 1 to begin timing.</p>
                     </div>
                 </div>
             </div>
