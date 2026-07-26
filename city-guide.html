@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karachi City Guide | StudentSync</title>
+    <meta name="description" content="A practical relocation guide for out-station students moving to Karachi for university: campus areas, rent, mess, transport, safety, and arrival checklist.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --guide-panel: rgba(31, 40, 51, 0.48);
+            --guide-border: rgba(255, 255, 255, 0.1);
+            --guide-soft: rgba(255, 255, 255, 0.055);
+        }
+
+        body.city-guide-page {
+            padding-top: 84px;
+        }
+
+        .city-hero {
+            min-height: 86vh;
+            display: grid;
+            align-items: center;
+            padding: 4rem 0 2rem;
+        }
+
+        .city-hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.04fr) minmax(320px, 0.96fr);
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .city-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            color: var(--accent-mint);
+            border: 1px solid rgba(0, 209, 178, 0.25);
+            background: rgba(0, 209, 178, 0.08);
+            border-radius: 999px;
+            padding: 0.4rem 0.75rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .city-hero h1 {
+            font-size: clamp(2.35rem, 7vw, 5rem);
+            line-height: 0.95;
+            max-width: 850px;
+            margin-bottom: 1.25rem;
+        }
+
+        .city-hero-copy {
+            color: var(--text-muted);
+            max-width: 680px;
+            font-size: 1.05rem;
+            line-height: 1.75;
+        }
+
+        .city-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1.6rem;
+        }
+
+        .city-visual {
+            min-height: 470px;
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: var(--glass-shadow);
+            background:
+                linear-gradient(180deg, rgba(11, 12, 16, 0.08), rgba(11, 12, 16, 0.82)),
+                url("https://source.unsplash.com/1200x900/?karachi,city,university") center/cover;
+        }
+
+        .city-visual::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(255, 64, 129, 0.25), transparent 44%),
+                linear-gradient(315deg, rgba(0, 209, 178, 0.22), transparent 48%);
+        }
+
+        .city-visual-card {
+            position: absolute;
+            left: 1rem;
+            right: 1rem;
+            bottom: 1rem;
+            z-index: 1;
+            background: rgba(11, 12, 16, 0.74);
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            border-radius: 16px;
+            padding: 1rem;
+            backdrop-filter: blur(18px);
+        }
+
+        .city-visual-card h3 {
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 0.45rem;
+        }
+
+        .city-visual-card p {
+            color: var(--text-muted);
+            font-size: 0.86rem;
+            line-height: 1.55;
+        }
+
+        .guide-shell {
+            padding: 1.5rem 0 5rem;
+        }
+
+        .guide-toolbar {
+            display: grid;
+            grid-template-columns: minmax(260px, 1.1fr) repeat(3, minmax(170px, 0.7fr));
+            gap: 0.9rem;
+            align-items: end;
+            padding: 1rem;
+            border-radius: 18px;
+            background: var(--guide-panel);
+            border: 1px solid var(--guide-border);
+            backdrop-filter: blur(18px);
+            margin-bottom: 1.1rem;
+        }
+
+        .guide-field label {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .guide-field select {
+            width: 100%;
+            min-height: 44px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(0, 0, 0, 0.28);
+            color: white;
+            font-family: inherit;
+            padding: 0.65rem 0.75rem;
+            outline: none;
+        }
+
+        .guide-field select option {
+            background: var(--bg-dark);
+        }
+
+        .guide-dashboard {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 340px;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .guide-panel,
+        .guide-card {
+            background: var(--guide-panel);
+            border: 1px solid var(--guide-border);
+            border-radius: 18px;
+            backdrop-filter: blur(18px);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .guide-panel {
+            padding: 1.2rem;
+        }
+
+        .guide-card {
+            padding: 1rem;
+        }
+
+        .guide-section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .guide-section-title h2,
+        .guide-section-title h3 {
+            color: white;
+            line-height: 1.2;
+        }
+
+        .guide-section-title p {
+            color: var(--text-muted);
+            font-size: 0.86rem;
+            margin-top: 0.25rem;
+        }
+
+        .guide-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: var(--accent-gold);
+            border: 1px solid rgba(255, 189, 46, 0.25);
+            border-radius: 999px;
+            padding: 0.28rem 0.55rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .campus-profile {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 220px;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .campus-lead {
+            background: linear-gradient(135deg, rgba(255, 64, 129, 0.13), rgba(0, 209, 178, 0.08));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1rem;
+        }
+
+        .campus-lead h2 {
+            color: white;
+            font-size: 1.7rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .campus-lead p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .score-card {
+            background: rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(0, 209, 178, 0.2);
+            border-radius: 16px;
+            padding: 1rem;
+            display: grid;
+            align-content: center;
+            gap: 0.5rem;
+        }
+
+        .score-card strong {
+            color: white;
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .score-card span,
+        .score-card p {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            line-height: 1.45;
+        }
+
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.85rem;
+        }
+
+        .mini-card {
+            background: var(--guide-soft);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 14px;
+            padding: 0.95rem;
+        }
+
+        .mini-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            color: white;
+            font-size: 0.98rem;
+            margin-bottom: 0.55rem;
+        }
+
+        .mini-card h3 i {
+            color: var(--accent-mint);
+        }
+
+        .mini-card ul {
+            list-style: none;
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .mini-card li {
+            color: var(--text-muted);
+            font-size: 0.84rem;
+            line-height: 1.45;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 0.45rem;
+        }
+
+        .mini-card li:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .area-list {
+            display: grid;
+            gap: 0.7rem;
+        }
+
+        .area-card {
+            display: grid;
+            gap: 0.55rem;
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 14px;
+            padding: 0.85rem;
+            background: rgba(255, 255, 255, 0.045);
+        }
+
+        .area-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .area-top strong {
+            color: white;
+            display: block;
+            line-height: 1.25;
+        }
+
+        .area-top span {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        .fit-meter {
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .fit-meter div {
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--accent-coral), var(--accent-gold), var(--accent-mint));
+        }
+
+        .budget-card {
+            position: sticky;
+            top: 96px;
+            display: grid;
+            gap: 0.9rem;
+        }
+
+        .budget-total {
+            background: linear-gradient(135deg, rgba(0, 209, 178, 0.13), rgba(255, 189, 46, 0.09));
+            border: 1px solid rgba(0, 209, 178, 0.24);
+            border-radius: 16px;
+            padding: 1rem;
+        }
+
+        .budget-total span {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        .budget-total strong {
+            display: block;
+            color: white;
+            font-size: 1.8rem;
+            line-height: 1.1;
+            margin-top: 0.2rem;
+        }
+
+        .budget-lines {
+            display: grid;
+            gap: 0.55rem;
+        }
+
+        .budget-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .budget-line strong {
+            color: white;
+            white-space: nowrap;
+        }
+
+        .planner-list {
+            list-style: none;
+            display: grid;
+            gap: 0.55rem;
+        }
+
+        .planner-list li {
+            display: flex;
+            gap: 0.55rem;
+            color: var(--text-muted);
+            font-size: 0.84rem;
+            line-height: 1.45;
+        }
+
+        .planner-list i {
+            color: var(--accent-mint);
+            margin-top: 0.18rem;
+        }
+
+        .top-campus-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        .campus-card {
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 16px;
+            padding: 0.95rem;
+            background: rgba(255, 255, 255, 0.045);
+            display: grid;
+            gap: 0.55rem;
+            min-height: 190px;
+        }
+
+        .campus-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--accent-gold);
+        }
+
+        .campus-card h3 {
+            color: white;
+            font-size: 0.98rem;
+            line-height: 1.25;
+        }
+
+        .campus-card p {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
+        .campus-card button {
+            margin-top: auto;
+            border: 0;
+            background: transparent;
+            color: var(--accent-mint);
+            font: inherit;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .source-strip {
+            margin-top: 1rem;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            line-height: 1.55;
+        }
+
+        .source-strip a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        @media (max-width: 1050px) {
+            .city-hero-grid,
+            .guide-dashboard,
+            .campus-profile {
+                grid-template-columns: 1fr;
+            }
+
+            .budget-card {
+                position: static;
+            }
+
+            .guide-toolbar {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .top-campus-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            body.city-guide-page {
+                padding-top: 116px;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .city-hero {
+                min-height: auto;
+                padding: 2.4rem 0 1.5rem;
+            }
+
+            .city-visual {
+                min-height: 320px;
+                border-radius: 16px;
+            }
+
+            .guide-toolbar,
+            .guide-grid,
+            .top-campus-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .guide-panel,
+            .guide-card {
+                border-radius: 14px;
+            }
+
+            .city-actions .btn {
+                width: 100%;
+            }
+
+            .guide-section-title {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="city-guide-page">
+    <div class="bg-gradient bg-gradient-1"></div>
+    <div class="bg-gradient bg-gradient-2"></div>
+
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                Student<span>Sync</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html#features">Challenges</a>
+                <div class="dropdown">
+                    <a href="#" class="dropbtn active">Solutions <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem; margin-left: 3px;"></i></a>
+                    <div class="dropdown-content">
+                        <a href="transit-economics.html">Transit Economics</a>
+                        <a href="route-intelligence.html">Route Intelligence</a>
+                        <a href="civic-voice.html">Civic Voice Hub</a>
+                        <a href="conceptual-mastery.html">Conceptual Mastery</a>
+                        <a href="knowledge-base.html">Knowledge Base</a>
+                        <a href="strategic-mentorship.html">Strategic Mentorship</a>
+                        <a href="city-guide.html" class="active">City Guide</a>
+                    </div>
+                </div>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="contact.html" class="btn btn-primary" style="text-decoration: none;">Join Now</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="city-hero">
+            <div class="container city-hero-grid">
+                <div>
+                    <span class="city-kicker"><i class="fa-solid fa-location-dot"></i> Karachi Relocation Command Center</span>
+                    <h1>Move to Karachi without guessing.</h1>
+                    <p class="city-hero-copy">A survival-grade city guide for out-station students: pick your campus, compare nearby areas, estimate rent and mess costs, plan your first 48 hours, and avoid the most common housing mistakes.</p>
+                    <div class="city-actions">
+                        <a href="#relocation-planner" class="btn btn-primary btn-large" style="text-decoration:none;">Build My Plan <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="#top-campuses" class="btn btn-outline btn-large" style="text-decoration:none;">Top 5 Campuses <i class="fa-solid fa-building-columns"></i></a>
+                    </div>
+                </div>
+                <div class="city-visual" role="img" aria-label="Karachi city visual for incoming students">
+                    <div class="city-visual-card">
+                        <h3>For students coming from Hyderabad, Sukkur, Quetta, Multan, Lahore, Islamabad and beyond.</h3>
+                        <p>Focus on three decisions first: campus corridor, safe room or hostel, and reliable food routine. Everything below is designed around those decisions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="guide-shell container" id="relocation-planner">
+            <div class="guide-toolbar">
+                <div class="guide-field">
+                    <label for="uniSelect">Campus / University</label>
+                    <select id="uniSelect"></select>
+                </div>
+                <div class="guide-field">
+                    <label for="budgetSelect">Monthly Budget</label>
+                    <select id="budgetSelect">
+                        <option value="lean">Lean: under 45k</option>
+                        <option value="balanced" selected>Balanced: 45k-70k</option>
+                        <option value="comfort">Comfort: 70k+</option>
+                    </select>
+                </div>
+                <div class="guide-field">
+                    <label for="genderSelect">Accommodation Type</label>
+                    <select id="genderSelect">
+                        <option value="any">Any safe option</option>
+                        <option value="boys">Boys hostel / sharing</option>
+                        <option value="girls">Girls hostel / family PG</option>
+                        <option value="flat">Shared flat</option>
+                    </select>
+                </div>
+                <div class="guide-field">
+                    <label for="commuteSelect">Commute Priority</label>
+                    <select id="commuteSelect">
+                        <option value="near">Stay near campus</option>
+                        <option value="balanced" selected>Balance rent + commute</option>
+                        <option value="cheap">Save rent, travel more</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="guide-dashboard">
+                <div class="guide-panel">
+                    <div id="guideContent"></div>
+                </div>
+
+                <aside class="guide-card budget-card">
+                    <div class="guide-section-title">
+                        <div>
+                            <h3>Monthly Budget</h3>
+                            <p>Estimated planning range, verify before booking.</p>
+                        </div>
+                    </div>
+                    <div class="budget-total">
+                        <span>Expected total</span>
+                        <strong id="budgetTotal">PKR 0</strong>
+                    </div>
+                    <div class="budget-lines" id="budgetLines"></div>
+                    <ul class="planner-list" id="quickPlan"></ul>
+                </aside>
+            </div>
+        </section>
+
+        <section class="container guide-panel" id="top-campuses">
+            <div class="guide-section-title">
+                <div>
+                    <h2>Top 5 Karachi Student Corridors</h2>
+                    <p>Not a formal ranking. These are high-demand campus corridors for incoming students, selected for recognition, student volume, and relocation planning value.</p>
+                </div>
+                <span class="guide-badge"><i class="fa-solid fa-shield-halved"></i> HEC-recognized names checked</span>
+            </div>
+            <div class="top-campus-grid" id="topCampusGrid"></div>
+            <p class="source-strip">
+                Sources checked for recognition/campus context:
+                <a href="https://www.hec.gov.pk/english/universities/Pages/recognised.aspx" target="_blank" rel="noopener">HEC recognized universities</a>,
+                <a href="https://www.neduet.edu.pk/contact-us" target="_blank" rel="noopener">NED official contact page</a>,
+                <a href="https://osa.iba.edu.pk/" target="_blank" rel="noopener">IBA Office of Student Affairs</a>.
+                Local rent and mess figures are StudentSync planning estimates, not live property listings.
+            </p>
+        </section>
+    </main>
+
+    <footer style="padding: 2rem 0; color: var(--text-muted); text-align: center;">
+        <div class="container">StudentSync City Guide - built for out-station students arriving in Karachi.</div>
+    </footer>
+
+    <script src="city-guide.js"></script>
+</body>
+</html>
