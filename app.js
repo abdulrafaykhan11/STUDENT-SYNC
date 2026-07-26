@@ -755,7 +755,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        let civicPosts = [
+        let defaultCivicPosts = [
             // Universities
             { id: 1, author: "Ali Raza", campus: "NED University", category: "Infrastructure", content: "The main entrance road has a massive pothole causing heavy traffic jams every morning. Needs immediate repair.", upvotes: 142, downvotes: 5, userVote: 0, replies: [{author: "Sara K.", text: "Yes, I got late to my 8:30 class because of this!"}] },
             { id: 11, author: "Hamza Tariq", campus: "NED University", category: "Academics", content: "The new lab equipment in the electrical department is still not accessible for final year projects.", upvotes: 45, downvotes: 2, userVote: 0, replies: [] },
@@ -798,6 +798,13 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 20, author: "Samina", campus: "Bay View Academy", category: "Infrastructure", content: "The art room's AC is not working.", upvotes: 12, downvotes: 0, userVote: 0, replies: [] },
             { id: 21, author: "Farhan_Malir", campus: "Roots Millennium Malir", category: "Transport", content: "Can we get a crossing guard for the main road? It's too fast.", upvotes: 85, downvotes: 1, userVote: 0, replies: [] }
         ];
+
+        let civicPosts = JSON.parse(localStorage.getItem('studentSync_civicPosts')) || defaultCivicPosts;
+
+        const saveCivicPosts = () => {
+            localStorage.setItem('studentSync_civicPosts', JSON.stringify(civicPosts));
+        };
+
 
         const renderCivicFeed = () => {
             let currentCampus = civicCampusSelect.value;
@@ -885,6 +892,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             civicPosts.unshift(newPost);
+            saveCivicPosts();
             renderCivicFeed();
             civicForm.reset();
         });
@@ -907,6 +915,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     post.upvotes++;
                     post.userVote = 1;
                 }
+                saveCivicPosts();
                 renderCivicFeed();
             } else if (btn.dataset.action === 'downvote') {
                 if (post.userVote === -1) {
@@ -917,6 +926,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     post.downvotes++;
                     post.userVote = -1;
                 }
+                saveCivicPosts();
                 renderCivicFeed();
             } else if (btn.dataset.action === 'reply') {
                 const repliesContainer = postEl.querySelector('.replies-container');
@@ -926,6 +936,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const text = input.value.trim();
                 if (text) {
                     post.replies.push({ author: "You", text: text });
+                    saveCivicPosts();
                     renderCivicFeed();
                     // Reopen the replies container
                     const newPostEl = civicFeedContainer.querySelector(`.civic-post[data-id="${postId}"]`);
