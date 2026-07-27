@@ -2703,6 +2703,7 @@ body::after {
 
 .surge-bar-fill.best { background: linear-gradient(180deg, var(--accent-mint), #00b894); }
 .surge-bar-fill.peak { background: linear-gradient(180deg, #ff5252, var(--accent-coral)); }
+.surge-bar-fill.offhour { background: linear-gradient(180deg, rgba(148, 163, 184, 0.72), rgba(100, 116, 139, 0.58)); }
 
 .surge-bar span {
     font-size: 0.65rem;
