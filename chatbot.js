@@ -53,7 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
         gcw: { name: 'Govt College for Women', type: 'college', area: 'north_nazimabad', kmExtra: 0, signal: 'Nazimabad belt', aliases: ['govt college for women', 'gcw'] },
         bahria_college: { name: 'Bahria College Karsaz', type: 'college', area: 'pechs', kmExtra: 0.4, signal: 'Karsaz Road active', aliases: ['bahria college', 'bahria karsaz'] },
         adamjee: { name: 'Adamjee Science College', type: 'college', area: 'gulshan', kmExtra: 0.2, signal: 'Gulshan main route', aliases: ['adamjee', 'adamjee college'] },
-        djmc: { name: 'DJ Sindh Govt Science College', type: 'college', area: 'malir', kmExtra: 0, signal: 'Malir connector', aliases: ['djmc', 'dj sindh'] }
+        djmc: { name: 'DJ Sindh Govt Science College', type: 'college', area: 'malir', kmExtra: 0, signal: 'Malir connector', aliases: ['djmc', 'dj sindh'] },
+        kgs: { name: 'Karachi Grammar School', type: 'school', area: 'clifton', kmExtra: 0, signal: 'Clifton morning route', aliases: ['karachi grammar', 'kgs'] },
+        city_school: { name: 'The City School Gulshan', type: 'school', area: 'gulshan', kmExtra: 0, signal: 'Gulshan block route', aliases: ['city school', 'the city school', 'city school gulshan'] },
+        beaconhouse: { name: 'Beaconhouse Clifton', type: 'school', area: 'clifton', kmExtra: 0.3, signal: 'Sea View corridor', aliases: ['beaconhouse', 'beaconhouse clifton'] },
+        fps: { name: 'Foundation Public School', type: 'school', area: 'gulshan', kmExtra: 0.5, signal: 'University Road branch', aliases: ['foundation public school', 'fps'] },
+        happy_home: { name: 'Happy Home School', type: 'school', area: 'pechs', kmExtra: 0, signal: 'PECHS school belt', aliases: ['happy home', 'happy home school'] },
+        bayview: { name: 'Bay View Academy', type: 'school', area: 'clifton', kmExtra: 0.6, signal: 'DHA link road', aliases: ['bay view', 'bayview', 'bay view academy'] },
+        roots: { name: 'Roots Millennium Malir', type: 'school', area: 'malir', kmExtra: 0, signal: 'Malir Cantt route', aliases: ['roots', 'roots millennium', 'roots malir'] }
     };
 
     const legacyRoutes = {
@@ -189,6 +196,70 @@ document.addEventListener('DOMContentLoaded', () => {
             { type: 'PG', name: 'Airport Link PG', rent: 26000, deposit: 23000, area: 'Shah Faisal Colony No. 3', contact: 'Mrs. Nighat Saleem', phone: '+92 333 720 4958', note: 'Home meals, shared bath, main road nearby.' }
         ]
     };
+
+    const emergencyAreaPlans = {
+        gulshan: {
+            exits: ['Main University Road gate', 'Admin block side exit', 'Library / parking side route'],
+            assembly: 'Main ground or open parking away from boundary walls',
+            security: 'Main gate security desk',
+            medical: 'Student clinic / admin first-aid room',
+            safePoint: 'NIPA / University Road public pickup point',
+            notes: ['Avoid crowding at the main gate during panic.', 'Use open ground if smoke, fire, or building damage is visible.']
+        },
+        north_nazimabad: {
+            exits: ['Main road gate', 'Back service lane exit', 'Auditorium / ground side route'],
+            assembly: 'Open ground near admin block',
+            security: 'Reception security counter',
+            medical: 'First-aid room near admin office',
+            safePoint: 'Hyderi / Five Star main road pickup point',
+            notes: ['Keep students away from narrow staircases.', 'Use Green Line / main road side only after staff clearance.']
+        },
+        pechs: {
+            exits: ['Main Karsaz / PECHS gate', 'Service lane exit', 'Cafeteria / parking side route'],
+            assembly: 'Open parking or sports court',
+            security: 'Main gate guard room',
+            medical: 'Admin medical desk / nearby clinic reference',
+            safePoint: 'Nursery, Karsaz, or Bahadurabad main road pickup',
+            notes: ['Avoid Shahrah-e-Faisal rush-side crossing during evacuation.', 'Move toward open parking before calling family.']
+        },
+        clifton: {
+            exits: ['Main Clifton / DHA gate', 'Side lane exit', 'Basement parking ramp only if clear'],
+            assembly: 'Open courtyard or front parking away from glass',
+            security: 'Reception / gate security desk',
+            medical: 'Student affairs first-aid counter',
+            safePoint: 'Main Clifton / DHA road pickup bay',
+            notes: ['Avoid elevators in fire or power failure.', 'Use marked staircases and stay away from glass fronts.']
+        },
+        malir: {
+            exits: ['Main Malir gate', 'Transport yard exit', 'Playground side route'],
+            assembly: 'Playground / open transport yard',
+            security: 'Gate security booth',
+            medical: 'Admin first-aid room',
+            safePoint: 'Malir Halt / Model Colony main road pickup',
+            notes: ['Do not wait near vans during fire or fuel smell.', 'Use open ground before moving to roadside pickup.']
+        }
+    };
+
+    const emergencyTypeSteps = {
+        university: ['Alert class representative and floor marshal.', 'Move through nearest staircase, not elevators.', 'Report missing classmates at assembly point.'],
+        college: ['Inform admin office or lab in-charge immediately.', 'Exit labs carefully and leave bags behind if needed.', 'Gather by department/class section.'],
+        school: ['Teacher leads the line; students do not run.', 'Parents/guardians wait at pickup point until release.', 'Report any missing child to admin desk first.']
+    };
+
+    const emergencyContacts = {
+        university: { security: '+92 300 712 6041', admin: '+92 321 640 1187', medical: '+92 333 508 9274' },
+        college: { security: '+92 300 816 4420', admin: '+92 321 775 3096', medical: '+92 333 604 1287' },
+        school: { security: '+92 300 549 7316', admin: '+92 321 482 6075', medical: '+92 333 915 2408' }
+    };
+
+    function buildEmergencyPlan(inst) {
+        const areaPlan = emergencyAreaPlans[inst.area] || emergencyAreaPlans.gulshan;
+        return {
+            ...areaPlan,
+            contacts: emergencyContacts[inst.type] || emergencyContacts.university,
+            steps: emergencyTypeSteps[inst.type] || emergencyTypeSteps.university
+        };
+    }
 
     const studyTopics = {
         html: {
@@ -1052,17 +1123,51 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    function renderEmergencyAnswer() {
+    function renderEmergencyAnswer(instKey) {
+        const inst = institutions[instKey] || null;
+        if (!inst) {
+            return `
+                <div class="chatbot-study-card">
+                    <div class="chatbot-study-head">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div><span>Emergency Exit Help</span><strong>Campus naam bhejein</strong></div>
+                    </div>
+                    <p>Direct emergency plan ke liye campus naam likhein, jaise "NED emergency exit", "Karachi Grammar School fire exit", ya "NUST medical help".</p>
+                    <ol>
+                        <li>Nearest marked exit use karein; lift/elevator avoid karein.</li>
+                        <li>Open ground/assembly area me report karein.</li>
+                        <li>Security, admin aur medical desk ko immediately inform karein.</li>
+                    </ol>
+                </div>
+                <a class="chatbot-link" href="civic-voice.html#emergency-directory">Open Emergency Directory <i class="fa-solid fa-arrow-right"></i></a>
+            `;
+        }
+
+        const plan = buildEmergencyPlan(inst);
+        const rows = [
+            ['Emergency exits', plan.exits.join(', ')],
+            ['Assembly point', plan.assembly],
+            ['Security desk', `${plan.security} - ${plan.contacts.security}`],
+            ['Medical help', `${plan.medical} - ${plan.contacts.medical}`],
+            ['Safe pickup', plan.safePoint],
+            ['Immediate steps', [...plan.steps, ...plan.notes].join(' ')]
+        ].map(([label, value]) => `
+            <div class="chatbot-area-row chatbot-listing-row">
+                <strong>${escapeHtml(label)}</strong>
+                <small>${escapeHtml(value)}</small>
+            </div>
+        `).join('');
+
         return `
             <div class="chatbot-study-card">
                 <div class="chatbot-study-head">
                     <i class="fa-solid fa-triangle-exclamation"></i>
-                    <div><span>Emergency Exit Directory</span><strong>Civic Voice Hub</strong></div>
+                    <div><span>Emergency Plan</span><strong>${escapeHtml(inst.name)}</strong></div>
                 </div>
-                <p>Civic page par school, college aur university select karke emergency exits, assembly point, security desk, medical help, safe pickup point aur urgent report draft mil jayega.</p>
-                <p class="chatbot-mini-note">Real emergency me campus signboards, guards aur staff instructions ko first priority dein.</p>
+                <div class="chatbot-area-list">${rows}</div>
+                <p class="chatbot-mini-note">Real emergency me campus signboards, guards aur staff instructions ko first priority dein. Ye StudentSync quick directory hai, official safety map ka replacement nahi.</p>
             </div>
-            <a class="chatbot-link" href="civic-voice.html#emergency-directory">Open Emergency Directory <i class="fa-solid fa-arrow-right"></i></a>
+            <a class="chatbot-link" href="civic-voice.html#emergency-directory">Open full Emergency Directory <i class="fa-solid fa-arrow-right"></i></a>
         `;
     }
 
@@ -1184,7 +1289,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (chatState.mode === 'quiz') return handleQuizAnswer(clean);
         if (chatState.mode === 'complaint') return saveComplaintFromChat(question);
 
-        if (emergencyIntent) return renderEmergencyAnswer();
+        if (emergencyIntent) return renderEmergencyAnswer(instKey);
 
         if (topicKey && quizIntent) return startTopicQuiz(topicKey);
         if (!topicKey && quizIntent) return 'Kis topic ka quiz loon? Example: "PHP ka quiz lo", "JavaScript quiz", "MySQL MCQ".';
