@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dhaus: { name: 'DHA Suffa University', type: 'university', area: 'clifton', kmExtra: 0, signal: 'Korangi Road moderate', aliases: ['dha suffa', 'dhaus', 'suffa'] },
         szabist: { name: 'SZABIST Karachi', type: 'university', area: 'clifton', kmExtra: 1.2, signal: 'Clifton corridor', aliases: ['szabist', 'szabist karachi'] },
         indus: { name: 'Indus University', type: 'university', area: 'pechs', kmExtra: 0.5, signal: 'Gulistan-e-Johar link', aliases: ['indus', 'indus university'] },
+        nust: { name: 'NUST PNEC Karachi', type: 'university', area: 'pechs', kmExtra: 1.6, signal: 'Karsaz / Shahrah-e-Faisal corridor', aliases: ['nust', 'nust pnec', 'pnec', 'pnec karachi', 'nust karachi'] },
         dj_science: { name: 'DJ Science College', type: 'college', area: 'gulshan', kmExtra: 0.3, signal: 'University Road stop', aliases: ['dj science', 'dj college'] },
         st_patricks: { name: "St. Patrick's College", type: 'college', area: 'pechs', kmExtra: 0, signal: 'Saddar approach', aliases: ['st patrick', 'st patricks'] },
         gcw: { name: 'Govt College for Women', type: 'college', area: 'north_nazimabad', kmExtra: 0, signal: 'Nazimabad belt', aliases: ['govt college for women', 'gcw'] },
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ku: { km: 4.8, congestion: 8, transfers: 0, walk: 8, seats: 5, shuttleEta: 9 },
             fast: { km: 13.8, congestion: 17, transfers: 1, walk: 10, seats: 2, shuttleEta: 18 },
             iba: { km: 6.2, congestion: 11, transfers: 0, walk: 7, seats: 3, shuttleEta: 10 },
+            nust: { km: 14.9, congestion: 18, transfers: 1, walk: 9, seats: 3, shuttleEta: 17 },
             dhaus: { km: 19.5, congestion: 21, transfers: 2, walk: 12, seats: 1, shuttleEta: 24 }
         },
         north_nazimabad: {
@@ -68,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ku: { km: 13.9, congestion: 17, transfers: 1, walk: 9, seats: 3, shuttleEta: 16 },
             fast: { km: 20.4, congestion: 24, transfers: 2, walk: 12, seats: 2, shuttleEta: 23 },
             iba: { km: 14.3, congestion: 18, transfers: 1, walk: 10, seats: 2, shuttleEta: 17 },
+            nust: { km: 16.8, congestion: 20, transfers: 1, walk: 10, seats: 2, shuttleEta: 20 },
             dhaus: { km: 25.7, congestion: 29, transfers: 2, walk: 14, seats: 1, shuttleEta: 27 }
         },
         pechs: {
@@ -75,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ku: { km: 12.8, congestion: 16, transfers: 1, walk: 8, seats: 4, shuttleEta: 14 },
             fast: { km: 8.5, congestion: 12, transfers: 0, walk: 6, seats: 3, shuttleEta: 12 },
             iba: { km: 13.5, congestion: 17, transfers: 1, walk: 9, seats: 2, shuttleEta: 16 },
+            nust: { km: 6.1, congestion: 10, transfers: 0, walk: 6, seats: 4, shuttleEta: 10 },
             dhaus: { km: 15.9, congestion: 19, transfers: 1, walk: 10, seats: 2, shuttleEta: 19 }
         },
         clifton: {
@@ -82,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ku: { km: 23.4, congestion: 28, transfers: 2, walk: 13, seats: 2, shuttleEta: 26 },
             fast: { km: 14.6, congestion: 18, transfers: 1, walk: 9, seats: 3, shuttleEta: 18 },
             iba: { km: 24.0, congestion: 29, transfers: 2, walk: 14, seats: 1, shuttleEta: 28 },
+            nust: { km: 18.1, congestion: 22, transfers: 1, walk: 10, seats: 2, shuttleEta: 21 },
             dhaus: { km: 9.8, congestion: 13, transfers: 0, walk: 7, seats: 4, shuttleEta: 12 }
         },
         malir: {
@@ -89,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ku: { km: 14.4, congestion: 17, transfers: 1, walk: 9, seats: 5, shuttleEta: 15 },
             fast: { km: 16.7, congestion: 20, transfers: 1, walk: 10, seats: 2, shuttleEta: 20 },
             iba: { km: 15.1, congestion: 18, transfers: 1, walk: 8, seats: 3, shuttleEta: 17 },
+            nust: { km: 13.9, congestion: 17, transfers: 1, walk: 9, seats: 3, shuttleEta: 16 },
             dhaus: { km: 26.6, congestion: 31, transfers: 2, walk: 14, seats: 1, shuttleEta: 30 }
         }
     };
@@ -653,19 +659,132 @@ document.addEventListener('DOMContentLoaded', () => {
         return { km, congestion, transfers, walk, seats, shuttleEta, signal: inst.signal };
     }
 
-    function buildOptions(route) {
+    function buildServiceDetails(route, originKey, inst) {
+        const origin = areaLabels[originKey] || areaLabels.gulshan;
+        const campus = inst.name;
+        const campusArea = areaLabels[inst.area] || campus;
+        const pickupAddress = `${origin}, Karachi`;
+        const dropAddress = `${campus}, Karachi`;
+        const busRoutes = {
+            gulshan: {
+                operator: 'Red Bus / W-11 connector',
+                number: 'Red Bus RB-3 + W-11',
+                stop: 'NIPA / University Road stop',
+                via: 'NIPA -> Civic Center -> Hassan Square -> Stadium Road / Karsaz link',
+                time: 'Every 12-18 min, 7:00 AM-9:30 AM',
+                helpline: '021-111-743-873'
+            },
+            north_nazimabad: {
+                operator: 'Green Line + W-23 feeder',
+                number: 'Green Line GL-1 + W-23',
+                stop: 'Hyderi Market / Green Line station',
+                via: 'Hyderi -> Nazimabad -> Numaish -> MA Jinnah Road connector',
+                time: 'Every 10-15 min on Green Line, feeder every 18-25 min',
+                helpline: '021-111-743-873'
+            },
+            pechs: {
+                operator: 'Red Bus / Khan Coach',
+                number: 'Red Bus RB-2 or Khan Coach 4K',
+                stop: 'Nursery / PECHS stop',
+                via: 'Nursery -> Shahrah-e-Faisal -> Karsaz -> Drigh Road link',
+                time: 'Every 10-16 min, 7:00 AM-10:00 AM',
+                helpline: '021-111-743-873'
+            },
+            clifton: {
+                operator: 'Red Bus / W-23',
+                number: 'Red Bus RB-1 + W-23',
+                stop: 'Teen Talwar / Clifton stop',
+                via: 'Teen Talwar -> Metropole -> FTC -> Shahrah-e-Faisal',
+                time: 'Every 20-30 min, 7:30 AM-9:30 AM',
+                helpline: '021-111-743-873'
+            },
+            malir: {
+                operator: 'Khan Coach / W-11',
+                number: 'Khan Coach M-9 or W-11',
+                stop: 'Malir Halt stop',
+                via: 'Malir Halt -> Drigh Road -> Karsaz -> University Road connector',
+                time: 'Every 15-22 min, 7:00 AM-9:30 AM',
+                helpline: '021-111-743-873'
+            }
+        };
+        const campusStops = {
+            gulshan: 'University Road campus-side stop',
+            north_nazimabad: 'Board Office / Nazimabad connector stop',
+            pechs: 'Karsaz / Shahrah-e-Faisal campus-side stop',
+            clifton: 'Clifton / DHA campus-side stop',
+            malir: 'Malir Halt / Model Colony campus-side stop'
+        };
+        const carpoolDrivers = {
+            gulshan: { name: 'Ahsan Khan', phone: '+92 3498754456', car: 'Suzuki Bolam', plate: 'BKK-241', pickup: 'NIPA / Maskan pickup' },
+            north_nazimabad: { name: 'Haris Sheikh', phone: '+92 3425578278', car: 'Toyota Coater', plate: 'BNC-778', pickup: 'Hyderi / Five Star pickup' },
+            pechs: { name: 'Maha Raza', phone: '+92 45558378278', car: 'Suzuki Every', plate: 'BHG-512', pickup: 'Nursery / Tariq Road pickup' },
+            clifton: { name: 'Sameer Ali', phone: '+92 3145986009', car: 'Toyota Hiace', plate: 'BCQ-909', pickup: 'Teen Talwar pickup' },
+            malir: { name: 'Danish Ahmed', phone: '+92 3175860986', car: 'Nissan Carvan', plate: 'BKL-640', pickup: 'Malir Halt pickup' }
+        };
+        const bus = busRoutes[originKey] || busRoutes.gulshan;
+        const driver = carpoolDrivers[originKey] || carpoolDrivers.gulshan;
+        const dropStop = campusStops[inst.area] || `${campusArea} stop`;
+        const uberUrl = `https://m.uber.com/ul/?action=setPickup&pickup[formatted_address]=${encodeURIComponent(pickupAddress)}&dropoff[formatted_address]=${encodeURIComponent(dropAddress)}&dropoff[nickname]=${encodeURIComponent(campus)}`;
+
+        return {
+            ride: {
+                title: 'Ride app pickup',
+                route: 'Door pickup to campus gate',
+                pickup: `${origin} - exact pickup pin`,
+                drop: `${campus} main gate / nearest safe drop-off`,
+                schedule: 'Book when fare is normal; avoid peak surge if possible.',
+                apps: [
+                    { name: 'Uber - book this route', url: uberUrl },
+                    { name: 'Careem', url: 'https://www.careem.com/' },
+                    { name: 'Yango', url: 'https://yango.com/' }
+                ]
+            },
+            bus: {
+                title: 'Public bus plan',
+                route: `${bus.operator} (${bus.number})`,
+                pickup: bus.stop,
+                drop: `${dropStop}, then ${route.walk} min walk`,
+                schedule: `${bus.time}. Via: ${bus.via}`,
+                contact: `Transit helpline: ${bus.helpline}`,
+                apps: []
+            },
+            carpool: {
+                title: 'Student carpool plan',
+                route: `${driver.name} - ${driver.car} (${driver.plate})`,
+                pickup: driver.pickup,
+                drop: `${campus} campus gate`,
+                schedule: `${route.seats} verified seat${route.seats === 1 ? '' : 's'} available. Confirm 30-45 min before class.`,
+                contact: `Demo driver number: ${driver.phone}`,
+                apps: [
+                    { name: 'Call driver', url: `tel:${driver.phone.replace(/\s/g, '')}` },
+                    { name: 'WhatsApp driver', url: `https://wa.me/${driver.phone.replace(/\D/g, '')}` }
+                ]
+            },
+            shuttle: {
+                title: 'Campus shuttle / point plan',
+                route: `${campus} point / shuttle corridor`,
+                pickup: `${origin} student pickup point`,
+                drop: `${campus} official point drop-off`,
+                schedule: `Next estimated pickup in ${route.shuttleEta} min; morning window 7:00 AM-9:00 AM.`,
+                apps: []
+            }
+        };
+    }
+
+    function buildOptions(route, originKey, inst) {
         const km = route.km;
         const rideBase = Math.round(150 + (km * 33) + route.congestion);
         const rideCost = Math.round(rideBase * (route.congestion > 22 ? 1.38 : route.congestion > 16 ? 1.24 : 1.12));
         const busCost = Math.round(55 + (route.transfers * 45) + (km > 18 ? 35 : 0));
         const carpoolCost = Math.round(95 + (km * 15) + Math.max(0, 5 - route.seats) * 12);
         const shuttleCost = Math.round(80 + (km > 15 ? 35 : 0) + (route.shuttleEta > 22 ? 20 : 0));
+        const serviceDetails = buildServiceDetails(route, originKey, inst);
 
         return {
-            ride: { cost: rideCost, time: Math.round(16 + (km * 1.75) + (route.congestion * 0.45)), reliability: route.congestion > 24 ? 72 : 84 },
-            bus: { cost: busCost, time: Math.round(24 + (km * 2.35) + (route.transfers * 11) + route.walk), reliability: route.transfers > 1 ? 69 : 77 },
-            carpool: { cost: carpoolCost, time: Math.round(20 + (km * 1.85) + (route.congestion * 0.35)), reliability: route.seats > 2 ? 91 : 82 },
-            shuttle: { cost: shuttleCost, time: Math.round(route.shuttleEta + 20 + (km * 2.05)), reliability: route.shuttleEta > 24 ? 76 : 88 }
+            ride: { cost: rideCost, time: Math.round(16 + (km * 1.75) + (route.congestion * 0.45)), reliability: route.congestion > 24 ? 72 : 84, service: serviceDetails.ride },
+            bus: { cost: busCost, time: Math.round(24 + (km * 2.35) + (route.transfers * 11) + route.walk), reliability: route.transfers > 1 ? 69 : 77, service: serviceDetails.bus },
+            carpool: { cost: carpoolCost, time: Math.round(20 + (km * 1.85) + (route.congestion * 0.35)), reliability: route.seats > 2 ? 91 : 82, service: serviceDetails.carpool },
+            shuttle: { cost: shuttleCost, time: Math.round(route.shuttleEta + 20 + (km * 2.05)), reliability: route.shuttleEta > 24 ? 76 : 88, service: serviceDetails.shuttle }
         };
     }
 
@@ -674,7 +793,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const inst = institutions[destKey];
         if (!route || !inst) return null;
 
-        const options = buildOptions(route);
+        const options = buildOptions(route, originKey, inst);
         const entries = Object.entries(options);
         const cheapest = entries.reduce((best, current) => current[1].cost < best[1].cost ? current : best);
         const fastest = entries.reduce((best, current) => current[1].time < best[1].time ? current : best);
@@ -718,6 +837,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const rows = Object.entries(plan.options).map(([key, option]) => {
             const meta = modeMeta[key];
+            const service = option.service || {};
             const badges = [
                 key === plan.recommended ? '<span>Best</span>' : '',
                 key === plan.cheapest ? '<span>Cheapest</span>' : '',
@@ -730,6 +850,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span>${formatRs(option.cost)}</span>
                     <small>${option.time} min</small>
                     <em>${badges}</em>
+                    <p><strong>${escapeHtml(service.route || meta.label)}</strong><br>${escapeHtml(service.pickup || plan.originLabel)} -> ${escapeHtml(service.drop || plan.campusLabel)}<br>${escapeHtml(service.schedule || '')}${service.contact ? `<br>${escapeHtml(service.contact)}` : ''}</p>
+                    ${service.apps?.length ? `<nav class="chatbot-ride-apps">${service.apps.map(app => `<a href="${app.url}" target="_blank" rel="noopener">${app.name}</a>`).join('')}</nav>` : ''}
                 </div>
             `;
         }).join('');
@@ -782,14 +904,29 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!plan) return null;
         const score = plan.route.congestion > 24 ? 68 : plan.route.congestion > 16 ? 76 : 84;
         const status = score >= 80 ? 'Safe' : score >= 70 ? 'Moderate' : 'Use caution';
+        const hazardBank = {
+            gulshan: ['NIPA / University Road par morning rush ka pressure aa sakta hai.', 'Rashid Minhas link par slow patches possible hain.'],
+            pechs: ['Karsaz side par office-hour bottleneck possible hai.', 'Shahrah-e-Faisal service lane par sudden slowdown aa sakta hai.'],
+            clifton: ['Kala Pul / Korangi Road side par peak congestion possible hai.', 'Rain ho to Clifton underpasses verify karein.'],
+            north_nazimabad: ['Liaquatabad / Nazimabad connector par queue build ho sakti hai.', 'Hyderi side market hours me slow movement hoti hai.'],
+            malir: ['Malir Halt / airport link par traffic pulses aa sakte hain.', 'Main connector par heavy vehicle slowdown possible hai.']
+        };
+        const hazards = hazardBank[originKey] || hazardBank.gulshan;
+        const alternate = originKey === 'gulshan' && instKey === 'nust'
+            ? 'Recommended alternate: Gulshan -> Rashid Minhas Road -> Karsaz -> NUST PNEC gate. University Road heavy ho to Stadium Road link check karein.'
+            : `Recommended alternate: ${plan.route.signal}; main-road route prefer karein aur side streets avoid karein.`;
         return `
             <div class="chatbot-route-card">
                 <div class="chatbot-route-head">
                     <span>${escapeHtml(plan.originLabel)} to ${escapeHtml(plan.campusLabel)}</span>
                     <strong>${status}</strong>
                 </div>
-                <p>Estimated travel time ${plan.options[plan.recommended].time} min hai. Best practical mode: <strong>${modeMeta[plan.recommended].label}</strong>.</p>
-                <p>Main roads prefer karein, class timing se 10-15 min pehle buffer rakhein, aur raat me well-lit pickup/drop points use karein.</p>
+                <p>Estimated travel time ${plan.options[plan.recommended].time} min hai. Best practical mode: <strong>${modeMeta[plan.recommended].label}</strong>. Distance approx ${plan.route.km} km.</p>
+                <div class="chatbot-alert-list">
+                    ${hazards.map(item => `<span><i class="fa-solid fa-triangle-exclamation"></i>${escapeHtml(item)}</span>`).join('')}
+                </div>
+                <p>${escapeHtml(alternate)}</p>
+                <p class="chatbot-mini-note">Ye StudentSync estimate hai. Live navigation ke liye departure se pehle maps/traffic verify karein.</p>
             </div>
             ${makeLink(pages.find(page => page.key === 'routes'), 'Open Route Intelligence')}
         `;
@@ -854,22 +991,101 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderCivicAnswer() {
+        chatState = { mode: 'complaint' };
         return `
             <div class="chatbot-study-card">
                 <div class="chatbot-study-head">
                     <i class="fa-solid fa-bullhorn"></i>
-                    <div><span>Civic Voice Hub</span><strong>Report template</strong></div>
+                    <div><span>Civic Voice Hub</span><strong>Direct complaint filing</strong></div>
                 </div>
-                <p>Complaint ko useful banane ke liye ye 4 cheezen likhein:</p>
+                <p>Complaint direct yahan se file ho sakti hai. Next message me ye format bhejein:</p>
                 <ol>
-                    <li>Campus / area name.</li>
-                    <li>Issue category: transport, admin delay, infrastructure, academics or safety.</li>
-                    <li>Exactly kya ho raha hai aur kab se.</li>
-                    <li>Student impact: late class, unsafe route, lost time, fee/document delay.</li>
+                    <li>Campus: NUST / NED / KU etc.</li>
+                    <li>Category: Transport / Infrastructure / Admin Delay / Academics / Harassment.</li>
+                    <li>Details: exactly kya issue hai aur student impact kya hai.</li>
                 </ol>
-                <p class="chatbot-mini-note">Example: NED main gate road par pothole ki wajah se morning traffic jam hota hai, students 8:30 class miss kar rahe hain.</p>
+                <p class="chatbot-mini-note">Example: Campus NUST, Category Transport, Details Gulshan se NUST route par Karsaz ke paas heavy jam hai, students late ho rahe hain.</p>
             </div>
-            <a class="chatbot-link" href="civic-voice.html">Open Civic Voice Hub <i class="fa-solid fa-arrow-right"></i></a>
+        `;
+    }
+
+    function parseComplaint(text) {
+        const clean = normalize(text);
+        const instKey = findInstitution(clean);
+        const campusMatch = text.match(/campus\s*[:\-]\s*([^,\n]+)/i);
+        const categoryMatch = text.match(/category\s*[:\-]\s*([^,\n]+)/i);
+        const detailsMatch = text.match(/details?\s*[:\-]\s*([\s\S]+)/i);
+        const categoryWords = [
+            ['transport', 'Transport'],
+            ['infrastructure', 'Infrastructure'],
+            ['admin', 'Admin Delay'],
+            ['academics', 'Academics'],
+            ['academic', 'Academics'],
+            ['harassment', 'Harassment'],
+            ['safety', 'Harassment']
+        ];
+        const category = categoryMatch?.[1]?.trim()
+            || categoryWords.find(([key]) => clean.includes(key))?.[1]
+            || 'Transport';
+        const campus = instKey
+            ? institutions[instKey].name
+            : (campusMatch?.[1]?.trim() || 'StudentSync Campus');
+        const details = detailsMatch?.[1]?.trim()
+            || text.replace(/campus\s*[:\-]\s*([^,\n]+)/i, '').replace(/category\s*[:\-]\s*([^,\n]+)/i, '').trim();
+
+        return {
+            campus,
+            category,
+            content: details.length > 12 ? details : text.trim()
+        };
+    }
+
+    function saveComplaintFromChat(text) {
+        if (normalize(text).includes('cancel') || normalize(text).includes('stop')) {
+            chatState = { mode: null };
+            return 'Complaint filing cancel kar di.';
+        }
+
+        const complaint = parseComplaint(text);
+        if (!complaint.content || complaint.content.length < 20) {
+            return 'Details thori aur clear bhejein. Example: "Campus NUST, Category Transport, Details Karsaz ke paas heavy jam hai aur students late ho rahe hain."';
+        }
+
+        const post = {
+            id: Date.now(),
+            author: 'Chatbot User',
+            campus: complaint.campus,
+            category: complaint.category,
+            content: complaint.content,
+            upvotes: 0,
+            downvotes: 0,
+            userVote: 0,
+            replies: []
+        };
+
+        try {
+            const key = 'studentSync_civicPosts';
+            const posts = JSON.parse(localStorage.getItem(key) || '[]');
+            posts.unshift(post);
+            localStorage.setItem(key, JSON.stringify(posts));
+            localStorage.setItem('studentSync_lastComplaintCampus', complaint.campus);
+        } catch (error) {
+            chatState = { mode: null };
+            return 'Complaint draft ban gayi, lekin browser storage me save nahi ho saki. Civic Voice page open karke form se submit kar dein.';
+        }
+
+        chatState = { mode: null };
+        return `
+            <div class="chatbot-study-card">
+                <div class="chatbot-study-head">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <div><span>Complaint filed</span><strong>${escapeHtml(complaint.campus)}</strong></div>
+                </div>
+                <p><strong>Category:</strong> ${escapeHtml(complaint.category)}</p>
+                <p>${escapeHtml(complaint.content)}</p>
+                <p class="chatbot-mini-note">Ye complaint Civic Voice feed ke local records me save ho gayi hai.</p>
+            </div>
+            <a class="chatbot-link" href="civic-voice.html">View in Civic Voice Hub <i class="fa-solid fa-arrow-right"></i></a>
         `;
     }
 
@@ -895,18 +1111,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const originKey = findArea(clean);
         const instKey = findInstitution(clean);
         const topicKey = findStudyTopic(clean);
-        const routeIntent = ['jaana', 'jana', 'go', 'route', 'fare', 'price', 'prices', 'cost', 'kiraya', 'commute', 'transport', 'bus', 'ride'].some(word => clean.includes(word));
+        const routeIntent = ['jaana', 'jana', 'go', 'route', 'rotue', 'fare', 'price', 'prices', 'cost', 'kiraya', 'commute', 'transport', 'bus', 'ride'].some(word => clean.includes(word));
         const cityIntent = ['hostel', 'rent', 'room', 'area', 'mess', 'rehna', 'shift', 'move', 'near', 'paas'].some(word => clean.includes(word));
-        const safetyIntent = ['safe', 'safety', 'traffic', 'alternate', 'road', 'raat', 'night'].some(word => clean.includes(word));
+        const safetyIntent = ['safe', 'safety', 'traffic', 'alternate', 'road', 'raat', 'night', 'masla', 'issue', 'problem', 'jam', 'block'].some(word => clean.includes(word));
         const quizIntent = ['quiz', 'test', 'mcq', 'sawal', 'question', 'questions', 'practice'].some(word => clean.includes(word));
         const learnIntent = ['nahi aati', 'nhi aati', 'nai aati', 'bilkul', 'learn', 'start', 'kya karoon', 'kia karoon', 'kya karun', 'guide', 'line by line', 'roadmap'].some(word => clean.includes(word));
         const notesIntent = ['notes', 'note', 'pdf', 'download', 'resource', 'resources', 'cheatsheet'].some(word => clean.includes(word));
         const flashIntent = ['flashcard', 'flash card', 'flashcards', 'deck'].some(word => clean.includes(word));
         const explainIntent = ['explain', 'samjhao', 'samjha', 'kya hai', 'what is', 'meaning', 'concept'].some(word => clean.includes(word));
+        const complaintIntent = ['complaint', 'complain', 'report', 'file'].some(word => clean.includes(word));
 
         if (!clean) return 'Website ya student planning se related sawal type karein, jaise "PHP nahi aati kya karoon?" ya "Gulshan se NED prices?".';
 
         if (chatState.mode === 'quiz') return handleQuizAnswer(clean);
+        if (chatState.mode === 'complaint') return saveComplaintFromChat(question);
 
         if (topicKey && quizIntent) return startTopicQuiz(topicKey);
         if (!topicKey && quizIntent) return 'Kis topic ka quiz loon? Example: "PHP ka quiz lo", "JavaScript quiz", "MySQL MCQ".';
@@ -918,18 +1136,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return 'Start yahan se karein: HTML -> CSS -> JavaScript -> PHP/MySQL. Agar backend chahiye to "PHP nahi aati" type karein, frontend chahiye to "JavaScript nahi aati" type karein.';
         }
 
-        if (clean.includes('mentor') || clean.includes('career') || clean.includes('resume') || clean.includes('cv') || clean.includes('interview') || clean.includes('roadmap')) {
-            return renderMentorAnswer(clean);
-        }
-
-        if (clean.includes('complaint') || clean.includes('complain') || clean.includes('report') || clean.includes('issue') || clean.includes('problem')) {
-            return renderCivicAnswer();
-        }
-
-        if (clean.includes('register') || clean.includes('registration') || clean.includes('join') || clean.includes('signup') || clean.includes('sign up') || clean.includes('apply')) {
-            return renderRegistrationAnswer();
-        }
-
         if (instKey && routeIntent && !originKey) return `${institutions[instKey].name} ke liye starting area bhi bata dein, jaise "Gulshan se ${institutions[instKey].name} prices".`;
         if (originKey && instKey && safetyIntent) return renderSafeRouteAnswer(originKey, instKey);
         if (originKey && instKey && routeIntent) return renderRouteAnswer(originKey, instKey);
@@ -937,8 +1143,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (originKey && !instKey && routeIntent) {
             return `${areaLabels[originKey]} se kis campus jana hai? Example: "${areaLabels[originKey]} se NED prices".`;
         }
-        if (instKey && routeIntent && !originKey) {
-            return `${institutions[instKey].name} ke liye starting area bhi bata dein, jaise “Gulshan se ${institutions[instKey].name} prices”.`;
+
+        if (clean.includes('mentor') || clean.includes('career') || clean.includes('resume') || clean.includes('cv') || clean.includes('interview') || clean.includes('roadmap')) {
+            return renderMentorAnswer(clean);
+        }
+
+        if (complaintIntent && (instKey || clean.includes('campus') || clean.includes('category') || clean.includes('details')) && question.trim().length > 35) {
+            chatState = { mode: 'complaint' };
+            return saveComplaintFromChat(question);
+        }
+
+        if (complaintIntent || clean.includes('issue') || clean.includes('problem')) {
+            return renderCivicAnswer();
+        }
+
+        if (clean.includes('register') || clean.includes('registration') || clean.includes('join') || clean.includes('signup') || clean.includes('sign up') || clean.includes('apply')) {
+            return renderRegistrationAnswer();
         }
 
         if (greetings.some(word => clean === word || clean.includes(`${word} `))) {

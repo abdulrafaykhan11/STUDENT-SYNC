@@ -6,6 +6,7 @@ const institutions = {
     dhaus: { name: 'DHA Suffa University', type: 'University', area: 'clifton', corridor: 'DHA / Korangi Road', campusNote: 'DHA and Gizri are convenient; PECHS can reduce rent if commute is manageable.' },
     szabist: { name: 'SZABIST Karachi', type: 'University', area: 'clifton', corridor: 'Clifton / DHA', campusNote: 'Clifton is close but costly; Gizri and PECHS are common student alternatives.' },
     indus: { name: 'Indus University', type: 'University', area: 'pechs', corridor: 'Johar / Gulshan link', campusNote: 'Johar and Gulshan work well if you want food access and shared flats.' },
+    nust: { name: 'NUST PNEC Karachi', type: 'University', area: 'pechs', corridor: 'Karsaz / Shahrah-e-Faisal corridor', campusNote: 'For NUST PNEC, Karsaz, PECHS and Bahadurabad keep commute manageable; test morning traffic before finalizing housing.' },
     dj_science: { name: 'DJ Science College', type: 'College', area: 'gulshan', corridor: 'Saddar / city access', campusNote: 'Saddar access matters; verify commute timing before choosing Gulshan or PECHS.' },
     st_patricks: { name: "St. Patrick's College", type: 'College', area: 'pechs', corridor: 'Saddar approach', campusNote: 'Garden, Saddar and PECHS are practical starting points for daily commute.' },
     gcw: { name: 'Govt College for Women', type: 'College', area: 'north_nazimabad', corridor: 'North Nazimabad belt', campusNote: 'For women students, prioritise verified hostel policy and guardian-friendly location.' },

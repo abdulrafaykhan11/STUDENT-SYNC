@@ -258,6 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dhaus: { name: 'DHA Suffa University', type: 'university', area: 'clifton', kmExtra: 0, signal: 'Korangi Road moderate' },
         szabist: { name: 'SZABIST Karachi', type: 'university', area: 'clifton', kmExtra: 1.2, signal: 'Clifton corridor' },
         indus: { name: 'Indus University', type: 'university', area: 'pechs', kmExtra: 0.5, signal: 'Gulistan-e-Johar link' },
+        nust: { name: 'NUST PNEC Karachi', type: 'university', area: 'pechs', kmExtra: 1.6, signal: 'Karsaz / Shahrah-e-Faisal corridor' },
         dj_science: { name: 'DJ Science College', type: 'college', area: 'gulshan', kmExtra: 0.3, signal: 'University Road stop' },
         st_patricks: { name: "St. Patrick's College", type: 'college', area: 'pechs', kmExtra: 0, signal: 'Saddar approach' },
         gcw: { name: 'Govt College for Women', type: 'college', area: 'north_nazimabad', kmExtra: 0, signal: 'Nazimabad belt' },
@@ -279,6 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ku: { km: 4.8, congestion: 8, transfers: 0, walk: 8, seats: 5, shuttleEta: 9 },
             fast: { km: 13.8, congestion: 17, transfers: 1, walk: 10, seats: 2, shuttleEta: 18 },
             iba: { km: 6.2, congestion: 11, transfers: 0, walk: 7, seats: 3, shuttleEta: 10 },
+            nust: { km: 14.9, congestion: 18, transfers: 1, walk: 9, seats: 3, shuttleEta: 17 },
             dhaus: { km: 19.5, congestion: 21, transfers: 2, walk: 12, seats: 1, shuttleEta: 24 }
         },
         north_nazimabad: {
@@ -286,6 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ku: { km: 13.9, congestion: 17, transfers: 1, walk: 9, seats: 3, shuttleEta: 16 },
             fast: { km: 20.4, congestion: 24, transfers: 2, walk: 12, seats: 2, shuttleEta: 23 },
             iba: { km: 14.3, congestion: 18, transfers: 1, walk: 10, seats: 2, shuttleEta: 17 },
+            nust: { km: 16.8, congestion: 20, transfers: 1, walk: 10, seats: 2, shuttleEta: 20 },
             dhaus: { km: 25.7, congestion: 29, transfers: 2, walk: 14, seats: 1, shuttleEta: 27 }
         },
         pechs: {
@@ -293,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ku: { km: 12.8, congestion: 16, transfers: 1, walk: 8, seats: 4, shuttleEta: 14 },
             fast: { km: 8.5, congestion: 12, transfers: 0, walk: 6, seats: 3, shuttleEta: 12 },
             iba: { km: 13.5, congestion: 17, transfers: 1, walk: 9, seats: 2, shuttleEta: 16 },
+            nust: { km: 6.1, congestion: 10, transfers: 0, walk: 6, seats: 4, shuttleEta: 10 },
             dhaus: { km: 15.9, congestion: 19, transfers: 1, walk: 10, seats: 2, shuttleEta: 19 }
         },
         clifton: {
@@ -300,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ku: { km: 23.4, congestion: 28, transfers: 2, walk: 13, seats: 2, shuttleEta: 26 },
             fast: { km: 14.6, congestion: 18, transfers: 1, walk: 9, seats: 3, shuttleEta: 18 },
             iba: { km: 24.0, congestion: 29, transfers: 2, walk: 14, seats: 1, shuttleEta: 28 },
+            nust: { km: 18.1, congestion: 22, transfers: 1, walk: 10, seats: 2, shuttleEta: 21 },
             dhaus: { km: 9.8, congestion: 13, transfers: 0, walk: 7, seats: 4, shuttleEta: 12 }
         },
         malir: {
@@ -307,6 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ku: { km: 14.4, congestion: 17, transfers: 1, walk: 9, seats: 5, shuttleEta: 15 },
             fast: { km: 16.7, congestion: 20, transfers: 1, walk: 10, seats: 2, shuttleEta: 20 },
             iba: { km: 15.1, congestion: 18, transfers: 1, walk: 8, seats: 3, shuttleEta: 17 },
+            nust: { km: 13.9, congestion: 17, transfers: 1, walk: 9, seats: 3, shuttleEta: 16 },
             dhaus: { km: 26.6, congestion: 31, transfers: 2, walk: 14, seats: 1, shuttleEta: 30 }
         }
     };
@@ -379,13 +385,126 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const buildOptions = route => {
+    const buildServiceDetails = (route, originKey, inst) => {
+        const origin = areaLabels[originKey] || areaLabels.gulshan;
+        const campus = inst.name;
+        const campusArea = areaLabels[inst.area] || campus;
+        const pickupAddress = `${origin}, Karachi`;
+        const dropAddress = `${campus}, Karachi`;
+        const busRoutes = {
+            gulshan: {
+                operator: 'Red Bus / W-11 connector',
+                number: 'Red Bus RB-3 + W-11',
+                stop: 'NIPA / University Road stop',
+                via: 'NIPA -> Civic Center -> Hassan Square -> Stadium Road / Karsaz link',
+                time: 'Every 12-18 min, 7:00 AM-9:30 AM',
+                helpline: '021-111-743-873'
+            },
+            north_nazimabad: {
+                operator: 'Green Line + W-23 feeder',
+                number: 'Green Line GL-1 + W-23',
+                stop: 'Hyderi Market / Green Line station',
+                via: 'Hyderi -> Nazimabad -> Numaish -> MA Jinnah Road connector',
+                time: 'Every 10-15 min on Green Line, feeder every 18-25 min',
+                helpline: '021-111-743-873'
+            },
+            pechs: {
+                operator: 'Red Bus / Khan Coach',
+                number: 'Red Bus RB-2 or Khan Coach 4K',
+                stop: 'Nursery / PECHS stop',
+                via: 'Nursery -> Shahrah-e-Faisal -> Karsaz -> Drigh Road link',
+                time: 'Every 10-16 min, 7:00 AM-10:00 AM',
+                helpline: '021-111-743-873'
+            },
+            clifton: {
+                operator: 'Red Bus / W-23',
+                number: 'Red Bus RB-1 + W-23',
+                stop: 'Teen Talwar / Clifton stop',
+                via: 'Teen Talwar -> Metropole -> FTC -> Shahrah-e-Faisal',
+                time: 'Every 20-30 min, 7:30 AM-9:30 AM',
+                helpline: '021-111-743-873'
+            },
+            malir: {
+                operator: 'Khan Coach / W-11',
+                number: 'Khan Coach M-9 or W-11',
+                stop: 'Malir Halt stop',
+                via: 'Malir Halt -> Drigh Road -> Karsaz -> University Road connector',
+                time: 'Every 15-22 min, 7:00 AM-9:30 AM',
+                helpline: '021-111-743-873'
+            }
+        };
+        const campusStops = {
+            gulshan: 'University Road campus-side stop',
+            north_nazimabad: 'Board Office / Nazimabad connector stop',
+            pechs: 'Karsaz / Shahrah-e-Faisal campus-side stop',
+            clifton: 'Clifton / DHA campus-side stop',
+            malir: 'Malir Halt / Model Colony campus-side stop'
+        };
+        const carpoolDrivers = {
+            gulshan: { name: 'Ahsan Khan', phone: '+92 3455678278', car: 'Suzuki Bolan', plate: 'BKK-241', pickup: 'NIPA / Maskan pickup' },
+            north_nazimabad: { name: 'Haris Sheikh', phone: '+92 3425578278', car: 'Toyota Coaster', plate: 'BNC-778', pickup: 'Hyderi / Five Star pickup' },
+            pechs: { name: 'Maha Raza', phone: '+92 45558378278', car: 'Suzuki Every', plate: 'BHG-512', pickup: 'Nursery / Tariq Road pickup' },
+            clifton: { name: 'Sameer Ali', phone: '+92 3145986009', car: 'Toyota Hiace', plate: 'BCQ-909', pickup: 'Teen Talwar pickup' },
+            malir: { name: 'Danish Ahmed', phone: '+92 3175860986', car: 'Nissan Carvan', plate: 'BKL-640', pickup: 'Malir Halt pickup' }
+        };
+        const bus = busRoutes[originKey] || busRoutes.gulshan;
+        const driver = carpoolDrivers[originKey] || carpoolDrivers.gulshan;
+        const dropStop = campusStops[inst.area] || `${campusArea} stop`;
+        const uberUrl = `https://m.uber.com/ul/?action=setPickup&pickup[formatted_address]=${encodeURIComponent(pickupAddress)}&dropoff[formatted_address]=${encodeURIComponent(dropAddress)}&dropoff[nickname]=${encodeURIComponent(campus)}`;
+
+        return {
+            ride: {
+                title: 'Ride app pickup',
+                route: 'Door pickup to campus gate',
+                pickup: `${origin} - choose your exact pickup pin`,
+                drop: `${campus} main gate / nearest safe drop-off`,
+                schedule: 'Best for urgent trips; avoid peak surge if fare is high.',
+                apps: [
+                    { name: 'Uber - book this route', url: uberUrl },
+                    { name: 'Careem', url: 'https://www.careem.com/' },
+                    { name: 'Yango', url: 'https://yango.com/' }
+                ]
+            },
+            bus: {
+                title: 'Public bus plan',
+                route: `${bus.operator} (${bus.number})`,
+                pickup: bus.stop,
+                drop: `${dropStop}, then ${route.walk} min walk to ${campus}`,
+                schedule: `${bus.time}. Via: ${bus.via}`,
+                contact: `Transit helpline: ${bus.helpline}`,
+                apps: []
+            },
+            carpool: {
+                title: 'Student carpool plan',
+                route: `${driver.name} - ${driver.car} (${driver.plate})`,
+                pickup: driver.pickup,
+                drop: `${campus} campus gate`,
+                schedule: `${route.seats} verified seat${route.seats === 1 ? '' : 's'} available. Confirm 30-45 min before class.`,
+                contact: `driver number: ${driver.phone}`,
+                apps: [
+                    { name: 'Call driver', url: `tel:${driver.phone.replace(/\s/g, '')}` },
+                    { name: 'WhatsApp driver', url: `https://wa.me/${driver.phone.replace(/\D/g, '')}` }
+                ]
+            },
+            shuttle: {
+                title: 'Campus shuttle / point plan',
+                route: `${campus} point / shuttle corridor`,
+                pickup: `${origin} student pickup point`,
+                drop: `${campus} official point drop-off`,
+                schedule: `Next estimated pickup in ${route.shuttleEta} min; morning window 7:00 AM-9:00 AM.`,
+                apps: []
+            }
+        };
+    };
+
+    const buildOptions = (route, originKey, inst) => {
         const km = route.km;
         const rideBase = Math.round(150 + (km * 33) + route.congestion);
         const rideCost = Math.round(rideBase * (route.congestion > 22 ? 1.38 : route.congestion > 16 ? 1.24 : 1.12));
         const busCost = Math.round(55 + (route.transfers * 45) + (km > 18 ? 35 : 0));
         const carpoolCost = Math.round(95 + (km * 15) + Math.max(0, 5 - route.seats) * 12);
         const shuttleCost = Math.round(80 + (km > 15 ? 35 : 0) + (route.shuttleEta > 22 ? 20 : 0));
+        const serviceDetails = buildServiceDetails(route, originKey, inst);
 
         return {
             ride: {
@@ -393,25 +512,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 oldCost: rideBase,
                 time: Math.round(16 + (km * 1.75) + (route.congestion * 0.45)),
                 reliability: route.congestion > 24 ? 72 : 84,
-                detail: 'Fastest solo option, but peak pricing is active.'
+                detail: 'Fastest solo option, but peak pricing is active.',
+                service: serviceDetails.ride
             },
             bus: {
                 cost: busCost,
                 time: Math.round(24 + (km * 2.35) + (route.transfers * 11) + route.walk),
                 reliability: route.transfers > 1 ? 69 : 77,
-                detail: `${route.transfers} transfer${route.transfers === 1 ? '' : 's'} and ${route.walk} min walk.`
+                detail: `${route.transfers} transfer${route.transfers === 1 ? '' : 's'} and ${route.walk} min walk.`,
+                service: serviceDetails.bus
             },
             carpool: {
                 cost: carpoolCost,
                 time: Math.round(20 + (km * 1.85) + (route.congestion * 0.35)),
                 reliability: route.seats > 2 ? 91 : 82,
-                detail: `${route.seats} verified seat${route.seats === 1 ? '' : 's'} near your area.`
+                detail: `${route.seats} verified seat${route.seats === 1 ? '' : 's'} near your area.`,
+                service: serviceDetails.carpool
             },
             shuttle: {
                 cost: shuttleCost,
                 time: Math.round(route.shuttleEta + 20 + (km * 2.05)),
                 reliability: route.shuttleEta > 24 ? 76 : 88,
-                detail: `Next pickup in ${route.shuttleEta} min.`
+                detail: `Next pickup in ${route.shuttleEta} min.`,
+                service: serviceDetails.shuttle
             }
         };
     };
@@ -421,7 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const inst = institutions[destKey];
         if (!route || !inst) return null;
 
-        const options = buildOptions(route);
+        const options = buildOptions(route, originKey, inst);
         const entries = Object.entries(options);
         const cheapest = entries.reduce((best, current) => current[1].cost < best[1].cost ? current : best);
         const fastest = entries.reduce((best, current) => current[1].time < best[1].time ? current : best);
@@ -447,6 +570,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const rideCost = plan.options.ride.cost;
         const saving = Math.max(0, rideCost - selected.cost);
         const monthlySaving = saving * 22;
+        const service = selected.service || {};
+        const serviceApps = service.apps?.length
+            ? `<div class="calc-ride-apps">${service.apps.map(app => `<a href="${app.url}" target="_blank" rel="noopener">${app.name} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`).join('')}</div>`
+            : '';
+        const serviceContact = service.contact
+            ? `<p class="calc-service-contact"><i class="fa-solid fa-phone"></i> ${service.contact}</p>`
+            : '';
 
         const optionRows = Object.entries(plan.options).map(([key, option]) => {
             const rowMeta = modeMeta[key];
@@ -475,7 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="calc-price-block">
                     <span>${meta.label}</span>
                     <h3>${formatRs(selected.cost)} ${activeMode === 'ride' ? `<small>${formatRs(selected.oldCost)}</small>` : ''}</h3>
-                    <p>${plan.originLabel} → ${plan.campusLabel}</p>
+                    <p>${plan.originLabel} to ${plan.campusLabel}</p>
                 </div>
                 <div class="calc-live-pill"><i class="fa-solid fa-circle"></i> ${meta.tag}</div>
             </div>
@@ -489,6 +619,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             <div class="calc-compare-list">
                 ${optionRows}
+            </div>
+
+            <div class="calc-service-card">
+                <div class="calc-service-title">
+                    <i class="fa-solid ${meta.icon}"></i>
+                    <div>
+                        <span>${service.title || meta.label}</span>
+                        <strong>${service.route || selected.detail}</strong>
+                    </div>
+                </div>
+                <div class="calc-service-grid">
+                    <div><span>Pickup</span><strong>${service.pickup || plan.originLabel}</strong></div>
+                    <div><span>Drop-off</span><strong>${service.drop || plan.campusLabel}</strong></div>
+                    <div><span>Time / frequency</span><strong>${service.schedule || selected.detail}</strong></div>
+                </div>
+                ${serviceContact}
+                ${serviceApps}
             </div>
         `;
 
@@ -746,7 +893,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Ensure value is set immediately for initial render
             if (availableCampuses.length > 0) {
-                civicCampusSelect.value = availableCampuses[0][1].name;
+                const preferredCampus = localStorage.getItem('studentSync_lastComplaintCampus');
+                civicCampusSelect.value = availableCampuses.some(([, inst]) => inst.name === preferredCampus)
+                    ? preferredCampus
+                    : availableCampuses[0][1].name;
             }
             
             // Re-render feed when campus options change
@@ -799,7 +949,24 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 21, author: "Farhan_Malir", campus: "Roots Millennium Malir", category: "Transport", content: "Can we get a crossing guard for the main road? It's too fast.", upvotes: 85, downvotes: 1, userVote: 0, replies: [] }
         ];
 
-        let civicPosts = JSON.parse(localStorage.getItem('studentSync_civicPosts')) || defaultCivicPosts;
+        const readSavedCivicPosts = () => {
+            try {
+                const saved = JSON.parse(localStorage.getItem('studentSync_civicPosts') || '[]');
+                return Array.isArray(saved) ? saved : [];
+            } catch (error) {
+                return [];
+            }
+        };
+
+        const mergeCivicPosts = savedPosts => {
+            const savedIds = new Set(savedPosts.map(post => post.id));
+            return [
+                ...savedPosts,
+                ...defaultCivicPosts.filter(post => !savedIds.has(post.id))
+            ];
+        };
+
+        let civicPosts = mergeCivicPosts(readSavedCivicPosts());
 
         const saveCivicPosts = () => {
             localStorage.setItem('studentSync_civicPosts', JSON.stringify(civicPosts));
@@ -830,7 +997,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="author-avatar">${post.author.charAt(0)}</div>
                             <div class="post-meta">
                                 <h4>${post.author}</h4>
-                                <span>${post.campus} • Just now</span>
+                                <span>${post.campus} - Just now</span>
                             </div>
                         </div>
                         <span class="post-tag ${post.category.split(' ')[0]}">${post.category}</span>
