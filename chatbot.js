@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { key: 'concepts', title: 'Conceptual Mastery', url: 'conceptual-mastery.html', icon: 'fa-brain', keywords: ['concept', 'conceptual', 'cramming', 'understanding', 'memorization', 'youtube', 'video', 'learn'], answer: 'Conceptual Mastery page rote learning ke bajaye real understanding par focus karta hai. Isme concept deconstructor, watch/download area aur night-before planner milta hai.' },
         { key: 'transit', title: 'Transit Economics', url: 'transit-economics.html', icon: 'fa-wallet', keywords: ['transport', 'transit', 'fare', 'cost', 'bus', 'ride', 'careem', 'uber', 'commute', 'budget', 'surge', 'price', 'prices', 'kiraya'], answer: 'Transit Economics page commute cost compare karta hai: bus, ride-hailing, personal transport, semester budget aur peak surge departure planning.' },
         { key: 'routes', title: 'Route Intelligence', url: 'route-intelligence.html', icon: 'fa-route', keywords: ['route', 'road', 'traffic', 'alternate', 'safe route', 'damaged', 'gridlock', 'campus route'], answer: 'Route Intelligence page Karachi routes, damaged roads, safer alternates aur campus travel signals ke liye bana hai.' },
-        { key: 'civic', title: 'Civic Voice Hub', url: 'civic-voice.html', icon: 'fa-bullhorn', keywords: ['complaint', 'complain', 'report', 'civic', 'issue', 'campus issue', 'problem', 'voice'], answer: 'Civic Voice Hub par campus ya commute issues report, track aur discuss kar sakte hain. Ye student complaints ko organized feed me convert karta hai.' },
+        { key: 'civic', title: 'Civic Voice Hub', url: 'civic-voice.html', icon: 'fa-bullhorn', keywords: ['complaint', 'complain', 'report', 'civic', 'issue', 'campus issue', 'problem', 'voice', 'emergency', 'exit', 'fire', 'medical', 'security'], answer: 'Civic Voice Hub par campus complaints ke saath Emergency Exit Directory bhi milti hai: exits, assembly point, security desk, medical help aur urgent report draft.' },
         { key: 'mentor', title: 'Strategic Mentorship', url: 'strategic-mentorship.html', icon: 'fa-compass', keywords: ['mentor', 'mentorship', 'career', 'roadmap', 'resume', 'interview', 'alumni', 'guidance', 'path'], answer: 'Strategic Mentorship page career guidance ke liye hai: mentor directory, roadmap generator, resume roaster, mock interview aur alumni advice.' },
         { key: 'city', title: 'Karachi City Guide', url: 'city-guide.html', icon: 'fa-map-location-dot', keywords: ['city', 'karachi', 'hostel', 'rent', 'area', 'relocation', 'move', 'campus area', 'mess', 'safety'], answer: 'Karachi City Guide out-station students ke liye hai. Campus choose karke nearby areas, rent, commute, budget aur move-in checklist plan hoti hai.' },
         { key: 'register', title: 'Registration / Join Now', url: 'contact.html', icon: 'fa-user-plus', keywords: ['register', 'registration', 'join', 'contact', 'form', 'apply', 'signup', 'sign up', 'admission'], answer: 'Join Now ya registration ke liye Contact page par institute registration form fill karein. Successful submission ke baad ID card preview/download option milta hai.' },
@@ -1052,6 +1052,20 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
+    function renderEmergencyAnswer() {
+        return `
+            <div class="chatbot-study-card">
+                <div class="chatbot-study-head">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <div><span>Emergency Exit Directory</span><strong>Civic Voice Hub</strong></div>
+                </div>
+                <p>Civic page par school, college aur university select karke emergency exits, assembly point, security desk, medical help, safe pickup point aur urgent report draft mil jayega.</p>
+                <p class="chatbot-mini-note">Real emergency me campus signboards, guards aur staff instructions ko first priority dein.</p>
+            </div>
+            <a class="chatbot-link" href="civic-voice.html#emergency-directory">Open Emergency Directory <i class="fa-solid fa-arrow-right"></i></a>
+        `;
+    }
+
     function parseComplaint(text) {
         const clean = normalize(text);
         const instKey = findInstitution(clean);
@@ -1163,11 +1177,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const flashIntent = ['flashcard', 'flash card', 'flashcards', 'deck'].some(word => clean.includes(word));
         const explainIntent = ['explain', 'samjhao', 'samjha', 'kya hai', 'what is', 'meaning', 'concept'].some(word => clean.includes(word));
         const complaintIntent = ['complaint', 'complain', 'report', 'file'].some(word => clean.includes(word));
+        const emergencyIntent = ['emergency', 'exit', 'fire', 'medical', 'security', 'safe point', 'assembly', 'evacuation'].some(word => clean.includes(word));
 
         if (!clean) return 'Website ya student planning se related sawal type karein, jaise "PHP nahi aati kya karoon?" ya "Gulshan se NED prices?".';
 
         if (chatState.mode === 'quiz') return handleQuizAnswer(clean);
         if (chatState.mode === 'complaint') return saveComplaintFromChat(question);
+
+        if (emergencyIntent) return renderEmergencyAnswer();
 
         if (topicKey && quizIntent) return startTopicQuiz(topicKey);
         if (!topicKey && quizIntent) return 'Kis topic ka quiz loon? Example: "PHP ka quiz lo", "JavaScript quiz", "MySQL MCQ".';

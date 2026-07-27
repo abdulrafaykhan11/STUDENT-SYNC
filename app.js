@@ -972,6 +972,130 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('studentSync_civicPosts', JSON.stringify(civicPosts));
         };
 
+        const emergencyAreaPlans = {
+            gulshan: {
+                exits: ['Main University Road gate', 'Admin block side exit', 'Library / parking side route'],
+                assembly: 'Main ground or open parking away from boundary walls',
+                security: 'Main gate security desk',
+                medical: 'Student clinic / admin first-aid room',
+                safePoint: 'NIPA / University Road public pickup point',
+                notes: ['Avoid crowding at the main gate during panic.', 'Use open ground if smoke, fire, or building damage is visible.']
+            },
+            north_nazimabad: {
+                exits: ['Main road gate', 'Back service lane exit', 'Auditorium / ground side route'],
+                assembly: 'Open ground near admin block',
+                security: 'Reception security counter',
+                medical: 'First-aid room near admin office',
+                safePoint: 'Hyderi / Five Star main road pickup point',
+                notes: ['Keep students away from narrow staircases.', 'Use Green Line / main road side only after staff clearance.']
+            },
+            pechs: {
+                exits: ['Main Karsaz / PECHS gate', 'Service lane exit', 'Cafeteria / parking side route'],
+                assembly: 'Open parking or sports court',
+                security: 'Main gate guard room',
+                medical: 'Admin medical desk / nearby clinic reference',
+                safePoint: 'Nursery, Karsaz, or Bahadurabad main road pickup',
+                notes: ['Avoid Shahrah-e-Faisal rush-side crossing during evacuation.', 'Move toward open parking before calling family.']
+            },
+            clifton: {
+                exits: ['Main Clifton / DHA gate', 'Side lane exit', 'Basement parking ramp only if clear'],
+                assembly: 'Open courtyard or front parking away from glass',
+                security: 'Reception / gate security desk',
+                medical: 'Student affairs first-aid counter',
+                safePoint: 'Main Clifton / DHA road pickup bay',
+                notes: ['Avoid elevators in fire or power failure.', 'Use marked staircases and stay away from glass fronts.']
+            },
+            malir: {
+                exits: ['Main Malir gate', 'Transport yard exit', 'Playground side route'],
+                assembly: 'Playground / open transport yard',
+                security: 'Gate security booth',
+                medical: 'Admin first-aid room',
+                safePoint: 'Malir Halt / Model Colony main road pickup',
+                notes: ['Do not wait near school vans during fire or fuel smell.', 'Use open ground before moving to roadside pickup.']
+            }
+        };
+
+        const emergencyTypeSteps = {
+            university: ['Alert class representative and floor marshal.', 'Move through nearest staircase, not elevators.', 'Report missing classmates at assembly point.'],
+            college: ['Inform admin office or lab in-charge immediately.', 'Exit labs carefully and leave bags behind if needed.', 'Gather by department/class section.'],
+            school: ['Teacher leads the line; students do not run.', 'Parents/guardians wait at pickup point until release.', 'Report any missing child to admin desk first.']
+        };
+
+        const emergencyContacts = {
+            university: { security: '+92 300 712 6041', admin: '+92 321 640 1187', medical: '+92 333 508 9274' },
+            college: { security: '+92 300 816 4420', admin: '+92 321 775 3096', medical: '+92 333 604 1287' },
+            school: { security: '+92 300 549 7316', admin: '+92 321 482 6075', medical: '+92 333 915 2408' }
+        };
+
+        const emergencyIconCards = plan => [
+            ['fa-door-open', 'Emergency Exits', plan.exits],
+            ['fa-people-arrows', 'Assembly Point', [plan.assembly]],
+            ['fa-shield-halved', 'Security Desk', [plan.security, `Security: ${plan.contacts.security}`, `Admin: ${plan.contacts.admin}`]],
+            ['fa-kit-medical', 'Medical Help', [plan.medical, `Medical desk: ${plan.contacts.medical}`]],
+            ['fa-location-dot', 'Safe Pickup Point', [plan.safePoint]],
+            ['fa-list-check', 'Immediate Steps', [...plan.steps, ...plan.notes]]
+        ];
+
+        const buildEmergencyPlan = inst => {
+            const areaPlan = emergencyAreaPlans[inst.area] || emergencyAreaPlans.gulshan;
+            return {
+                ...areaPlan,
+                contacts: emergencyContacts[inst.type] || emergencyContacts.university,
+                steps: emergencyTypeSteps[inst.type] || emergencyTypeSteps.university
+            };
+        };
+
+        const initEmergencyDirectory = () => {
+            const emergencyTypeSelect = document.getElementById('emergency-inst-type');
+            const emergencyCampusSelect = document.getElementById('emergency-campus');
+            const emergencyGrid = document.getElementById('emergency-grid');
+            const emergencyReportBtn = document.getElementById('emergency-report-btn');
+            const emergencyMapLink = document.getElementById('emergency-map-link');
+            if (!emergencyTypeSelect || !emergencyCampusSelect || !emergencyGrid) return;
+
+            const populateEmergencyCampus = () => {
+                const type = emergencyTypeSelect.value;
+                const entries = Object.entries(institutions).filter(([, inst]) => inst.type === type);
+                emergencyCampusSelect.innerHTML = entries.map(([key, inst]) => `<option value="${key}">${inst.name}</option>`).join('');
+                if (entries.length) emergencyCampusSelect.value = entries[0][0];
+                renderEmergencyPlan();
+            };
+
+            const renderEmergencyPlan = () => {
+                const instKey = emergencyCampusSelect.value;
+                const inst = institutions[instKey];
+                if (!inst) return;
+                const plan = buildEmergencyPlan(inst);
+                emergencyGrid.innerHTML = emergencyIconCards(plan).map(([icon, title, items]) => `
+                    <article class="emergency-card">
+                        <h3><i class="fa-solid ${icon}"></i>${title}</h3>
+                        <ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>
+                    </article>
+                `).join('');
+                if (emergencyMapLink) {
+                    emergencyMapLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${inst.name} Karachi`)}`;
+                }
+            };
+
+            emergencyTypeSelect.addEventListener('change', populateEmergencyCampus);
+            emergencyCampusSelect.addEventListener('change', renderEmergencyPlan);
+
+            if (emergencyReportBtn) {
+                emergencyReportBtn.addEventListener('click', () => {
+                    const inst = institutions[emergencyCampusSelect.value];
+                    if (!inst) return;
+                    civicInstTypeSelect.value = inst.type;
+                    populateCivicCampusSelect();
+                    civicCampusSelect.value = inst.name;
+                    document.getElementById('civic-desc').value = `URGENT SAFETY REPORT: ${inst.name} me emergency/safety issue hai. Location: ______. Problem type: fire / medical / harassment / violence / unsafe exit / building damage. Students impacted: ______. Immediate help required.`;
+                    civicForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    document.getElementById('civic-desc').focus();
+                });
+            }
+
+            populateEmergencyCampus();
+        };
+
 
         const renderCivicFeed = () => {
             let currentCampus = civicCampusSelect.value;
@@ -1113,6 +1237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         populateCivicCampusSelect();
+        initEmergencyDirectory();
         civicInstTypeSelect.addEventListener('change', populateCivicCampusSelect);
         civicCampusSelect.addEventListener('change', () => renderCivicFeed());
     }

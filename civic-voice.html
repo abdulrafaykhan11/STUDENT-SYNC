@@ -94,6 +94,59 @@
             </div>
         </section>
 
+        <!-- Emergency Exit & Safety Directory -->
+        <section class="emergency-directory-section" id="emergency-directory">
+            <div class="container">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-kicker" style="color: var(--accent-coral);">Emergency Exit Directory</span>
+                    <h2>Campus Safety Plan</h2>
+                    <p>Select any school, college, or university to view exit gates, safe assembly points, security desks, medical help, and urgent report actions.</p>
+                </div>
+
+                <div class="emergency-shell glass-card animate-on-scroll">
+                    <div class="emergency-controls">
+                        <label class="calc-field">
+                            <span>Institution Type</span>
+                            <div class="calc-select-wrap">
+                                <i class="fa-solid fa-layer-group"></i>
+                                <select id="emergency-inst-type" class="calc-select">
+                                    <option value="university" selected>University</option>
+                                    <option value="college">College</option>
+                                    <option value="school">School</option>
+                                </select>
+                            </div>
+                        </label>
+                        <label class="calc-field">
+                            <span>Select Campus</span>
+                            <div class="calc-select-wrap">
+                                <i class="fa-solid fa-building-shield"></i>
+                                <select id="emergency-campus" class="calc-select"></select>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="emergency-alert">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div>
+                            <strong>Use campus signboards and staff instructions first.</strong>
+                            <span>This is a StudentSync planning directory for quick orientation. Always verify exact exits, alarms, and emergency contacts with your institution.</span>
+                        </div>
+                    </div>
+
+                    <div class="emergency-grid" id="emergency-grid"></div>
+
+                    <div class="emergency-actions">
+                        <button type="button" class="btn btn-primary" id="emergency-report-btn">
+                            <i class="fa-solid fa-bullhorn"></i> Draft Urgent Report
+                        </button>
+                        <a class="btn btn-outline" id="emergency-map-link" href="#" target="_blank" rel="noopener">
+                            <i class="fa-solid fa-map-location-dot"></i> Open Area Map
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- The Central Feature: Live Feed & Report Engine -->
         <section class="command-center-section" style="padding-top: 60px; padding-bottom: 80px;">
             <div class="container">
@@ -284,6 +337,146 @@
     <!-- Custom JS -->
     <script src="app.js"></script>
     <style>
+        .emergency-directory-section {
+            padding: 40px 0 70px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .emergency-shell {
+            padding: 1.5rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .emergency-controls {
+            display: grid;
+            grid-template-columns: minmax(180px, 0.7fr) minmax(240px, 1.3fr);
+            gap: 1rem;
+        }
+
+        .emergency-controls .calc-field span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .emergency-alert {
+            display: flex;
+            gap: 0.85rem;
+            align-items: flex-start;
+            padding: 1rem;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 64, 129, 0.22);
+            background: rgba(255, 64, 129, 0.08);
+            color: var(--text-light);
+        }
+
+        .emergency-alert i {
+            color: var(--accent-coral);
+            margin-top: 0.15rem;
+        }
+
+        .emergency-alert strong,
+        .emergency-card strong {
+            display: block;
+            color: white;
+        }
+
+        .emergency-alert span {
+            display: block;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-top: 0.25rem;
+        }
+
+        .emergency-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.85rem;
+        }
+
+        .emergency-card {
+            display: grid;
+            gap: 0.55rem;
+            padding: 1rem;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.045);
+            min-width: 0;
+        }
+
+        .emergency-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            font-size: 1rem;
+            line-height: 1.25;
+        }
+
+        .emergency-card h3 i {
+            color: var(--accent-mint);
+        }
+
+        .emergency-card p {
+            color: var(--text-muted);
+            line-height: 1.5;
+            font-size: 0.88rem;
+            margin: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .emergency-card ul {
+            list-style: none;
+            display: grid;
+            gap: 0.42rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .emergency-card li {
+            color: var(--text-muted);
+            font-size: 0.86rem;
+            line-height: 1.45;
+            overflow-wrap: anywhere;
+        }
+
+        .emergency-card li::before {
+            content: "•";
+            color: var(--accent-mint);
+            margin-right: 0.45rem;
+        }
+
+        .emergency-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 900px) {
+            .emergency-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .emergency-controls,
+            .emergency-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .emergency-shell {
+                padding: 1rem;
+            }
+
+            .emergency-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
         textarea#civic-desc:focus {
             border-color: var(--accent-coral) !important;
         }
