@@ -402,6 +402,98 @@
             line-height: 1.45;
         }
 
+        .listing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.85rem;
+            margin: 0.75rem 0 1.25rem;
+        }
+
+        .listing-card {
+            display: grid;
+            gap: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 14px;
+            padding: 0.95rem;
+            background: rgba(255, 255, 255, 0.045);
+            min-width: 0;
+        }
+
+        .listing-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .listing-head h3 {
+            color: white;
+            font-size: 1rem;
+            line-height: 1.25;
+        }
+
+        .listing-head span {
+            color: var(--accent-mint);
+            font-weight: 800;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .listing-meta,
+        .listing-contact,
+        .listing-route {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            overflow-wrap: anywhere;
+        }
+
+        .listing-contact strong {
+            color: white;
+        }
+
+        .listing-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.38rem;
+        }
+
+        .listing-tags span {
+            border: 1px solid rgba(0, 209, 178, 0.2);
+            border-radius: 999px;
+            color: var(--accent-mint);
+            background: rgba(0, 209, 178, 0.07);
+            padding: 0.22rem 0.48rem;
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+
+        .listing-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .listing-actions a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            border-radius: 10px;
+            padding: 0.48rem 0.65rem;
+            text-decoration: none;
+            font-size: 0.76rem;
+            font-weight: 800;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .listing-actions a:first-child {
+            color: #071713;
+            background: var(--accent-mint);
+            border-color: transparent;
+        }
+
         .budget-card {
             position: sticky;
             top: 96px;
@@ -622,7 +714,8 @@
 
             .guide-toolbar,
             .action-grid,
-            .area-list {
+            .area-list,
+            .listing-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -797,6 +890,7 @@
                     <label for="staySelect">Stay Type</label>
                     <select id="staySelect">
                         <option value="hostel" selected>Hostel</option>
+                        <option value="hotel">Hotel / guest house</option>
                         <option value="pg">Paying guest</option>
                         <option value="flat">Shared flat</option>
                     </select>
@@ -813,6 +907,13 @@
                         </div>
                     </div>
                     <div class="area-list" id="areaOptions"></div>
+                    <div class="guide-section-title">
+                        <div>
+                            <h3>Available places near this area</h3>
+                            <p>Shortlist actual-style hotel, hostel, flat and paying guest options with contact details.</p>
+                        </div>
+                    </div>
+                    <div class="listing-grid" id="propertyListings"></div>
                     <div class="guide-section-title">
                         <div>
                             <h3>What to do next</h3>

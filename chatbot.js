@@ -157,6 +157,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const cityListings = {
+        gulshan: [
+            { type: 'Hostel', name: 'NIPA Student Residence', rent: 28000, deposit: 25000, area: 'Block 13-D, NIPA', contact: 'Fahad Siddiqui', phone: '+92 300 784 2196', note: '2 sharing, mess, WiFi, 10-18 min to University Road campuses.' },
+            { type: 'Hotel', name: 'Gulshan Campus Inn', rent: 65000, deposit: 15000, area: 'Main University Road', contact: 'Arif Lodges', phone: '+92 300 675 4281', note: 'Private room, cleaning, AC option, good for first-week stay.' },
+            { type: 'Flat', name: 'Maskan Shared Apartment', rent: 42000, deposit: 65000, area: 'Block 7, Maskan', contact: 'Sana Estate', phone: '+92 321 640 8735', note: '2 rooms, furnished, bus stop 6 min walk.' },
+            { type: 'PG', name: 'Civic Center Paying Guest', rent: 33000, deposit: 30000, area: 'Civic Center food street', contact: 'Mrs. Rabia Hasan', phone: '+92 333 918 4627', note: 'Breakfast, dinner, guardian-friendly.' }
+        ],
+        pechs: [
+            { type: 'Hostel', name: 'Nursery Boys Hostel', rent: 34000, deposit: 30000, area: 'PECHS Block 6', contact: 'Kamran Ali', phone: '+92 300 592 8461', note: '3 sharing, mess, point nearby, good for FAST/NUST PNEC.' },
+            { type: 'Hotel', name: 'Karsaz Transit Guest House', rent: 72000, deposit: 18000, area: 'Karsaz Road', contact: 'Salman Lodges', phone: '+92 321 486 9037', note: 'Private bath, WiFi, breakfast, first-week base near Karsaz.' },
+            { type: 'PG', name: 'Bahadurabad Girls PG', rent: 39000, deposit: 35000, area: 'Char Minar Chowrangi', contact: 'Mrs. Farzana Qureshi', phone: '+92 322 706 1948', note: 'Meals, family building, 15-25 min to Karsaz.' },
+            { type: 'Flat', name: 'Karsaz Two-Bed Portion', rent: 58000, deposit: 90000, area: 'Karsaz Road service lane', contact: 'Rehan Estate', phone: '+92 334 517 2809', note: '2 bed, gas, parking, separate entrance.' }
+        ],
+        clifton: [
+            { type: 'PG', name: 'Gizri Comfort PG', rent: 42000, deposit: 40000, area: 'Gizri Boulevard', contact: 'Mrs. Aalia Mir', phone: '+92 300 406 9275', note: 'Meals, attached bath option, secure lane.' },
+            { type: 'Hotel', name: 'Clifton Student Suites', rent: 92000, deposit: 25000, area: 'Clifton Block 4', contact: 'Naveed Suites', phone: '+92 300 764 1289', note: 'Private room, AC, housekeeping, premium short stay.' },
+            { type: 'Flat', name: 'DHA Phase 2 Shared Flat', rent: 54000, deposit: 85000, area: 'Phase 2 Extension', contact: 'Talha Estate', phone: '+92 321 578 3609', note: 'Furnished room, AC split, backup power.' },
+            { type: 'Hostel', name: 'Clifton Block 2 Residence', rent: 48000, deposit: 45000, area: 'Near Boat Basin', contact: 'Hammad Rauf', phone: '+92 333 249 6187', note: '2 sharing, mess, laundry, study room.' }
+        ],
+        north_nazimabad: [
+            { type: 'Hostel', name: 'Hyderi Student Hostel', rent: 27000, deposit: 24000, area: 'Block H, Hyderi', contact: 'Saad Ahmed', phone: '+92 300 694 1382', note: '2 sharing, mess, Green Line nearby.' },
+            { type: 'Hotel', name: 'Hyderi Guest Rooms', rent: 56000, deposit: 12000, area: 'Hyderi Market entrance', contact: 'Rizwan Rooms', phone: '+92 321 708 4562', note: 'Private room, WiFi, reception, market nearby.' },
+            { type: 'PG', name: 'Five Star Family PG', rent: 31000, deposit: 28000, area: 'Five Star Chowrangi', contact: 'Mrs. Shazia Noor', phone: '+92 322 405 7619', note: 'Meals, girls friendly, family home.' },
+            { type: 'Flat', name: 'Nazimabad Shared Portion', rent: 33000, deposit: 50000, area: 'No. 2 Nazimabad', contact: 'Asif Estate', phone: '+92 334 786 5201', note: '2 bed portion, water line, main road access.' }
+        ],
+        malir: [
+            { type: 'Hostel', name: 'Model Colony Student House', rent: 23000, deposit: 20000, area: 'Model Mor main market', contact: 'Umair Farooq', phone: '+92 300 841 6275', note: '3 sharing, mess, water tank.' },
+            { type: 'Hotel', name: 'Airport Link Guest House', rent: 52000, deposit: 12000, area: 'Airport Road link', contact: 'Imran Stays', phone: '+92 300 926 4175', note: 'Private room, breakfast, WiFi, useful on arrival.' },
+            { type: 'Flat', name: 'Malir Cantt Edge Portion', rent: 44000, deposit: 70000, area: 'Cantt Bazaar approach road', contact: 'Kashif Estate', phone: '+92 321 609 3487', note: '2 rooms, secure area, parking.' },
+            { type: 'PG', name: 'Airport Link PG', rent: 26000, deposit: 23000, area: 'Shah Faisal Colony No. 3', contact: 'Mrs. Nighat Saleem', phone: '+92 333 720 4958', note: 'Home meals, shared bath, main road nearby.' }
+        ]
+    };
+
     const studyTopics = {
         html: {
             label: 'HTML',
@@ -886,6 +919,14 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `).join('');
 
+        const listings = (cityListings[inst.area] || []).map(listing => `
+            <div class="chatbot-area-row chatbot-listing-row">
+                <strong>${escapeHtml(listing.name)} <small>${escapeHtml(listing.type)}</small></strong>
+                <span>${formatRs(listing.rent)} / month</span>
+                <small>${escapeHtml(listing.area)} - Deposit ${formatRs(listing.deposit)}<br>${escapeHtml(listing.contact)}: ${escapeHtml(listing.phone)}<br>${escapeHtml(listing.note)}</small>
+            </div>
+        `).join('');
+
         return `
             <div class="chatbot-route-card">
                 <div class="chatbot-route-head">
@@ -893,6 +934,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <strong>${escapeHtml(guide.label)}</strong>
                 </div>
                 <div class="chatbot-area-list">${rows}</div>
+                <p><strong>Available places:</strong></p>
+                <div class="chatbot-area-list">${listings}</div>
                 <p class="chatbot-mini-note">Room/hostel final karne se pehle evening visit, water timing, advance payment aur commute test zaroor verify karein.</p>
             </div>
             ${makeLink(pages.find(page => page.key === 'city'), 'Open Karachi City Guide')}
@@ -1112,7 +1155,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const instKey = findInstitution(clean);
         const topicKey = findStudyTopic(clean);
         const routeIntent = ['jaana', 'jana', 'go', 'route', 'rotue', 'fare', 'price', 'prices', 'cost', 'kiraya', 'commute', 'transport', 'bus', 'ride'].some(word => clean.includes(word));
-        const cityIntent = ['hostel', 'rent', 'room', 'area', 'mess', 'rehna', 'shift', 'move', 'near', 'paas'].some(word => clean.includes(word));
+        const cityIntent = ['hotel', 'guest house', 'hostel', 'rent', 'room', 'area', 'mess', 'rehna', 'shift', 'move', 'near', 'paas'].some(word => clean.includes(word));
         const safetyIntent = ['safe', 'safety', 'traffic', 'alternate', 'road', 'raat', 'night', 'masla', 'issue', 'problem', 'jam', 'block'].some(word => clean.includes(word));
         const quizIntent = ['quiz', 'test', 'mcq', 'sawal', 'question', 'questions', 'practice'].some(word => clean.includes(word));
         const learnIntent = ['nahi aati', 'nhi aati', 'nai aati', 'bilkul', 'learn', 'start', 'kya karoon', 'kia karoon', 'kya karun', 'guide', 'line by line', 'roadmap'].some(word => clean.includes(word));

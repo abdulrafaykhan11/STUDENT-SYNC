@@ -1596,6 +1596,10 @@ body::after {
     font-weight: 700;
 }
 
+.chatbot-listing-row small {
+    overflow-wrap: anywhere;
+}
+
 .chatbot-alert-list {
     display: grid;
     gap: 0.45rem;
